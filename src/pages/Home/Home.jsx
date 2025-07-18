@@ -1,102 +1,180 @@
-import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import PrivateRoute from './components/user/Auth/PrivateRoute';
-import HostRoute from './components/user/Auth/HostRoute';
 
-// Context Providers
-import { AuthProvider } from './context/AuthContext';
-import { BookingProvider } from './context/BookingContext';
-import { SearchProvider } from './context/SearchContext';
+import React, { useState, useEffect, useCallback } from 'react';
+import { useSearch } from '../../hooks/useSearch';
+import { useNavigate } from 'react-router-dom';
+import HeroSection     from '../../components/Home/HeroSection';
+import CategorySection from '../../components/Home/CategorySection';
+import PropertyGrid    from '../../components/property/PropertyGrid/PropertyGrid';
+import LoadingSpinner  from '../../components/common/LoadingSpinner/LoadingSpinner';
+import ErrorMessage    from '../../components/common/ErrorMessage/ErrorMessage';
 
-// Layout
-import Layout from './components/common/Layout/Layout';
+const Home = () => {
+  const [featuredProperties, setFeaturedProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { updateSearchParams } = useSearch();
+  const navigate = useNavigate();
 
-// Loading Component
-import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
+  // Datos mock para propiedades destacadas
+  const mockFeaturedProperties = [
+    {
+      id: 1,
+      title: "Apartamento Moderno en Zona Rosa",
+      location: "Zona Rosa, Bogotá",
+      price: 150000,
+      rating: 4.8,
+      images: ["/api/placeholder/300/200"],
+      amenities: ["WiFi", "Cocina", "Accesible"],
+      type: "apartment"
+    },
+    {
+      id: 2,
+      title: "Casa Familiar en Chapinero",
+      location: "Chapinero, Bogotá",
+      price: 280000,
+      rating: 4.9,
+      images: ["/api/placeholder/300/200"],
+      amenities: ["WiFi", "Jardín", "Parking", "Accesible"],
+      type: "house"
+    },
+    {
+      id: 3,
+      title: "Loft Contemporáneo La Candelaria",
+      location: "La Candelaria, Bogotá",
+      price: 120000,
+      rating: 4.7,
+      images: ["/api/placeholder/300/200"],
+      amenities: ["WiFi", "Vista panorámica", "Accesible"],
+      type: "loft"
+    }
+  ];
 
-// Global Styles
-import './assets/styles/global.css';
-import './App.css';
+  const valuePropositions = [
+    {
+      id: 1,
+      icon: "💸",
+      title: "Precios Accesibles",
+      description: "Opciones para todos los presupuestos, desde económicas hasta premium con transparencia total en costos"
+    },
+    {
+      id: 2,
+      icon: "♿",
+      title: "Accesibilidad Total",
+      description: "Filtros especializados y propiedades verificadas para personas con necesidades de movilidad reducida"
+    },
+    {
+      id: 3,
+      icon: "🔒",
+      title: "Reservas Seguras",
+      description: "Sistema de verificación robusto, pagos protegidos y soporte 24/7 para tu tranquilidad"
+    }
+  ];
 
-// Lazy Loaded Pages
-const Home = lazy(() => import('./pages/Home/Home'));
-const Search = lazy(() => import('./pages/Search/Search.jsx'));
-const Property = lazy(() => import('./pages/Property/Property.jsx'));
-const BookingPage = lazy(() => import('./components/common/booking/Booking.jsx'));
-const Login = lazy(() => import('./components/user/Auth/LoginForm'));
-const Register = lazy(() => import('./components/user/Auth/RegisterForm'));
-const Dashboard = lazy(() => import('./pages/User/Dashboard'));
-const Profile = lazy(() => import('./components/user/Dashboard/Profile'));
-const MyBookings = lazy(() => import('./components/user/Dashboard/MyBookings'));
-const Favorites = lazy(() => import('./components/user/Dashboard/Favorites'));
-const Messages = lazy(() => import('./components/user/Messages/MessageCenter'));
-const HostDashboard = lazy(() => import('./pages/Host/Dashboard'));
-const PropertyManager = lazy(() => import('./components/host/HostDashboard/PropertyManager'));
-const AddProperty = lazy(() => import('./components/host/PropertyForm/PropertyForm'));
-const EditProperty = lazy(() => import('./components/host/PropertyForm/PropertyForm'));
-const BookingManager = lazy(() => import('./components/host/HostDashboard/BookingManager'));
-const Analytics = lazy(() => import('./components/host/HostDashboard/Analytics'));
-const ErrorState = lazy(() => import('./components/common/ErrorState/ErrorState'));
+  const fetchFeaturedProperties = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // Simular delay de API
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // En una aplicación real, esto sería una llamada a la API
+      // const response = await api.getFeaturedProperties();
+      // setFeaturedProperties(response.data);
+      
+      setFeaturedProperties(mockFeaturedProperties);
+    } catch (err) {
+      console.error("Error fetching featured properties:", err);
+      setError("No pudimos cargar las propiedades destacadas. Intenta de nuevo más tarde.");
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
-function App() {
+  useEffect(() => {
+    fetchFeaturedProperties();
+  }, [fetchFeaturedProperties]);
+
+  const handleSearch = useCallback((searchParams) => {
+    updateSearchParams(searchParams);
+    navigate('/search');
+  }, [updateSearchParams, navigate]);
+
+  const handleRetry = useCallback(() => {
+    fetchFeaturedProperties();
+  }, [fetchFeaturedProperties]);
+
+  if (error) {
+    return (
+      <div className="home-page">
+        <HeroSection onSearch={handleSearch} />
+        <ErrorMessage 
+          message={error} 
+          onRetry={handleRetry}
+          className="home-error"
+        />
+      </div>
+    );
+  }
+
   return (
-    <AuthProvider>
-      <BookingProvider>
-        <SearchProvider>
-          <Router>
-            <Layout>
-              <Suspense fallback={<LoadingSpinner />}>
-                <Routes>
-                  {/* Public Routes */}
-                  <Route path="/" element={<Home />} />
-                  <Route path="/search" element={<Search />} />
-                  <Route path="/property/:id" element={<Property />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-
-                  {/* User Protected Routes */}
-                  <Route element={<PrivateRoute />}>
-                    <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/my-bookings" element={<MyBookings />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="/messages" element={<Messages />} />
-                    <Route path="/booking" element={<BookingPage />} />
-                    <Route path="/booking/:propertyId" element={<BookingPage />} />
-                  </Route>
-
-                  {/* Host Protected Routes */}
-                  <Route element={<HostRoute />}>
-                    <Route path="/host" element={<HostDashboard />} />
-                    <Route path="/host/dashboard" element={<HostDashboard />} />
-                    <Route path="/host/properties" element={<PropertyManager />} />
-                    <Route path="/host/properties/add" element={<AddProperty />} />
-                    <Route path="/host/properties/edit/:id" element={<EditProperty />} />
-                    <Route path="/host/bookings" element={<BookingManager />} />
-                    <Route path="/host/analytics" element={<Analytics />} />
-                  </Route>
-
-                  {/* Error Routes */}
-                  <Route path="/unauthorized" element={
-                    <ErrorState 
-                      title="Acceso no autorizado" 
-                      message="No tienes permiso para acceder a esta página" 
-                    />
-                  } />
-                  <Route path="*" element={
-                    <ErrorState 
-                      title="Página no encontrada" 
-                      message="La página que buscas no existe o ha sido movida" 
-                    />
-                  } />
-                </Routes>
-              </Suspense>
-            </Layout>
-          </Router>
-        </SearchProvider>
-      </BookingProvider>
-    </AuthProvider>
+    <div className="home-page">
+      <HeroSection onSearch={handleSearch} />
+      
+      <section className="featured-section" aria-labelledby="featured-title">
+        <h2 id="featured-title" className="section-title">
+          Propiedades Destacadas
+        </h2>
+        <p className="section-subtitle">
+          Descubre los alojamientos más populares y mejor valorados
+        </p>
+        
+        {loading ? (
+          <div className="loading-container">
+            <LoadingSpinner />
+            <p className="loading-text">Cargando propiedades destacadas...</p>
+          </div>
+        ) : (
+          <>
+            <PropertyGrid 
+              properties={featuredProperties} 
+              className="featured-grid"
+            />
+            {featuredProperties.length === 0 && (
+              <div className="empty-state">
+                <p>No hay propiedades destacadas disponibles en este momento.</p>
+              </div>
+            )}
+          </>
+        )}
+      </section>
+      
+      <CategorySection />
+      
+      <section className="value-proposition" aria-labelledby="value-title">
+        <div className="value-header">
+          <h2 id="value-title" className="section-title">
+            ¿Por qué elegirnos?
+          </h2>
+          <p className="section-subtitle">
+            Comprometidos con hacer tus viajes más accesibles y seguros
+          </p>
+        </div>
+        
+        <div className="value-grid">
+          {valuePropositions.map((item) => (
+            <article key={item.id} className="value-card">
+              <div className="value-icon" role="img" aria-label={item.title}>
+                {item.icon}
+              </div>
+              <h3 className="value-title">{item.title}</h3>
+              <p className="value-description">{item.description}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </div>
   );
-}
+};
 
-export default App;
+export default Home;
