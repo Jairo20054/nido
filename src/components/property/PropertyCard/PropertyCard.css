@@ -1,0 +1,182 @@
+.property-card {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
+}
+
+.property-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.property-image {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.image-slider img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.property-card:hover .image-slider img {
+  transform: scale(1.05);
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.favorite-button {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.favorite-button svg {
+  width: 18px;
+  height: 18px;
+  fill: #9ca3af;
+}
+
+.favorite-button:hover svg {
+  fill: #ef4444;
+}
+
+.property-tags {
+  display: flex;
+  gap: 8px;
+}
+
+.tag {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: white;
+}
+
+.tag.económico {
+  background: #10B981;
+}
+
+.tag.accesible {
+  background: #0EA5E9;
+}
+
+.tag.familiar {
+  background: #F59E0B;
+}
+
+.rating {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.property-details {
+  padding: 16px;
+}
+
+.property-header {
+  margin-bottom: 12px;
+}
+
+.property-title {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+  color: #1f2937;
+}
+
+.property-location {
+  display: flex;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.property-features {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 0.9rem;
+  color: #4b5563;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.property-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reviews {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.reviews span:first-child {
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.verified {
+  background: #f0fdf4;
+  color: #059669;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.pricing {
+  text-align: right;
+}
+
+.price-per-night {
+  font-weight: 600;
+  color: #1f2937;
+  font-size: 1rem;
+}
+
+.total-price {
+  font-size: 0.85rem;
+  color: #6b7280;
+}

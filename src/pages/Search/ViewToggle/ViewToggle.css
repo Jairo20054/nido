@@ -1,0 +1,44 @@
+.view-toggle {
+  display: flex;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 40px;
+}
+
+.toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+  font-weight: 500;
+  color: #666;
+  gap: 8px;
+}
+
+.toggle-button:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+
+.toggle-button:hover:not(.active):not(:disabled) {
+  background-color: #f9f9f9;
+}
+
+.toggle-button.active {
+  background-color: #008489;
+  color: white;
+}
+
+.toggle-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.toggle-icon {
+  font-size: 16px;
+}

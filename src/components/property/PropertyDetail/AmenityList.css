@@ -1,0 +1,206 @@
+/* Variables CSS para consistencia y mantenimiento */
+:root {
+  --amenity-gap-large: 32px;
+  --amenity-gap-medium: 24px;
+  --amenity-gap-small: 16px;
+  --amenity-gap-xs: 12px;
+  --amenity-gap-xxs: 8px;
+  
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-weight-semibold: 600;
+  --font-weight-medium: 500;
+  
+  --font-size-title: clamp(1rem, 2.5vw, 1.1rem);
+  --font-size-body: clamp(0.875rem, 2vw, 0.95rem);
+  
+  --icon-size: 1.2rem;
+  --icon-width: 24px;
+  
+  --color-text-primary: #374151;
+  --color-text-secondary: #6b7280;
+  --border-radius: 8px;
+  --transition-duration: 0.2s;
+  
+  --shadow-subtle: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+/* Contenedor principal de amenidades */
+.amenity-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--amenity-gap-large);
+  padding: 0;
+  margin: 0;
+}
+
+/* Categoría individual */
+.category {
+  margin-bottom: var(--amenity-gap-medium);
+  padding: var(--amenity-gap-small);
+  border-radius: var(--border-radius);
+  transition: transform var(--transition-duration) ease, 
+              box-shadow var(--transition-duration) ease;
+}
+
+.category:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-subtle);
+}
+
+/* Título de categoría */
+.category-title {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-title);
+  color: var(--color-text-primary);
+  margin: 0 0 var(--amenity-gap-small);
+  display: flex;
+  align-items: center;
+  gap: var(--amenity-gap-xxs);
+  line-height: 1.4;
+}
+
+/* Icono de categoría */
+.category-icon {
+  font-size: var(--icon-size);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  transition: color var(--transition-duration) ease;
+}
+
+.category:hover .category-icon {
+  color: var(--color-text-primary);
+}
+
+/* Grid de amenidades dentro de cada categoría */
+.amenity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--amenity-gap-xs);
+}
+
+/* Item individual de amenidad */
+.amenity-item {
+  display: flex;
+  align-items: center;
+  gap: var(--amenity-gap-xxs);
+  padding: var(--amenity-gap-xxs);
+  border-radius: calc(var(--border-radius) / 2);
+  transition: background-color var(--transition-duration) ease,
+              transform var(--transition-duration) ease;
+  cursor: default;
+}
+
+.amenity-item:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  transform: translateX(4px);
+}
+
+/* Icono de amenidad */
+.amenity-icon {
+  font-size: var(--icon-size);
+  width: var(--icon-width);
+  min-width: var(--icon-width);
+  text-align: center;
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  transition: color var(--transition-duration) ease;
+}
+
+.amenity-item:hover .amenity-icon {
+  color: var(--color-text-primary);
+}
+
+/* Nombre de amenidad */
+.amenity-name {
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Media queries para responsividad mejorada */
+@media (max-width: 1024px) {
+  .amenity-list {
+    grid-template-columns: 1fr;
+    gap: var(--amenity-gap-medium);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --amenity-gap-large: 24px;
+    --amenity-gap-medium: 20px;
+    --amenity-gap-small: 12px;
+  }
+  
+  .amenity-list {
+    gap: var(--amenity-gap-medium);
+  }
+  
+  .amenity-grid {
+    grid-template-columns: 1fr;
+    gap: var(--amenity-gap-xxs);
+  }
+  
+  .category {
+    padding: var(--amenity-gap-xs);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --amenity-gap-large: 20px;
+    --amenity-gap-medium: 16px;
+    --amenity-gap-small: 10px;
+    --amenity-gap-xs: 8px;
+  }
+  
+  .amenity-item {
+    padding: 6px;
+  }
+  
+  .category-title {
+    margin-bottom: 10px;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text-primary: #f9fafb;
+    --color-text-secondary: #d1d5db;
+  }
+  
+  .amenity-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* Estados de focus para accesibilidad */
+.amenity-item:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Utilidad para ocultar elementos visualmente pero mantenerlos accesibles */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

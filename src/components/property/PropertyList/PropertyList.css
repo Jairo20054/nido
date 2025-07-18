@@ -1,0 +1,91 @@
+.property-list {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.list-header h2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #1f2937;
+  margin: 0;
+}
+
+.sort-select {
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+}
+
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+}
+
+.pagination-button {
+  padding: 8px 16px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-button:hover {
+  background: #e5e7eb;
+}
+
+.page-numbers {
+  display: flex;
+  gap: 8px;
+}
+
+.page-numbers span {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.page-numbers span.active {
+  background: #10B981;
+  color: white;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .list-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  
+  .property-grid {
+    grid-template-columns: 1fr;
+  }
+}

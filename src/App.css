@@ -1,0 +1,83 @@
+/* Reset y configuración base */
+* {
+  box-sizing: border-box;
+}
+
+/* Variables CSS para mejor mantenimiento */
+:root {
+  --header-height: 80px;
+  --primary-spacing: 1rem;
+  --content-max-width: 1200px;
+  --border-radius: 8px;
+  --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --transition-smooth: all 0.3s ease;
+}
+
+/* Contenedor principal de la aplicación */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fafafa;
+}
+
+/* Contenido principal */
+.main-content {
+  flex: 1;
+  padding-top: var(--header-height);
+  padding-left: var(--primary-spacing);
+  padding-right: var(--primary-spacing);
+  padding-bottom: var(--primary-spacing);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  width: 100%;
+  transition: var(--transition-smooth);
+}
+
+/* Mejoras para accesibilidad y UX */
+.main-content:focus-within {
+  outline: 2px solid #007acc;
+  outline-offset: 4px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 60px;
+    --primary-spacing: 0.75rem;
+  }
+  
+  .main-content {
+    padding-left: var(--primary-spacing);
+    padding-right: var(--primary-spacing);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --header-height: 50px;
+    --primary-spacing: 0.5rem;
+  }
+}
+
+/* Mejoras adicionales para elementos comunes */
+.content-section {
+  margin-bottom: 2rem;
+  padding: var(--primary-spacing);
+  background: white;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-light);
+}
+
+/* Utilidades para scroll suave */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Mejora para cuando el contenido es muy corto */
+.main-content {
+  min-height: calc(100vh - var(--header-height));
+}

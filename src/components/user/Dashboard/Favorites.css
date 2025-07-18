@@ -1,0 +1,267 @@
+/* Contenedor principal */
+.favorites {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Header de favoritos */
+.favorites-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.favorites-count {
+  font-size: 0.875rem;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+/* Grid de favoritos */
+.favorites-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+/* Tarjeta de favorito */
+.favorite-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.favorite-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-color: #10B981;
+}
+
+/* Contenedor de imagen */
+.favorite-image-container {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.favorite-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.favorite-card:hover .favorite-image {
+  transform: scale(1.05);
+}
+
+/* Botón de eliminar */
+.favorite-remove {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: #6b7280;
+  transition: all 0.2s ease;
+  z-index: 2;
+}
+
+.favorite-remove:hover {
+  background: rgba(239, 68, 68, 0.9);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* Información de la tarjeta */
+.favorite-info {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.favorite-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.favorite-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+  line-height: 1.4;
+  flex: 1;
+}
+
+.favorite-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: #fef3c7;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.star {
+  font-size: 12px;
+}
+
+.rating-value {
+  font-weight: 600;
+  color: #92400e;
+}
+
+.favorite-location {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.favorite-description {
+  font-size: 0.875rem;
+  color: #4b5563;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.favorite-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  gap: 12px;
+}
+
+.favorite-price {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #10B981;
+  margin: 0;
+}
+
+.view-details-btn {
+  background: #10B981;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-details-btn:hover {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #6b7280;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  font-size: 1.25rem;
+  color: #374151;
+  margin: 0 0 8px 0;
+}
+
+.empty-state p {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .favorites {
+    padding: 0 12px;
+    gap: 20px;
+  }
+  
+  .favorites-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .favorites-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .favorite-info {
+    padding: 16px;
+  }
+  
+  .favorite-footer {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  
+  .view-details-btn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .favorite-header {
+    gap: 8px;
+  }
+  
+  .favorite-title {
+    font-size: 1rem;
+  }
+  
+  .favorite-image-container {
+    height: 160px;
+  }
+}

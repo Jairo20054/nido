@@ -1,0 +1,526 @@
+/* Variables CSS para consistencia */
+:root {
+  --primary-color: #10B981;
+  --primary-hover: #059669;
+  --primary-light: #f0fdf4;
+  --error-color: #EF4444;
+  --error-light: #FEF2F2;
+  --warning-color: #F59E0B;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --text-light: #9CA3AF;
+  --border-color: #E5E7EB;
+  --border-hover: #D1D5DB;
+  --background-light: #F9FAFB;
+  --background-white: #FFFFFF;
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --border-radius: 12px;
+  --border-radius-sm: 8px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+.payment-form {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--spacing-lg);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--text-primary);
+  line-height: 1.6;
+}
+
+.payment-header {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.payment-form h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 0 0 var(--spacing-sm);
+  color: var(--text-primary);
+}
+
+.payment-form p {
+  color: var(--text-secondary);
+  margin: 0 0 var(--spacing-lg);
+  font-size: 1.1rem;
+}
+
+.section {
+  background: var(--background-white);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease;
+}
+
+.section:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.section h3 {
+  font-weight: 600;
+  font-size: 1.3rem;
+  margin: 0 0 var(--spacing-lg);
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.section-icon {
+  font-size: 1.2rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.form-group {
+  margin-bottom: var(--spacing-md);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  background-color: var(--background-white);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-group input:hover:not(:focus) {
+  border-color: var(--border-hover);
+}
+
+.form-group input.error {
+  border-color: var(--error-color);
+  background-color: var(--error-light);
+}
+
+.form-group input.error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-group input::placeholder {
+  color: var(--text-light);
+}
+
+.error-message {
+  display: block;
+  color: var(--error-color);
+  font-size: 0.85rem;
+  margin-top: var(--spacing-xs);
+  font-weight: 500;
+}
+
+/* Estilos para métodos de pago */
+.method-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+.method-option {
+  padding: var(--spacing-md);
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius-sm);
+  background: var(--background-white);
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+  text-align: center;
+  min-height: 80px;
+  justify-content: center;
+}
+
+.method-option:hover:not(.active) {
+  border-color: var(--primary-color);
+  background-color: rgba(16, 185, 129, 0.02);
+  transform: translateY(-1px);
+}
+
+.method-option.active {
+  border-color: var(--primary-color);
+  background: var(--primary-light);
+  color: var(--primary-color);
+  font-weight: 600;
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.method-icon {
+  font-size: 1.5rem;
+}
+
+.payment-details {
+  background-color: var(--background-light);
+  padding: var(--spacing-lg);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--border-color);
+  margin-top: var(--spacing-md);
+}
+
+/* Estilos específicos para tarjeta */
+.card-input-wrapper {
+  position: relative;
+}
+
+.card-type {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.card-type.visa {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzE0MzQ5MSIvPgo8dGV4dCB4PSI1IiB5PSIxNiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjEwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0id2hpdGUiPlZJU0E8L3RleHQ+Cjwvc3ZnPgo=');
+}
+
+.card-type.mastercard {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iI0VCMDAxQiIvPgo8dGV4dCB4PSI0IiB5PSIxNiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjgiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+TUFTVEVSPC90ZXh0Pgo8L3N2Zz4K');
+}
+
+.card-type.amex {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzAwNkZDRiIvPgo8dGV4dCB4PSI4IiB5PSIxNiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjgiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+QU1FWDWV4dD4KPC9zdmc+Cg==');
+}
+
+.card-type.generic {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCA0MCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjQwIiBoZWlnaHQ9IjI0IiByeD0iNCIgZmlsbD0iIzZCNzI4MCIvPgo8dGV4dCB4PSI2IiB5PSIxNiIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjgiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSI+Q0FSRDT90ZXh0Pgo8L3N2Zz4K');
+}
+
+/* Estilos para PayPal */
+.paypal-note {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-top: var(--spacing-md);
+  padding: var(--spacing-md);
+  background-color: rgba(16, 185, 129, 0.05);
+  border-radius: var(--border-radius-sm);
+  border-left: 4px solid var(--primary-color);
+}
+
+.info-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+/* Estilos para efectivo */
+.cash-note {
+  background-color: rgba(245, 158, 11, 0.05);
+  border-left: 4px solid var(--warning-color);
+}
+
+.cash-info {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.cash-info p {
+  margin: 0 0 var(--spacing-sm);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.cash-info p:first-child {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Estilos para términos y condiciones */
+.terms {
+  background: var(--background-light);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+}
+
+.terms-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  font-size: 0.9rem;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+.terms-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin: var(--spacing-xs) 0 0 0;
+  cursor: pointer;
+  accent-color: var(--primary-color);
+}
+
+.terms-checkbox input[type="checkbox"].error {
+  outline: 2px solid var(--error-color);
+  outline-offset: 2px;
+}
+
+.terms-checkbox a {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.terms-checkbox a:hover {
+  text-decoration: underline;
+}
+
+/* Estilos para botones de acción */
+.actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+}
+
+.back-button, .next-button {
+  padding: 16px var(--spacing-xl);
+  border-radius: var(--border-radius-sm);
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  min-height: 50px;
+}
+
+.back-button {
+  background: var(--background-white);
+  border: 2px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.back-button:hover:not(:disabled) {
+  background: var(--background-light);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.next-button {
+  background: var(--primary-color);
+  color: white;
+  border: 2px solid var(--primary-color);
+}
+
+.next-button:hover:not(:disabled) {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.next-button:disabled {
+  background: var(--text-light);
+  border-color: var(--text-light);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.back-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Spinner para estado de carga */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid transparent;
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .payment-form {
+    padding: var(--spacing-md);
+  }
+  
+  .payment-form h2 {
+    font-size: 1.6rem;
+  }
+  
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .method-options {
+    grid-template-columns: 1fr;
+  }
+  
+  .actions {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .back-button, .next-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .section {
+    padding: var(--spacing-md);
+  }
+}
+
+@media (max-width: 480px) {
+  .payment-form {
+    padding: var(--spacing-sm);
+  }
+  
+  .payment-form h2 {
+    font-size: 1.4rem;
+  }
+  
+  .section h3 {
+    font-size: 1.1rem;
+  }
+  
+  .form-group input {
+    padding: 12px var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  
+  .cash-info {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+}
+
+/* Estados de focus mejorados para accesibilidad */
+.method-option:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.form-group input:focus-visible,
+.terms-checkbox input:focus-visible,
+.back-button:focus-visible,
+.next-button:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Animaciones sutiles */
+.section {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.payment-details {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Mejoras para el contraste y legibilidad */
+.error-message {
+  background-color: var(--error-light);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--spacing-xs);
+  border-left: 3px solid var(--error-color);
+}
+
+/* Estilos para elementos de estado */
+.form-group.success input {
+  border-color: var(--primary-color);
+  background-color: var(--primary-light);
+}
+
+.form-group.success input:focus {
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Mejoras para elementos interactivos */
+.method-option:active {
+  transform: translateY(0);
+}
+
+.back-button:active,
+.next-button:active {
+  transform: translateY(0);
+}

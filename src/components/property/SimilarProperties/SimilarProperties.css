@@ -1,0 +1,27 @@
+.similar-properties {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 1px solid #eee;
+}
+
+.similar-properties h2 {
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .properties-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+}
+
+.similar-property {
+  margin-bottom: 0;
+}

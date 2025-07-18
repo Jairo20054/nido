@@ -1,0 +1,57 @@
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.empty-state-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.empty-state-icon.search {
+  color: #008489;
+  background-color: rgba(0, 132, 137, 0.1);
+}
+
+.empty-state-icon.error {
+  color: #ff5a5f;
+  background-color: rgba(255, 90, 95, 0.1);
+}
+
+.empty-state-title {
+  margin: 0 0 15px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+.empty-state-description {
+  margin: 0 0 25px;
+  font-size: 16px;
+  color: #666;
+  line-height: 1.5;
+}
+
+.empty-state-action {
+  padding: 12px 24px;
+  background-color: #008489;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.empty-state-action:hover {
+  background-color: #006a6e;
+}
