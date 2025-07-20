@@ -4,6 +4,7 @@ import HeroSection from '../../pages/Home/HeroSection';
 import CategorySection from '../../pages/Home/CategorySection';
 import PropertyGrid from '../../components/property/PropertyGrid/PropertyGrid';
 import LoadingSpinner from '../../components/common/LoadingSpinner/LoadingSpinner';
+import Header from '../../components/common/Header/Header';
 import ErrorMessage from '../../components/common/ErrorMessage/ErrorMessage';
 
 const Home = () => {

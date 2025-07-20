@@ -5,7 +5,7 @@ import PropertyInfo from '../../components/property/PropertyInfo/PropertyInfo';
 import PropertyAmenities from '../../components/property/PropertyAmenities/PropertyAmenities';
 import PropertyLocation from '../../components/property/PropertyLocation/PropertyLocation';
 import PropertyReviews from '../../components/property/PropertyReviews/PropertyReviews';
-import BookingWidget from '../../components/booking/BookingWidget/BookingWidget';
+import BookingWidget from '../../components/booking/BookingWidget';
 import HostInfo from '../../components/property/HostInfo/HostInfo';
 import SimilarProperties from '../../components/property/SimilarProperties/SimilarProperties';
 import LoadingSpinner from '../../components/common/LoadingSpinner/LoadingSpinner';
