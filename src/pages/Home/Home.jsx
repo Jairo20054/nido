@@ -1,18 +1,15 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
-import { useSearch } from '../../hooks/useSearch';
 import { useNavigate } from 'react-router-dom';
-import HeroSection     from '../../components/Home/HeroSection';
-import CategorySection from '../../components/Home/CategorySection';
-import PropertyGrid    from '../../components/property/PropertyGrid/PropertyGrid';
-import LoadingSpinner  from '../../components/common/LoadingSpinner/LoadingSpinner';
-import ErrorMessage    from '../../components/common/ErrorMessage/ErrorMessage';
+import HeroSection from '../../pages/Home/HeroSection';
+import CategorySection from '../../pages/Home/CategorySection';
+import PropertyGrid from '../../components/property/PropertyGrid/PropertyGrid';
+import LoadingSpinner from '../../components/common/LoadingSpinner/LoadingSpinner';
+import ErrorMessage from '../../components/common/ErrorMessage/ErrorMessage';
 
 const Home = () => {
   const [featuredProperties, setFeaturedProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { updateSearchParams } = useSearch();
   const navigate = useNavigate();
 
   // Datos mock para propiedades destacadas
@@ -75,13 +72,7 @@ const Home = () => {
     setError(null);
     
     try {
-      // Simular delay de API
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // En una aplicación real, esto sería una llamada a la API
-      // const response = await api.getFeaturedProperties();
-      // setFeaturedProperties(response.data);
-      
       setFeaturedProperties(mockFeaturedProperties);
     } catch (err) {
       console.error("Error fetching featured properties:", err);
@@ -95,10 +86,12 @@ const Home = () => {
     fetchFeaturedProperties();
   }, [fetchFeaturedProperties]);
 
+  // Función modificada para usar estado de navegación
   const handleSearch = useCallback((searchParams) => {
-    updateSearchParams(searchParams);
-    navigate('/search');
-  }, [updateSearchParams, navigate]);
+    navigate('/search', { 
+      state: { searchParams }  // Pasamos parámetros como estado de navegación
+    });
+  }, [navigate]);
 
   const handleRetry = useCallback(() => {
     fetchFeaturedProperties();
