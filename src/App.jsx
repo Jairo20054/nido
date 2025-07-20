@@ -17,6 +17,9 @@ import LoadingSpinner from './components/common/LoadingSpinner/LoadingSpinner';
 
 // Global Styles
 import './assets/styles/global.css';
+import './assets/styles/variables.css';
+import './assets/styles/utilities.css';
+import './assets/styles/animations.css';
 import './App.css';
 
 // Lazy Loaded Pages

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../../hooks/useAuth';
 import SearchBar from './SearchBar';
+import Navigation from './Navigation'; // Importar el componente Navigation
 import UserMenu from './UserMenu';
 import { 
   HomeIcon, 
@@ -26,11 +27,12 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Navigation items con configuración mejorada
+  // Navigation items adaptados para el nuevo componente Navigation
   const navigationItems = useMemo(() => [
     {
       id: 'short-stays',
       label: 'Estadías Cortas',
+      shortLabel: 'Cortas',
       path: '/search?type=short',
       icon: HomeIcon,
       description: 'Hasta 30 días',
@@ -38,7 +40,8 @@ const Header = () => {
     },
     {
       id: 'long-stays',
-      label: 'Estadías Largas', 
+      label: 'Estadías Largas',
+      shortLabel: 'Largas',
       path: '/search?type=long',
       icon: CalendarDaysIcon,
       description: 'Más de 30 días',
@@ -47,6 +50,7 @@ const Header = () => {
     {
       id: 'services',
       label: 'Servicios',
+      shortLabel: 'Servicios',
       path: '/services',
       icon: WrenchScrewdriverIcon,
       description: 'Limpieza, tours, más',
@@ -195,31 +199,16 @@ const Header = () => {
           <span className="header__logo-text">Nido</span>
         </Link>
 
-        {/* Desktop Navigation mejorada */}
-        <nav className="header__nav hide-mobile" role="navigation" aria-label="Navegación principal">
-          <div className="header__nav-items">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = isActiveNavItem(item.path);
-              
-              return (
-                <Link
-                  key={item.id}
-                  to={item.path}
-                  className={`header__nav-item ${isActive ? 'header__nav-item--active' : ''}`}
-                  data-color={item.color}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  <Icon className="header__nav-icon" aria-hidden="true" />
-                  <div className="header__nav-content">
-                    <span className="header__nav-label">{item.label}</span>
-                    <span className="header__nav-description">{item.description}</span>
-                  </div>
-                </Link>
-              );
-            })}
-          </div>
-        </nav>
+        {/* Reemplazo de navegación desktop con componente Navigation */}
+        <div className="header__nav-container hide-mobile">
+          <Navigation 
+            variant="horizontal"
+            showIcons={true}
+            items={navigationItems}
+            activePathMatcher={(item) => isActiveNavItem(item.path)}
+            className="header__navigation"
+          />
+        </div>
 
         {/* Search Bar mejorada */}
         <div className="header__search">
