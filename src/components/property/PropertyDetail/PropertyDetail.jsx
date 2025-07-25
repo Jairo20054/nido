@@ -65,7 +65,7 @@ const PropertyDetail = ({ property }) => {
         </div>
         
         <div className="detail-content">
-          <div className="main-content">
+          <div className="main-contentent">
             <div className="tabs">
               <button 
                 className={`tab ${activeTab === 'details' ? 'active' : ''}`}

@@ -1,7 +1,7 @@
 import React from 'react';
 import './PropertyCard.css';
 
-const PropertyCard = ({ property }) => {
+const PropertyCard = ({ property, onClick }) => {
   // Valores por defecto para propiedades que podrían ser undefined
   const safeProperty = {
     images: [],
@@ -17,7 +17,7 @@ const PropertyCard = ({ property }) => {
   };
 
   return (
-    <div className="property-card">
+    <div className="property-card" onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
       <div className="property-image">
         <div className="image-slider">
           {/* Imagen principal con protección para imágenes vacías */}

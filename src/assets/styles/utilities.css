@@ -320,18 +320,18 @@
 .text-clip { text-overflow: clip; }
 
 /* ===== COLORES ===== */
-.text-primary { color: var(--primary-color); }
-.text-secondary { color: var(--secondary-color); }
-.text-accent { color: var(--accent-color); }
+.text-primary { color: var(--primary); }
+.text-secondary { color: var(--secondary); }
+.text-accent { color: var(--accent); }
 .text-white { color: white; }
 .text-black { color: black; }
 .text-gray { color: #6b7280; }
 .text-gray-light { color: #9ca3af; }
 .text-gray-dark { color: #374151; }
 
-.bg-primary { background-color: var(--primary-color); }
-.bg-secondary { background-color: var(--secondary-color); }
-.bg-accent { background-color: var(--accent-color); }
+.bg-primary { background-color: var(--primary); }
+.bg-secondary { background-color: var(--secondary); }
+.bg-accent { background-color: var(--accent); }
 .bg-white { background-color: white; }
 .bg-black { background-color: black; }
 .bg-gray { background-color: #f3f4f6; }
@@ -362,9 +362,9 @@
 .border-double { border-style: double; }
 .border-none { border-style: none; }
 
-.border-primary { border-color: var(--primary-color); }
-.border-secondary { border-color: var(--secondary-color); }
-.border-accent { border-color: var(--accent-color); }
+.border-primary { border-color: var(--primary); }
+.border-secondary { border-color: var(--secondary); }
+.border-accent { border-color: var(--accent); }
 .border-white { border-color: white; }
 .border-black { border-color: black; }
 .border-gray { border-color: #d1d5db; }
@@ -410,9 +410,9 @@
 .shadow-inner { box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
 
 /* Sombras de colores */
-.shadow-primary { box-shadow: 0 4px 14px 0 rgba(var(--primary-color-rgb, 59, 130, 246), 0.39); }
-.shadow-secondary { box-shadow: 0 4px 14px 0 rgba(var(--secondary-color-rgb, 16, 185, 129), 0.39); }
-.shadow-accent { box-shadow: 0 4px 14px 0 rgba(var(--accent-color-rgb, 245, 101, 101), 0.39); }
+.shadow-primary { box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39); }
+.shadow-secondary { box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39); }
+.shadow-accent { box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.39); }
 
 /* ===== POSICIONAMIENTO ===== */
 .static { position: static; }
@@ -639,7 +639,7 @@
 }
 .focus\:ring-primary:focus { 
   outline: none;
-  box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 59, 130, 246), 0.5);
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.5);
 }
 
 .active\:scale-95:active { transform: scale(0.95); }

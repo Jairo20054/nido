@@ -2,7 +2,7 @@ import React from 'react';
 import PropertyCard from '../PropertyCard/PropertyCard';
 import './PropertyGrid.css';
 
-const PropertyGrid = ({ properties, className }) => {
+const PropertyGrid = ({ properties, className, onCardClick }) => {
   if (!properties || properties.length === 0) {
     return (
       <div className={`property-grid ${className || ''}`}>
@@ -18,6 +18,7 @@ const PropertyGrid = ({ properties, className }) => {
           key={property.id} 
           property={property} 
           className="property-grid-item"
+          onClick={() => onCardClick && onCardClick(property)}
         />
       ))}
     </div>

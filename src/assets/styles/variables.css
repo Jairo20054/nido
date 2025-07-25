@@ -242,6 +242,71 @@
   --breakpoint-lg: 1024px;
   --breakpoint-xl: 1280px;
   --breakpoint-2xl: 1536px;
+
+  /* === VARIABLES PARA COMPONENTES HEADER, NAVIGATION, USERMENU, SEARCHBAR === */
+  --color-primary: var(--primary, #10B981);
+  --color-primary-dark: var(--primary-dark, #047857);
+  --color-secondary: var(--secondary, #0EA5E9);
+  --color-accent: var(--accent, #F59E0B);
+  --color-white: #ffffff;
+  --color-black: #111827;
+  --color-gray: #6B7280;
+  --color-gray-light: #E5E7EB;
+  --color-gray-dark: #374151;
+  --color-gray-muted: #9CA3AF;
+  --color-danger: #EF4444;
+  --color-success: #10B981;
+  --color-info: #3B82F6;
+  --color-bg: var(--bg-primary, #FFFFFF);
+  --color-bg-secondary: var(--bg-secondary, #F9FAFB);
+  --color-bg-tertiary: var(--bg-tertiary, #F3F4F6);
+  --color-border: var(--border-primary, #E5E7EB);
+  --color-border-dark: var(--border-secondary, #D1D5DB);
+  --color-text: var(--text-primary, #111827);
+  --color-text-muted: var(--text-tertiary, #9CA3AF);
+  --color-text-secondary: var(--text-secondary, #6B7280);
+  --color-text-inverse: var(--text-inverse, #FFFFFF);
+  /* Bordes y radios */
+  --border-radius-xs: 2px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 12px;
+  --border-radius-xl: 20px;
+  --border-radius-2xl: 32px;
+  --border-radius-full: 9999px;
+  /* Sombras */
+  --shadow-xs: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0,0,0,0.1), 0 1px 2px -1px rgba(0,0,0,0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -4px rgba(0,0,0,0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 8px 10px -6px rgba(0,0,0,0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0,0,0,0.25);
+  /* Espaciados */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  /* Tipografía */
+  --font-size-xs: 0.75rem;
+  --font-size-sm: 0.875rem;
+  --font-size-md: 1rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  /* Otros */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+  --z-sticky: 1100;
+  --z-dropdown: 1000;
+  --z-modal: 1400;
+  --z-tooltip: 1800;
 }
 
 /* === TEMA OSCURO === */

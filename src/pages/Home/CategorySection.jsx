@@ -1,72 +1,89 @@
-import React, { useState } from 'react';
-import './Header.css';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import './CategorySection.css';
 
-const Header = () => {
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+const CategorySection = () => {
+  const categories = [
+    {
+      id: 'economicas',
+      title: 'Económicas',
+      description: 'Alojamientos con precios accesibles sin comprometer la comodidad',
+      icon: '💰',
+    },
+    {
+      id: 'accesibles',
+      title: 'Accesibles',
+      description: 'Propiedades adaptadas para personas con movilidad reducida',
+      icon: '♿',
+    },
+    {
+      id: 'familiares',
+      title: 'Familiares',
+      description: 'Espacios amplios y seguros para disfrutar en familia',
+      icon: '👨‍👩‍👧‍👦',
+    },
+    {
+      id: 'lujo',
+      title: 'Lujo',
+      description: 'Experiencias premium con servicios exclusivos',
+      icon: '🌟',
+    },
+    {
+      id: 'larga-estadia',
+      title: 'Larga Estadía',
+      description: 'Opciones mensuales con descuentos especiales',
+      icon: '📅',
+    },
+    {
+      id: 'pet-friendly',
+      title: 'Pet Friendly',
+      description: 'Propiedades que aceptan mascotas',
+      icon: '🐾',
+    }
+  ];
 
   return (
-    <header className="header">
-      <div className="header-top">
-        <Link to="/" className="logo">
-          <span className="logo-icon">🏠</span>
-          <span className="logo-text">NidoAccesible</span>
-        </Link>
+    <section className="category-section">
+      <div className="category-container">
+        <div className="category-header">
+          <h2 className="category-title">Encuentra el alojamiento perfecto para ti</h2>
+          <p className="category-subtitle">
+            Explora nuestras categorías cuidadosamente seleccionadas para ofrecerte la mejor experiencia de arrendamiento
+          </p>
+        </div>
 
-        <div className="header-nav">
-          <nav className="main-nav">
-            <Link to="/short-stays">Cortos</Link>
-            <Link to="/long-stays">Largos</Link>
-            <Link to="/services">Servicios</Link>
-          </nav>
-
-          <div className="header-actions">
-            <button 
-              className="search-toggle" 
-              onClick={() => setIsSearchExpanded(!isSearchExpanded)}
-              aria-expanded={isSearchExpanded}
-              aria-label="Buscar propiedades"
+        <div className="category-grid">
+          {categories.map((category) => (
+            <div 
+              key={category.id} 
+              className={`category-card category-${category.id}`}
             >
-              🔍
-            </button>
-            
-            <div className="user-menu">
-              <button 
-                className="user-toggle"
-                onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                aria-expanded={isUserMenuOpen}
-                aria-label="Menú de usuario"
-              >
-                👤
-              </button>
-              
-              {isUserMenuOpen && (
-                <div className="user-dropdown">
-                  <Link to="/login">Iniciar sesión</Link>
-                  <Link to="/signup">Registrarse</Link>
-                  <Link to="/host">Publicar propiedad</Link>
+              <div className="category-card-content">
+                <div className="category-icon-container">
+                  <span className="category-icon">{category.icon}</span>
                 </div>
-              )}
+                <div className="category-text">
+                  <h3 className="category-card-title">{category.title}</h3>
+                  <p className="category-card-description">{category.description}</p>
+                </div>
+                <div className="category-card-footer">
+                  <button className="category-explore-button">
+                    Explorar
+                    <svg xmlns="http://www.w3.org/2000/svg" className="category-arrow-icon" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
+
+        <div className="category-footer">
+          <button className="view-all-button">Ver todas las categorías</button>
         </div>
       </div>
-
-      {isSearchExpanded && (
-        <div className="search-expanded">
-          <div className="search-container">
-            <input 
-              type="text" 
-              placeholder="¿Dónde quieres hospedarte?" 
-              className="search-input"
-            />
-            <button className="search-button">Buscar</button>
-          </div>
-        </div>
-      )}
-    </header>
+    </section>
   );
 };
 
-export default Header;
+export default CategorySection;

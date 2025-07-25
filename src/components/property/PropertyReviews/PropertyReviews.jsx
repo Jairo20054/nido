@@ -1,4 +1,3 @@
-jsx:src/components/Property/PropertyReviews.jsx
 import React, { useState } from 'react';
 import { FaStar, FaUserCircle } from 'react-icons/fa';
 import './PropertyReviews.css';
@@ -16,11 +15,7 @@ const PropertyReviews = ({ reviews, rating, totalReviews }) => {
   }
 
   const toggleReview = (index) => {
-    if (expandedReview === index) {
-      setExpandedReview(null);
-    } else {
-      setExpandedReview(index);
-    }
+    setExpandedReview(expandedReview === index ? null : index);
   };
 
   return (
@@ -42,7 +37,7 @@ const PropertyReviews = ({ reviews, rating, totalReviews }) => {
       
       <div className="reviews-list">
         {reviews.map((review, index) => (
-          <div key={index} className="review-item">
+          <div key={review.id || index} className="review-item">
             <div className="review-header">
               <div className="reviewer-avatar">
                 {review.avatar ? (
@@ -71,6 +66,7 @@ const PropertyReviews = ({ reviews, rating, totalReviews }) => {
               <button 
                 className="review-toggle" 
                 onClick={() => toggleReview(index)}
+                aria-expanded={expandedReview === index}
               >
                 {expandedReview === index ? 'Leer menos' : 'Leer más'}
               </button>

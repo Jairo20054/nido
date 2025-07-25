@@ -60,7 +60,7 @@ function App() {
                   <Route path="/register" element={<Register />} />
 
                   {/* User Protected */}
-                  <Route element={<PrivateRoute />}>
+                  
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/profile"   element={<Profile />} />
                     <Route path="/my-bookings" element={<MyBookings />} />
@@ -68,7 +68,7 @@ function App() {
                     <Route path="/messages"    element={<Messages />} />
                     <Route path="/booking"     element={<BookingPage />} />
                     <Route path="/booking/:propertyId" element={<BookingPage />} />
-                  </Route>
+                  
 
                   {/* Host Protected */}
                   <Route element={<HostRoute />}>
