@@ -103,10 +103,15 @@ const Property = () => {
     }
   }, [retryCount, loadPropertyData, navigate]);
 
-  // Efecto principal
+  // Efecto principal - Recarga cuando cambia el ID
   useEffect(() => {
+    // Resetear estado al cambiar de propiedad
+    setProperty(null);
+    setLoading(true);
+    setError(null);
+    
     loadPropertyData();
-  }, [loadPropertyData]);
+  }, [id, loadPropertyData]);
 
   // Función para scroll suave a secciones
   const scrollToSection = useCallback((sectionId) => {

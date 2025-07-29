@@ -19,10 +19,10 @@ const Navigation = ({
     {
       id: 'short-stays',
       path: '/short-stays',
-      label: 'Estadías Cortas',
+      label: 'Ofertas ',
       shortLabel: 'Cortos',
       icon: FaHome,
-      description: 'Reservas de corta duración'
+      description: 'Ofertas '
     },
     {
       id: 'long-stays',
