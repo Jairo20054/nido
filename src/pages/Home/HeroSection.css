@@ -2,342 +2,442 @@
 
 /* Contenedor principal de la sección hero */
 .hero-section {
-  position: relative; /* Posicionamiento relativo para elementos hijos */
-  height: 80vh; /* Altura del 80% del viewport */
-  min-height: 700px; /* Altura mínima de 600px */
-  /* Fondo con gradiente oscuro superpuesto a una imagen */
+  position: relative;
+  height: 80vh;
+  min-height: 700px;
   background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
-  background-size: cover; /* Cubre todo el espacio disponible */
-  background-position: center; /* Centra la imagen de fondo */
-  display: flex; /* Usa flexbox para alinear contenido */
-  align-items: center; /* Centra verticalmente */
-  justify-content: center; /* Centra horizontalmente */
-  color: #FFFFFF; /* Color de texto blanco */
-  padding: 0 20px; /* Padding horizontal */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  padding: 0 20px;
 }
 
-/* Capa superpuesta para el contenido */
-.hero-overlay {
-  width: 100%; /* Ancho completo */
-  max-width: 1000px; /* Ancho máximo */
+/* Contenedor para centrar todo el contenido */
+.hero-content-container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
 }
 
 /* Contenedor del contenido principal */
 .hero-content {
-  max-width: 810px; /* Ancho máximo del contenido */
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* Estilos para el título principal */
 .hero-title {
-  font-size: 2.8rem; /* Tamaño de fuente */
-  font-weight: 800; /* Grosor de fuente */
-  line-height: 1.2; /* Altura de línea */
-  margin-bottom: 1.2rem; /* Margen inferior */
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra de texto */
-  color: white; /* Color de texto */
+  font-size: 2.8rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1.2rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-align: center;
 }
 
 /* Estilos para el subtítulo */
 .hero-subtitle {
-  font-size: 1.4rem; /* Tamaño de fuente */
-  margin-bottom: 2.5rem; /* Margen inferior */
-  max-width: 600px; /* Ancho máximo */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3); /* Sombra de texto */
-  color: white; /* Color de texto */
+  font-size: 1.4rem;
+  margin-bottom: 2.5rem;
+  max-width: 600px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  color: white;
+  text-align: center;
 }
 
-/* Formulario de búsqueda */
+/* Formulario de búsqueda - CENTRADO */
 .search-form {
-  background: rgba(255, 255, 255, 0.95); /* Fondo blanco semitransparente */
-  border-radius: 12px; /* Bordes redondeados */
-  padding: 25px; /* Espaciado interno */
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); /* Sombra */
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 1000px;
 }
 
 /* Fila del formulario */
 .form-row {
-  display: flex; /* Usa flexbox */
-  flex-wrap: wrap; /* Permite que los elementos se ajusten */
-  gap: 15px; /* Espacio entre elementos */
-  margin-bottom: 15px; /* Margen inferior */
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
 }
 
 /* Grupo de campos del formulario */
 .form-group {
-  flex: 1; /* Ocupa espacio disponible */
-  min-width: 200px; /* Ancho mínimo */
+  flex: 1;
+  min-width: 200px;
 }
 
 /* Etiqueta del formulario */
 .form-label {
-  display: block; /* Muestra como bloque */
-  font-size: 0.9rem; /* Tamaño de fuente */
-  color: #374151; /* Color de texto */
-  margin-bottom: 8px; /* Margen inferior */
-  font-weight: 600; /* Grosor de fuente */
+  display: block;
+  font-size: 0.9rem;
+  color: #374151;
+  margin-bottom: 8px;
+  font-weight: 600;
 }
 
 /* Contenedor para inputs con icono */
 .input-with-icon {
-  position: relative; /* Posicionamiento relativo */
+  position: relative;
 }
 
 /* Estilos para el icono */
 .input-with-icon .icon {
-  position: absolute; /* Posicionamiento absoluto */
-  left: 12px; /* Posición desde la izquierda */
-  top: 50%; /* Posición desde arriba */
-  transform: translateY(-50%); /* Centra verticalmente */
-  font-size: 1.2rem; /* Tamaño de fuente */
-  color: #6B7280; /* Color del icono */
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #6B7280;
 }
 
 /* Estilos para los inputs */
 .form-input {
-  width: 100%; /* Ancho completo */
-  padding: 14px 16px 14px 42px; /* Espaciado interno (incluye espacio para icono) */
-  border: 1px solid #E5E7EB; /* Borde */
-  border-radius: 8px; /* Bordes redondeados */
-  font-size: 1rem; /* Tamaño de fuente */
-  color: #374151; /* Color de texto */
-  background: #FFFFFF; /* Fondo */
-  transition: border-color 0.2s, box-shadow 0.2s; /* Transición suave */
+  width: 100%;
+  padding: 14px 16px 14px 42px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #374151;
+  background: #FFFFFF;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-/* Estilos cuando el input está enfocado */
 .form-input:focus {
-  outline: none; /* Elimina el outline por defecto */
-  border-color: #10B981; /* Cambia color del borde */
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); /* Sombra */
+  outline: none;
+  border-color: #10B981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
 }
 
 /* Botón de búsqueda */
 .search-button {
-  background: #10B981; /* Color de fondo */
-  color: white; /* Color de texto */
-  border: none; /* Sin borde */
-  border-radius: 8px; /* Bordes redondeados */
-  padding: 14px 28px; /* Espaciado interno */
-  font-size: 1.1rem; /* Tamaño de fuente */
-  font-weight: 600; /* Grosor de fuente */
-  cursor: pointer; /* Cursor tipo pointer */
-  transition: background-color 0.2s, transform 0.1s; /* Transición suave */
-  align-self: flex-end; /* Alineación al final */
-  min-height: 50px; /* Altura mínima */
-  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3); /* Sombra */
+  background: #10B981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  align-self: flex-end;
+  min-height: 50px;
+  box-shadow: 0 4px 6px rgba(16, 185, 129, 0.3);
 }
 
-/* Efecto hover para el botón */
 .search-button:hover {
-  background: #059669; /* Cambia color de fondo */
+  background: #059669;
 }
 
-/* Efecto al hacer clic en el botón */
 .search-button:active {
-  transform: translateY(1px); /* Pequeño desplazamiento */
+  transform: translateY(1px);
 }
 
 /* Sección expandible (Más opciones) */
 .form-expandable {
-  margin-top: 15px; /* Margen superior */
+  margin-top: 15px;
 }
 
 /* Botón para expandir/contraer */
 .expand-toggle {
-  background: transparent; /* Fondo transparente */
-  border: none; /* Sin borde */
-  color: #10B981; /* Color de texto */
-  font-weight: 600; /* Grosor de fuente */
-  font-size: 0.95rem; /* Tamaño de fuente */
-  cursor: pointer; /* Cursor tipo pointer */
-  display: flex; /* Usa flexbox */
-  align-items: center; /* Centra verticalmente */
-  gap: 5px; /* Espacio entre elementos */
-  padding: 8px 0; /* Espaciado interno */
+  background: transparent;
+  border: none;
+  color: #10B981;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 0;
+  transition: all 0.3s ease;
 }
 
-/* Icono de expandir/contraer */
+.expand-toggle:hover {
+  color: #059669;
+}
+
 .expand-icon {
-  transition: transform 0.3s; /* Transición suave */
-  font-size: 0.8rem; /* Tamaño de fuente */
+  transition: transform 0.3s;
+  font-size: 0.8rem;
 }
 
-/* Estado expandido del icono */
 .expand-icon.expanded {
-  transform: rotate(180deg); /* Rota 180 grados */
+  transform: rotate(180deg);
 }
 
-/* Filtros avanzados */
+/* Filtros avanzados - MEJORADOS */
 .advanced-filters {
-  margin-top: 20px; /* Margen superior */
-  padding-top: 20px; /* Espaciado interno superior */
-  border-top: 1px solid #E5E7EB; /* Borde superior */
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #E5E7EB;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
 }
 
 /* Grupo de filtros */
 .filter-group {
-  margin-bottom: 20px; /* Margen inferior */
+  margin-bottom: 20px;
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Título del filtro */
 .filter-title {
-  font-size: 1.1rem; /* Tamaño de fuente */
-  color: #374151; /* Color de texto */
-  margin-bottom: 12px; /* Margen inferior */
-  font-weight: 600; /* Grosor de fuente */
+  font-size: 1.1rem;
+  color: #1f2937;
+  margin-bottom: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 16px;
+  background: #10B981;
+  border-radius: 2px;
 }
 
 /* Rango de precios */
 .price-range {
-  padding: 0 10px; /* Espaciado interno horizontal */
+  padding: 0 10px;
 }
 
-/* Etiquetas de precio */
 .price-label {
-  display: flex; /* Usa flexbox */
-  justify-content: space-between; /* Espacio entre elementos */
-  font-size: 0.9rem; /* Tamaño de fuente */
-  color: #6B7280; /* Color de texto */
-  margin-bottom: 8px; /* Margen inferior */
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #6B7280;
+  margin-bottom: 12px;
 }
 
-/* Control deslizante de precios */
 .price-slider {
-  width: 100%; /* Ancho completo */
-  height: 6px; /* Altura */
-  border-radius: 3px; /* Bordes redondeados */
-  background: #E5E7EB; /* Color de fondo */
-  outline: none; /* Elimina outline */
-  -webkit-appearance: none; /* Elimina apariencia por defecto en WebKit */
-  appearance: none; /* Elimina apariencia por defecto */
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-/* Estilo del control deslizante (WebKit) */
 .price-slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Elimina apariencia por defecto */
-  width: 20px; /* Ancho */
-  height: 20px; /* Altura */
-  border-radius: 50%; /* Forma circular */
-  background: #10B981; /* Color de fondo */
-  cursor: pointer; /* Cursor tipo pointer */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra */
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #10B981;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+  border: 2px solid white;
 }
 
 /* Opciones de filtro */
 .filter-options {
-  display: flex; /* Usa flexbox */
-  flex-wrap: wrap; /* Permite que los elementos se ajusten */
-  gap: 12px; /* Espacio entre elementos */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 12px;
 }
 
 /* Opción individual de filtro */
 .filter-option {
-  display: flex; /* Usa flexbox */
-  align-items: center; /* Centra verticalmente */
-  gap: 8px; /* Espacio entre elementos */
-  font-size: 0.95rem; /* Tamaño de fuente */
-  color: #4B5563; /* Color de texto */
-  cursor: pointer; /* Cursor tipo pointer */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  color: #4B5563;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 8px;
+  border-radius: 6px;
+}
+
+.filter-option:hover {
+  background-color: #f0fdf4;
 }
 
 /* Casilla de verificación personalizada */
 .checkmark {
-  display: inline-block; /* Muestra como bloque en línea */
-  width: 18px; /* Ancho */
-  height: 18px; /* Altura */
-  border: 2px solid #D1D5DB; /* Borde */
-  border-radius: 4px; /* Bordes redondeados */
-  position: relative; /* Posicionamiento relativo */
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #D1D5DB;
+  border-radius: 5px;
+  position: relative;
+  transition: all 0.2s;
 }
 
-/* Input checkbox (oculto) */
 .filter-option input[type="checkbox"] {
-  position: absolute; /* Posicionamiento absoluto */
-  opacity: 0; /* Transparencia total (oculto) */
-  cursor: pointer; /* Cursor tipo pointer */
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
-/* Estilo cuando el checkbox está marcado */
 .filter-option input[type="checkbox"]:checked + .checkmark {
-  background-color: #10B981; /* Cambia color de fondo */
-  border-color: #10B981; /* Cambia color del borde */
+  background-color: #10B981;
+  border-color: #10B981;
 }
 
-/* Marca de verificación cuando está seleccionado */
 .filter-option input[type="checkbox"]:checked + .checkmark::after {
-  content: ""; /* Contenido vacío */
-  position: absolute; /* Posicionamiento absoluto */
-  left: 5px; /* Posición desde la izquierda */
-  top: 1px; /* Posición desde arriba */
-  width: 5px; /* Ancho */
-  height: 10px; /* Altura */
-  border: solid white; /* Borde blanco */
-  border-width: 0 2px 2px 0; /* Grosor del borde */
-  transform: rotate(45deg); /* Rota 45 grados */
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 /* Etiquetas/tags */
 .hero-tags {
-  display: flex; /* Usa flexbox */
-  gap: 15px; /* Espacio entre elementos */
-  margin-top: 30px; /* Margen superior */
-  flex-wrap: wrap; /* Permite que los elementos se ajusten */
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-/* Etiqueta/tag individual */
 .tag {
-  background: rgba(16, 185, 129, 0.15); /* Fondo semitransparente */
-  color: #10B981; /* Color de texto */
-  padding: 8px 16px; /* Espaciado interno */
-  border-radius: 20px; /* Bordes redondeados */
-  font-size: 0.9rem; /* Tamaño de fuente */
-  font-weight: 600; /* Grosor de fuente */
-  backdrop-filter: blur(4px); /* Efecto de desenfoque */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde semitransparente */
+  background: rgba(16, 185, 129, 0.15);
+  color: #10B981;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.tag:hover {
+  background: rgba(16, 185, 129, 0.25);
+  transform: translateY(-2px);
 }
 
 /* Media queries para diseño responsive */
 
-/* Pantallas hasta 768px */
-@media (max-width: 768px) {
+/* Pantallas hasta 992px */
+@media (max-width: 992px) {
   .hero-section {
-    height: auto; /* Altura automática */
-    padding: 40px 15px; /* Espaciado interno */
+    height: auto;
+    min-height: auto;
+    padding: 60px 20px;
   }
   
   .hero-title {
-    font-size: 2.2rem; /* Reduce tamaño de fuente */
+    font-size: 2.4rem;
   }
   
   .hero-subtitle {
-    font-size: 1.2rem; /* Reduce tamaño de fuente */
+    font-size: 1.3rem;
+  }
+  
+  .advanced-filters {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Pantallas hasta 768px */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.2rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.2rem;
   }
   
   .form-row {
-    flex-direction: column; /* Cambia a columna */
+    flex-direction: column;
   }
   
   .search-button {
-    width: 100%; /* Ancho completo */
-    margin-top: 10px; /* Margen superior */
+    width: 100%;
+    margin-top: 10px;
+  }
+  
+  .form-group {
+    min-width: 100%;
+  }
+  
+  .filter-options {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
   }
 }
 
 /* Pantallas hasta 480px */
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 1.8rem; /* Reduce más el tamaño de fuente */
+    font-size: 1.8rem;
   }
   
   .hero-subtitle {
-    font-size: 1.1rem; /* Reduce más el tamaño de fuente */
+    font-size: 1.1rem;
   }
   
   .search-form {
-    padding: 20px 15px; /* Reduce espaciado interno */
+    padding: 20px 15px;
   }
   
   .form-input {
-    padding: 12px 12px 12px 38px; /* Ajusta espaciado interno */
+    padding: 12px 12px 12px 38px;
+  }
+  
+  .filter-title {
+    font-size: 1rem;
+  }
+  
+  .filter-option {
+    font-size: 0.9rem;
+  }
+  
+  .price-label span {
+    font-size: 0.8rem;
+  }
+  
+  .filter-group {
+    padding: 15px;
+  }
+}
+
+/* Pantallas muy pequeñas */
+@media (max-width: 360px) {
+  .input-with-icon .icon {
+    left: 8px;
+    font-size: 1rem;
+  }
+  
+  .form-input {
+    padding-left: 35px;
+    font-size: 0.9rem;
+  }
+  
+  .search-button {
+    font-size: 1rem;
+    padding: 12px 20px;
+  }
+  
+  .filter-options {
+    grid-template-columns: 1fr;
   }
 }
