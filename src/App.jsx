@@ -72,8 +72,6 @@ function App() {
 
                   {/* Host Protected */}
                   <Route element={<HostRoute />}>
-                    <Route path="/host"                   element={<HostDashboard />} />
-                    <Route path="/host/dashboard"         element={<HostDashboard />} />
                     <Route path="/host/properties"        element={<PropertyManager />} />
                     <Route path="/host/properties/add"    element={<AddProperty />} />
                     <Route path="/host/properties/edit/:id" element={<EditProperty />} />

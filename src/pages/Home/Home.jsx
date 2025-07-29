@@ -231,14 +231,7 @@ const Home = () => {
       <CategorySection />
       
       <section className="value-proposition" aria-labelledby="value-title">
-        <div className="value-header">
-          <h2 id="value-title" className="section-title">
-            ¿Por qué elegirnos?
-          </h2>
-          <p className="section-subtitle">
-            Comprometidos con hacer tus viajes más accesibles y seguros
-          </p>
-        </div>
+        
         
         {/*<div className="value-grid">
           {valuePropositions.map((item) => (

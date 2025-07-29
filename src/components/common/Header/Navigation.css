@@ -101,7 +101,7 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: var(--nav-text-secondary);
+  color: var(--nav-text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
@@ -269,6 +269,7 @@
 
   .nav-label {
     display: none;
+    color: #10b981;
   }
 
   .mobile-menu-footer {
