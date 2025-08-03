@@ -1,51 +1,40 @@
 // Configuración de la base de datos
-// En una implementación real, aquí se configuraría la conexión a una base de datos como MongoDB, PostgreSQL, etc.
+const mongoose = require('mongoose');
+const config = require('./config');
 
-const config = {
-  // Configuración para MongoDB
-  mongodb: {
-    uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/nido',
-    options: {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  },
-  
-  // Configuración para PostgreSQL
-  postgresql: {
-    host: process.env.POSTGRES_HOST || 'localhost',
-    port: process.env.POSTGRES_PORT || 5432,
-    database: process.env.POSTGRES_DB || 'nido',
-    username: process.env.POSTGRES_USER || 'nido_user',
-    password: process.env.POSTGRES_PASSWORD || 'nido_password',
-  },
-  
-  // Configuración para MySQL
-  mysql: {
-    host: process.env.MYSQL_HOST || 'localhost',
-    port: process.env.MYSQL_PORT || 3306,
-    database: process.env.MYSQL_DB || 'nido',
-    username: process.env.MYSQL_USER || 'nido_user',
-    password: process.env.MYSQL_PASSWORD || 'nido_password',
+// Configuración para MongoDB
+const mongodbConfig = {
+  uri: config.database.mongodb.uri,
+  options: {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
   }
 };
 
-// Función para obtener la configuración de la base de datos según el tipo
-const getDatabaseConfig = (type) => {
-  switch (type) {
-    case 'mongodb':
-      return config.mongodb;
-    case 'postgresql':
-      return config.postgresql;
-    case 'mysql':
-      return config.mysql;
-    default:
-      // Por defecto, usamos MongoDB
-      return config.mongodb;
+// Función para conectar a la base de datos
+const connectDatabase = async () => {
+  try {
+    await mongoose.connect(mongodbConfig.uri, mongodbConfig.options);
+    console.log('=== CONEXIÓN A BASE DE DATOS ===');
+    console.log(`Conectado a MongoDB en: ${mongodbConfig.uri}`);
+    console.log(`==============================`);
+  } catch (error) {
+    console.error('Error al conectar a la base de datos:', error.message);
+    process.exit(1);
+  }
+};
+
+// Función para desconectar de la base de datos
+const disconnectDatabase = async () => {
+  try {
+    await mongoose.disconnect();
+    console.log('Desconectado de la base de datos');
+  } catch (error) {
+    console.error('Error al desconectar de la base de datos:', error.message);
   }
 };
 
 module.exports = {
-  config,
-  getDatabaseConfig
+  connect: connectDatabase,
+  disconnect: disconnectDatabase
 };

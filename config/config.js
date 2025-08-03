@@ -11,6 +11,9 @@ const config = {
   // Configuración de la base de datos
   database: {
     type: process.env.DB_TYPE || 'mongodb',
+    mongodb: {
+      uri: process.env.MONGODB_URI || 'mongodb://localhost:27017/nido'
+    }
   },
   
   // Configuración de autenticación
