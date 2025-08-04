@@ -9,6 +9,9 @@ const requestLogger = require('./middleware/loggingMiddleware');
 const app = express();
 const port = config.server.port;
 
+// Conectar a la base de datos
+database.connect();
+
 // Middleware de logging detallado
 app.use(requestLogger);
 

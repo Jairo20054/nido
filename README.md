@@ -1,70 +1,129 @@
-# Getting Started with Create React App
+# Nido - Plataforma de Alquiler de Viviendas
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Plataforma completa de alquiler de viviendas con frontend en React y backend en Node.js/Express.
 
-## Available Scripts
+## Descripción
 
-In the project directory, you can run:
+Nido es una plataforma de alquiler de viviendas que permite a los usuarios buscar, reservar y gestionar propiedades. Incluye funcionalidades para anfitriones y huéspedes, con un sistema de autenticación seguro y una interfaz intuitiva.
 
-### `npm start`
+## Características
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Frontend
+- Interfaz de usuario moderna y responsive con React
+- Navegación intuitiva y experiencia de usuario fluida
+- Sistema de búsqueda y filtrado de propiedades
+- Gestión de reservas y perfiles de usuario
+- Integración con mapas para visualización de ubicaciones
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Backend
+- API RESTful con Node.js y Express
+- Base de datos MongoDB con Mongoose
+- Autenticación JWT segura
+- Encriptación de contraseñas con bcrypt
+- Validación de datos y manejo de errores
+- Logging de solicitudes y respuestas
 
-### `npm test`
+## Tecnologías
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Frontend
+- React 18
+- React Router para navegación
+- Material-UI y TailwindCSS para estilos
+- React Query para gestión de estado asíncrono
+- Zustand para gestión de estado global
+- Framer Motion para animaciones
 
-### `npm run build`
+### Backend
+- Node.js
+- Express.js
+- MongoDB con Mongoose
+- JWT para autenticación
+- Bcrypt para encriptación de contraseñas
+- Nodemon para desarrollo
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Requisitos
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Node.js >= 14.x
+- MongoDB >= 4.x
+- npm o yarn
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Instalación
 
-### `npm run eject`
+1. Clonar el repositorio:
+```bash
+git clone <repositorio-url>
+cd nido
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+2. Instalar dependencias del frontend:
+```bash
+npm install
+```
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+3. Instalar dependencias del backend (ya incluidas en package.json):
+```bash
+# Las dependencias del backend ya están incluidas en el package.json principal
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+4. Crear archivo `.env` basado en `.env.example`:
+```bash
+cp .env.example .env
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+5. Configurar las variables de entorno en `.env`
 
-## Learn More
+## Uso
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Desarrollo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### Frontend
+```bash
+npm start
+```
 
-### Code Splitting
+#### Backend
+```bash
+npm run dev:backend
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Producción
+```bash
+npm run build
+```
 
-### Analyzing the Bundle Size
+## Estructura del Proyecto
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```
+nido/
+├── config/          # Configuración de la aplicación
+├── controllers/      # Controladores de las rutas
+├── middleware/       # Middleware personalizado
+├── models/          # Modelos de la base de datos
+├── public/          # Archivos estáticos del frontend
+├── routes/          # Definición de rutas
+├── src/             # Código fuente del frontend
+│   ├── components/  # Componentes de React
+│   ├── pages/       # Páginas de la aplicación
+│   ├── context/     # Contextos de React
+│   ├── hooks/       # Hooks personalizados
+│   ├── services/    # Servicios y llamadas a la API
+│   ├── utils/       # Funciones auxiliares
+│   └── assets/      # Recursos estáticos
+├── utils/           # Funciones auxiliares del backend
+├── server.js        # Punto de entrada del backend
+├── .env.example     # Ejemplo de variables de entorno
+├── .gitignore       # Archivos ignorados por git
+├── package.json     # Dependencias y scripts
+└── README.md        # Documentación
+```
 
-### Making a Progressive Web App
+## Contribuir
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+1. Crear una rama para la nueva funcionalidad (`git checkout -b feature/nueva-funcionalidad`)
+2. Hacer commit de los cambios (`git commit -am 'Agregar nueva funcionalidad'`)
+3. Hacer push a la rama (`git push origin feature/nueva-funcionalidad`)
+4. Crear un nuevo Pull Request
 
-### Advanced Configuration
+## Licencia
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT

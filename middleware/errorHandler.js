@@ -1,13 +1,62 @@
-// Middleware para manejar errores
+/**
+ * Middleware para manejar errores
+ * @param {Object} err - Objeto de error
+ * @param {Object} req - Objeto de solicitud
+ * @param {Object} res - Objeto de respuesta
+ * @param {Function} next - Función next
+ */
 const errorHandler = (err, req, res, next) => {
-  console.error(err.stack);
+  console.error('Error no manejado:', err);
   
-  // Error de validación
+  // Error de validación de Mongoose
   if (err.name === 'ValidationError') {
+    const errors = Object.values(err.errors).map(e => e.message);
     return res.status(400).json({
       success: false,
-      message: 'Validation error',
-      errors: err.errors
+      message: 'Error de validación',
+      errors
+    });
+  }
+  
+  // Error de unicidad de Mongoose
+  if (err.code === 11000) {
+    return res.status(409).json({
+      success: false,
+      message: 'Error de duplicado',
+      error: 'El recurso ya existe'
+    });
+  }
+  
+  // Error de validación de tipos de Mongoose
+  if (err.name === 'CastError') {
+    return res.status(400).json({
+      success: false,
+      message: 'Solicitud inválida',
+      error: 'Formato de ID inválido'
+    });
+  }
+  
+  // Error de autenticación
+  if (err.name === 'JsonWebTokenError') {
+    return res.status(401).json({
+      success: false,
+      message: 'Token inválido'
+    });
+  }
+  
+  // Error de token expirado
+  if (err.name === 'TokenExpiredError') {
+    return res.status(401).json({
+      success: false,
+      message: 'Token expirado'
+    });
+  }
+  
+  // Error de permisos insuficientes
+  if (err.name === 'ForbiddenError') {
+    return res.status(403).json({
+      success: false,
+      message: 'Permisos insuficientes'
     });
   }
   
@@ -15,7 +64,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
     return res.status(401).json({
       success: false,
-      message: 'Unauthorized'
+      message: 'No autorizado'
     });
   }
   
@@ -23,7 +72,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === 'ForbiddenError') {
     return res.status(403).json({
       success: false,
-      message: 'Forbidden'
+      message: 'Acceso denegado'
     });
   }
   
@@ -31,7 +80,7 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === 'NotFoundError') {
     return res.status(404).json({
       success: false,
-      message: 'Resource not found'
+      message: 'Recurso no encontrado'
     });
   }
   
@@ -39,14 +88,14 @@ const errorHandler = (err, req, res, next) => {
   if (err.name === 'ConflictError') {
     return res.status(409).json({
       success: false,
-      message: 'Conflict'
+      message: 'Conflicto en la solicitud'
     });
   }
   
   // Error interno del servidor
   res.status(500).json({
     success: false,
-    message: 'Internal server error'
+    message: 'Error interno del servidor'
   });
 };
 
