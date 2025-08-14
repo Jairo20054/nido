@@ -1,117 +1,121 @@
-# Nido Backend API
+# Nido - Plataforma de Alquiler de Viviendas
 
-API RESTful para la aplicación de alquiler de viviendas Nido.
+Plataforma completa de alquiler de viviendas con frontend en React y backend en Node.js/Express.
 
 ## Descripción
 
-Este es el backend de la aplicación Nido, construido con Node.js, Express y MongoDB. Proporciona endpoints para gestionar usuarios, propiedades y reservas.
+Nido es una plataforma de alquiler de viviendas que permite a los usuarios buscar, reservar y gestionar propiedades. Incluye funcionalidades para anfitriones y huéspedes, con un sistema de autenticación seguro y una interfaz intuitiva.
 
 ## Características
 
-- Autenticación JWT
-- CRUD de usuarios, propiedades y reservas
-- Validación de datos
-- Manejo de errores
-- Logging de solicitudes
-- Paginación de resultados
+### Frontend
+- Interfaz de usuario moderna y responsive con React
+- Navegación intuitiva y experiencia de usuario fluida
+- Sistema de búsqueda y filtrado de propiedades
+- Gestión de reservas y perfiles de usuario
+- Integración con mapas para visualización de ubicaciones
+
+### Backend
+- API RESTful con Node.js y Express
+- Base de datos MongoDB con Mongoose
+- Autenticación JWT segura
+- Encriptación de contraseñas con bcrypt
+- Validación de datos y manejo de errores
+- Logging de solicitudes y respuestas
 
 ## Tecnologías
 
+### Frontend
+- React 18
+- React Router para navegación
+- Material-UI y TailwindCSS para estilos
+- React Query para gestión de estado asíncrono
+- Zustand para gestión de estado global
+- Framer Motion para animaciones
+
+### Backend
 - Node.js
 - Express.js
 - MongoDB con Mongoose
 - JWT para autenticación
 - Bcrypt para encriptación de contraseñas
+- Nodemon para desarrollo
 
 ## Requisitos
 
 - Node.js >= 14.x
 - MongoDB >= 4.x
+- npm o yarn
 
 ## Instalación
 
 1. Clonar el repositorio:
 ```bash
 git clone <repositorio-url>
-cd nido-backend
+cd nido
 ```
 
-2. Instalar dependencias:
+2. Instalar dependencias del frontend:
 ```bash
 npm install
 ```
 
-3. Crear archivo `.env` basado en `.env.example`:
+3. Instalar dependencias del backend (ya incluidas en package.json):
+```bash
+# Las dependencias del backend ya están incluidas en el package.json principal
+```
+
+4. Crear archivo `.env` basado en `.env.example`:
 ```bash
 cp .env.example .env
 ```
 
-4. Configurar las variables de entorno en `.env`
+5. Configurar las variables de entorno en `.env`
 
 ## Uso
 
 ### Desarrollo
+
+#### Frontend
 ```bash
-npm run dev
+npm start
+```
+
+#### Backend
+```bash
+npm run dev:backend
 ```
 
 ### Producción
 ```bash
-npm start
+npm run build
 ```
 
 ## Estructura del Proyecto
 
 ```
-backend/
+nido/
 ├── config/          # Configuración de la aplicación
 ├── controllers/      # Controladores de las rutas
 ├── middleware/       # Middleware personalizado
 ├── models/          # Modelos de la base de datos
+├── public/          # Archivos estáticos del frontend
 ├── routes/          # Definición de rutas
-├── utils/           # Funciones auxiliares
-├── server.js        # Punto de entrada de la aplicación
+├── src/             # Código fuente del frontend
+│   ├── components/  # Componentes de React
+│   ├── pages/       # Páginas de la aplicación
+│   ├── context/     # Contextos de React
+│   ├── hooks/       # Hooks personalizados
+│   ├── services/    # Servicios y llamadas a la API
+│   ├── utils/       # Funciones auxiliares
+│   └── assets/      # Recursos estáticos
+├── utils/           # Funciones auxiliares del backend
+├── server.js        # Punto de entrada del backend
 ├── .env.example     # Ejemplo de variables de entorno
 ├── .gitignore       # Archivos ignorados por git
 ├── package.json     # Dependencias y scripts
 └── README.md        # Documentación
 ```
-
-## Endpoints de la API
-
-### Usuarios
-- `POST /api/users` - Crear usuario
-- `POST /api/users/login` - Iniciar sesión
-- `GET /api/users/profile` - Obtener perfil del usuario (requiere autenticación)
-- `GET /api/users/:id` - Obtener usuario por ID
-- `PUT /api/users/:id` - Actualizar usuario (requiere autenticación)
-- `DELETE /api/users/:id` - Eliminar usuario (requiere autenticación)
-
-### Propiedades
-- `GET /api/properties` - Obtener todas las propiedades
-- `GET /api/properties/:id` - Obtener propiedad por ID
-- `POST /api/properties` - Crear propiedad (requiere autenticación)
-- `PUT /api/properties/:id` - Actualizar propiedad (requiere autenticación)
-- `DELETE /api/properties/:id` - Eliminar propiedad (requiere autenticación)
-
-### Reservas
-- `GET /api/bookings` - Obtener todas las reservas (requiere autenticación)
-- `GET /api/bookings/:id` - Obtener reserva por ID (requiere autenticación)
-- `GET /api/bookings/user/:userId` - Obtener reservas por usuario (requiere autenticación)
-- `POST /api/bookings` - Crear reserva (requiere autenticación)
-- `PUT /api/bookings/:id` - Actualizar reserva (requiere autenticación)
-- `DELETE /api/bookings/:id` - Cancelar reserva (requiere autenticación)
-
-## Autenticación
-
-La mayoría de los endpoints requieren autenticación mediante JWT. Para autenticarse:
-
-1. Iniciar sesión con `POST /api/users/login`
-2. Usar el token devuelto en el encabezado `Authorization: Bearer <token>`
-
-## Variables de Entorno
-
-Consultar `.env.example` para ver las variables de entorno requeridas.
 
 ## Contribuir
 

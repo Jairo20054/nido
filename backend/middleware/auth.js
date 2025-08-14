@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-const config = require('../config/config');
+const config = require('../../config/config');
 
 /**
  * Middleware para verificar si el usuario está autenticado
