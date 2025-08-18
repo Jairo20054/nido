@@ -1,6 +1,6 @@
 // Configuración de la base de datos
 const mongoose = require('mongoose');
-const config = require('./config');
+const config = require('../backend/config/config');
 
 // Configuración para MongoDB
 const mongodbConfig = {
