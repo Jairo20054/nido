@@ -6,7 +6,7 @@ const Joi = require('joi');
 const envSchema = Joi.object({
   NODE_ENV: Joi.string().valid('development', 'production', 'test', 'staging').default('development'),
 
-  PORT: Joi.number().default(3001),
+  PORT: Joi.number().default(5000),
   HOST: Joi.string().default('0.0.0.0'),
 
   DB_TYPE: Joi.string().valid('mongodb').default('mongodb'),

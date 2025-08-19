@@ -108,15 +108,15 @@ const HostRoute = () => {
     fetchHostData();
   }, []);
   
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: <FiHome />, path: '/host/dashboard' },
-    { id: 'properties', label: 'Propiedades', icon: <FiList />, path: '/host/properties' },
-    { id: 'calendar', label: 'Calendario', icon: <FiCalendar />, path: '/host/calendar' },
-    { id: 'finances', label: 'Finanzas', icon: <FiDollarSign />, path: '/host/finances' },
-    { id: 'stats', label: 'Estadísticas', icon: <FiBarChart2 />, path: '/host/stats' },
-    { id: 'messages', label: 'Mensajes', icon: <FiMessageSquare />, path: '/host/messages' },
-    { id: 'settings', label: 'Configuración', icon: <FiSettings />, path: '/host/settings' },
-  ];
+  // En tu HostRoute.jsx, actualiza el array navItems:
+const navItems = [
+  { id: 'dashboard', label: 'Dashboard', icon: <FiHome />, path: '/host/dashboard' },
+  { id: 'properties', label: 'Propiedades', icon: <FiList />, path: '/host/properties' },
+  { id: 'bookings', label: 'Reservas', icon: <FiCalendar />, path: '/host/bookings' },
+  { id: 'analytics', label: 'Analytics', icon: <FiBarChart2 />, path: '/host/analytics' },
+  { id: 'messages', label: 'Mensajes', icon: <FiMessageSquare />, path: '/host/messages' },
+  { id: 'settings', label: 'Configuración', icon: <FiSettings />, path: '/host/settings' },
+];
   
   const handleLogout = () => {
     // Lógica para cerrar sesión

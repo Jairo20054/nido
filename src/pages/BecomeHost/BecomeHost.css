@@ -1,0 +1,133 @@
+/* src/pages/BecomeHost/BecomeHost.css */
+.become-host-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.become-host-hero {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: white;
+  border-radius: 12px;
+  margin-bottom: 3rem;
+}
+
+.become-host-hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.become-host-hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.benefits-section {
+  margin-bottom: 4rem;
+}
+
+.benefits-section h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+.benefit-card {
+  text-align: center;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s;
+}
+
+.benefit-card:hover {
+  transform: translateY(-5px);
+}
+
+.benefit-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.how-it-works {
+  margin-bottom: 4rem;
+}
+
+.how-it-works h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.steps-list {
+  list-style: none;
+  counter-reset: step-counter;
+}
+
+.steps-list li {
+  counter-increment: step-counter;
+  margin-bottom: 2rem;
+  padding-left: 3rem;
+  position: relative;
+}
+
+.steps-list li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  background: #10B981;
+  color: white;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.cta-section {
+  text-align: center;
+  padding: 3rem;
+  background-color: #F9FAFB;
+  border-radius: 12px;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background-color: #10B981;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.cta-button:hover {
+  background-color: #059669;
+}
+
+.cta-button.primary {
+  background-color: #3B82F6;
+}
+
+.cta-button.primary:hover {
+  background-color: #2563EB;
+}
+
+.small-text {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #6B7280;
+}

@@ -1,9 +1,9 @@
 const express = require('express');
 const cors = require('cors');
-const config = require('../config/config');
-const routes = require('../routes');
+const config = require('./config/config');
+const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
-const database = require('../config/database');
+const database = require('./config/db');
 const requestLogger = require('./middleware/loggingMiddleware');
 
 const app = express();

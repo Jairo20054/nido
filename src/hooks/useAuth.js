@@ -1,6 +1,7 @@
+// frontend/src/hooks/useAuth.js
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { api } from '../utils/api';
+import api from '../utils/api'; // IMPORTACIÓN CORRECTA: default
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
@@ -10,38 +11,33 @@ export const useAuth = () => {
   const abortControllerRef = useRef(null);
   const isInitializedRef = useRef(false);
 
-  // Limpiar errores automáticamente
-  const clearError = useCallback(() => {
-    setError(null);
-  }, []);
+  const clearError = useCallback(() => setError(null), []);
 
-  // Verificar sesión al cargar con abort controller para evitar memory leaks
   useEffect(() => {
     const checkAuth = async () => {
-      // Evitar múltiples inicializaciones
       if (isInitializedRef.current) return;
       isInitializedRef.current = true;
 
       setLoading(true);
       setError(null);
 
-      // Crear abort controller para cancelar request si el componente se desmonta
       abortControllerRef.current = new AbortController();
 
       try {
+        // axios soporta AbortController.signal en versiones recientes
         const userData = await api.get('/auth/me', {
           signal: abortControllerRef.current.signal
         });
-        
+
+        // api interceptor devuelve response.data => userData es el objeto usuario
         if (userData && !abortControllerRef.current.signal.aborted) {
           setUser(userData);
         }
       } catch (err) {
-        // Solo establecer error si no fue cancelado
         if (!abortControllerRef.current.signal.aborted) {
-          console.warn('Auth check failed:', err.message);
+          console.warn('Auth check failed:', err?.message || err);
           setUser(null);
-          // No mostrar error en la verificación inicial silenciosa
+          // No setError para la verificación silenciosa
         }
       } finally {
         if (!abortControllerRef.current.signal.aborted) {
@@ -49,10 +45,9 @@ export const useAuth = () => {
         }
       }
     };
-    
+
     checkAuth();
 
-    // Cleanup function
     return () => {
       if (abortControllerRef.current) {
         abortControllerRef.current.abort();
@@ -61,7 +56,6 @@ export const useAuth = () => {
   }, []);
 
   const login = useCallback(async (email, password) => {
-    // Validación básica
     if (!email?.trim() || !password?.trim()) {
       setError('Email y contraseña son requeridos');
       return false;
@@ -69,25 +63,24 @@ export const useAuth = () => {
 
     setLoading(true);
     setError(null);
-    
+
     try {
-      const userData = await api.post('/auth/login', { 
-        email: email.trim().toLowerCase(), 
-        password 
+      const response = await api.post('/auth/login', {
+        email: email.trim().toLowerCase(),
+        password
       });
-      
+
+      // api devuelve response.data (según interceptor)
+      const userData = response?.user || response; // depende de tu backend
       if (userData) {
         setUser(userData);
-        // Navegar después de un pequeño delay para permitir que el estado se actualice
         setTimeout(() => navigate('/dashboard'), 50);
         return true;
       }
-      
+
       throw new Error('No se recibieron datos del usuario');
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 
-                          err.message || 
-                          'Error de autenticación. Por favor, intenta de nuevo.';
+      const errorMessage = err?.response?.message || err?.message || 'Error de autenticación. Por favor, intenta de nuevo.';
       setError(errorMessage);
       return false;
     } finally {
@@ -96,7 +89,6 @@ export const useAuth = () => {
   }, [navigate]);
 
   const register = useCallback(async (userData) => {
-    // Validación básica
     if (!userData?.email?.trim() || !userData?.password?.trim()) {
       setError('Email y contraseña son requeridos');
       return false;
@@ -104,28 +96,25 @@ export const useAuth = () => {
 
     setLoading(true);
     setError(null);
-    
+
     try {
-      // Limpiar y normalizar datos
       const cleanUserData = {
         ...userData,
         email: userData.email.trim().toLowerCase(),
         name: userData.name?.trim()
       };
 
-      const newUser = await api.post('/auth/register', cleanUserData);
-      
+      const response = await api.post('/auth/register', cleanUserData);
+      const newUser = response?.user || response;
       if (newUser) {
         setUser(newUser);
         setTimeout(() => navigate('/dashboard'), 50);
-        return true; 
+        return true;
       }
-      
+
       throw new Error('No se pudo crear el usuario');
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 
-                          err.message || 
-                          'Error en el registro. Por favor, intenta de nuevo.';
+      const errorMessage = err?.response?.message || err?.message || 'Error en el registro. Por favor, intenta de nuevo.';
       setError(errorMessage);
       return false;
     } finally {
@@ -135,12 +124,10 @@ export const useAuth = () => {
 
   const logout = useCallback(async () => {
     setLoading(true);
-    
     try {
       await api.post('/auth/logout');
     } catch (err) {
       console.warn('Logout error:', err);
-      // Continuar con el logout local incluso si falla el servidor
     } finally {
       setUser(null);
       setError(null);
@@ -149,7 +136,6 @@ export const useAuth = () => {
     }
   }, [navigate]);
 
-  // Función para actualizar el perfil del usuario
   const updateProfile = useCallback(async (profileData) => {
     if (!user) {
       setError('Usuario no autenticado');
@@ -164,9 +150,7 @@ export const useAuth = () => {
       setUser(updatedUser);
       return true;
     } catch (err) {
-      const errorMessage = err.response?.data?.message || 
-                          err.message || 
-                          'Error al actualizar el perfil';
+      const errorMessage = err?.response?.message || err?.message || 'Error al actualizar el perfil';
       setError(errorMessage);
       return false;
     } finally {
@@ -174,10 +158,8 @@ export const useAuth = () => {
     }
   }, [user]);
 
-  // Función para refrescar los datos del usuario
   const refreshUser = useCallback(async () => {
     if (!user) return false;
-
     try {
       const userData = await api.get('/auth/me');
       setUser(userData);
@@ -189,23 +171,16 @@ export const useAuth = () => {
   }, [user]);
 
   return {
-    // Estado
     user,
     loading,
     error,
     isAuthenticated: !!user,
-    
-    // Acciones principales
     login,
     register,
     logout,
-    
-    // Acciones adicionales
     updateProfile,
     refreshUser,
     clearError,
-    
-    // Utilidades
     isInitialized: isInitializedRef.current && !loading
   };
 };
