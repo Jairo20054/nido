@@ -11,7 +11,7 @@ export const SearchProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   const updateDates = (checkIn, checkOut) => {
-    if (new Date(checkOut) <= new Date(checkIn)) {
+    if (checkIn && checkOut && new Date(checkOut) <= new Date(checkIn)) {
       setError('La fecha de salida debe ser posterior a la de entrada');
       return;
     }
@@ -22,39 +22,55 @@ export const SearchProvider = ({ children }) => {
   useEffect(() => {
     const saved = localStorage.getItem('searchParams');
     if (saved) {
-      const { loc, dates, guests: g } = JSON.parse(saved);
-      setLocation(loc);
-      setDatesState(dates);
-      setGuests(g);
+      try {
+        const { loc, dates, guests: g } = JSON.parse(saved);
+        setLocation(loc || '');
+        setDatesState(dates || { checkIn: null, checkOut: null });
+        setGuests(g || 1);
+      } catch (error) {
+        console.error('Error loading search params from localStorage:', error);
+      }
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('searchParams', JSON.stringify({ loc: location, dates, guests }));
+    try {
+      localStorage.setItem('searchParams', JSON.stringify({ 
+        loc: location, 
+        dates, 
+        guests 
+      }));
+    } catch (error) {
+      console.error('Error saving search params to localStorage:', error);
+    }
   }, [location, dates, guests]);
 
+  const value = {
+    location,
+    setLocation,
+    dates,
+    updateDates,
+    guests,
+    setGuests,
+    results,
+    setResults,
+    isLoading,
+    setLoading,
+    error,
+    setError
+  };
+
   return (
-    <SearchContext.Provider value={{
-      location,
-      setLocation,
-      dates,
-      updateDates,
-      guests,
-      setGuests,
-      results,
-      setResults,
-      isLoading,
-      setLoading,
-      error,
-      setError
-    }}>
+    <SearchContext.Provider value={value}>
       {children}
     </SearchContext.Provider>
   );
 };
 
 export const useSearch = () => {
-  const ctx = useContext(SearchContext);
-  if (!ctx) throw new Error('useSearch debe usarse dentro de SearchProvider');
-  return ctx;
+  const context = useContext(SearchContext);
+  if (!context) {
+    throw new Error('useSearch debe usarse dentro de SearchProvider');
+  }
+  return context;
 };

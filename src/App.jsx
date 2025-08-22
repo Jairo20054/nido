@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -20,6 +19,7 @@ import './assets/styles/global.css';
 import './assets/styles/variables.css';
 import './assets/styles/utilities.css';
 import './assets/styles/animations.css';
+import './assets/styles/responsive-fixes.css';
 import './App.css';
 
 // Helper function for lazy loading with error handling
@@ -76,10 +76,10 @@ const HostSettings = lazyLoad(() => import('./pages/Host/HostSettings'), 'HostSe
 
 function App() {
   return (
-    <AuthProvider>
-      <BookingProvider>
-        <SearchProvider>
-          <Router>
+    <Router>
+      <AuthProvider>
+        <SearchProvider> {/* SearchProvider debe envolver todo el contenido que use useSearch */}
+          <BookingProvider>
             <Layout>
               <Suspense fallback={<LoadingSpinner />}>
                 <Routes>
@@ -139,10 +139,10 @@ function App() {
                 </Routes>
               </Suspense>
             </Layout>
-          </Router>
+          </BookingProvider>
         </SearchProvider>
-      </BookingProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </Router>
   );
 }
 

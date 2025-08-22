@@ -1,7 +1,6 @@
-// src/components/Header/Header.jsx
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../../hooks/useAuth';
+import useAuth from '../../../hooks/useAuth';
 import Navigation from './Navigation';
 import UserMenu from './UserMenu';
 import { 
@@ -11,7 +10,10 @@ import {
   Bars3Icon,
   XMarkIcon,
   HeartIcon,
-  BellIcon
+  BellIcon,
+  ClockIcon,
+  HomeModernIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
 import './Header.css';
 
@@ -54,7 +56,7 @@ const Header = () => {
         label: "Estadías Cortas",
         shortLabel: "Cortas",
         path: "/search?type=short",
-        icon: HomeIcon,
+        icon: ClockIcon,
         description: "Hasta 30 días",
         color: "blue",
       },
@@ -63,7 +65,7 @@ const Header = () => {
         label: "Estadías Largas",
         shortLabel: "Largas",
         path: "/search?type=long",
-        icon: CalendarDaysIcon,
+        icon: HomeModernIcon,
         description: "Más de 30 días",
         color: "green",
       },
@@ -72,7 +74,7 @@ const Header = () => {
         label: "Servicios",
         shortLabel: "Servicios",
         path: "/services",
-        icon: WrenchScrewdriverIcon,
+        icon: SparklesIcon,
         description: "Limpieza, tours, más",
         color: "purple",
       },
@@ -181,7 +183,6 @@ const Header = () => {
   }, [navigate]);
 
   const onLogoutClick = useCallback(() => {
-    // Aquí puedes agregar lógica para cerrar sesión si es necesario
     navigate("/login");
   }, [navigate]);
 

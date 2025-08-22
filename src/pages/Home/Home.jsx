@@ -5,6 +5,7 @@ import CategorySection from './CategorySection';
 import PropertyGrid from '../../components/property/PropertyGrid/PropertyGrid';
 import LoadingSpinner from '../../components/common/LoadingSpinner/LoadingSpinner';
 import ErrorMessage from '../../components/common/ErrorMessage/ErrorMessage';
+import Footer from '../../components/common/Footer/Footer';
 
 const Home = () => {
   const [featuredProperties, setFeaturedProperties] = useState([])
@@ -245,6 +246,8 @@ const Home = () => {
           ))}
         </div>*/}
       </section>
+      
+      <Footer />
     </div>
   );
 };

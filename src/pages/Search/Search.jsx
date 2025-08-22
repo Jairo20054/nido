@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import { useSearch } from '../../hooks/useSearch';
+import useSearch from '../../hooks/useSearch'; // Cambiado a importación por defecto
 import SearchFilters from '../../components/Search/SearchFilters';
 import PropertyGrid from '../../components/property/PropertyGrid/PropertyGrid';
 import MapView from '../../components/Search/MapView/MapView';
@@ -28,7 +28,8 @@ const Search = () => {
   const [sortBy, setSortBy] = useState('relevance');
   const [filtersVisible, setFiltersVisible] = useState(false);
   
-  const { searchResults, searchProperties, isSearching } = useSearch();
+  // Usar el hook useSearch correctamente
+  const { results, isLoading, searchProperties } = useSearch();
 
   // Parsear parámetros de URL inicial
   const parseUrlParams = useCallback(() => {
@@ -99,10 +100,10 @@ const Search = () => {
 
   // Efecto para actualizar propiedades cuando cambian los resultados
   useEffect(() => {
-    if (searchResults) {
-      setProperties(searchResults);
+    if (results) {
+      setProperties(results);
     }
-  }, [searchResults]);
+  }, [results]);
 
   // Manejar cambios en filtros
   const handleFilterChange = useCallback((newFilters) => {
@@ -239,7 +240,7 @@ const Search = () => {
           <h1 className="search-title">{pageTitle}</h1>
           <ResultsCounter 
             count={properties.length} 
-            loading={loading || isSearching}
+            loading={loading || isLoading}
             location={searchParams.location}
           />
         </div>
@@ -294,7 +295,7 @@ const Search = () => {
 
         {/* Resultados */}
         <main className="results-container" role="main">
-          {loading || isSearching ? (
+          {loading || isLoading ? (
             <div className="loading-container">
               <LoadingSpinner />
               <p className="loading-text">

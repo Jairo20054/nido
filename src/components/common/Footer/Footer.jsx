@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
   Facebook, 
   Instagram, 
@@ -8,11 +8,16 @@ import {
   MapPin, 
   Heart,
   ExternalLink,
-  Accessibility
+  Accessibility,
+  ChevronUp,
+  ArrowRight
 } from 'lucide-react';
+import './Footer.css';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
   
   const navigationLinks = [
     { href: '/', label: 'Inicio', ariaLabel: 'Ir a la página principal' },
@@ -54,7 +59,7 @@ const Footer = () => {
   const contactInfo = [
     { icon: Mail, text: 'hola@accesiblestay.com', href: 'mailto:hola@accesiblestay.com' },
     { icon: Phone, text: '+57 (1) 234-5678', href: 'tel:+5712345678' },
-    { icon: MapPin, text: 'Bogotá, Colombia', href: '#' }
+    { icon: MapPin, text: 'Bogotá, Colombia', href: 'https://maps.google.com/?q=Bogotá,Colombia' }
   ];
 
   const handleLinkClick = (href, label) => {
@@ -76,42 +81,57 @@ const Footer = () => {
     }
   };
 
+  const handleNewsletterSubmit = (e) => {
+    e.preventDefault();
+    if (email && isValidEmail(email)) {
+      console.log('Newsletter signup:', email);
+      setSubscribed(true);
+      setEmail('');
+      setTimeout(() => setSubscribed(false), 3000);
+    }
+  };
+
+  const isValidEmail = (email) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   return (
-    <footer className="bg-gray-900 text-white" role="contentinfo">
-      {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <footer className="footer" role="contentinfo">
+      <div className="footer-container">
+        <div className="footer-content">
           
           {/* Brand Section */}
-          <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <Accessibility className="h-8 w-8 text-emerald-400" aria-hidden="true" />
-              <h3 className="text-2xl font-bold text-white">
+          <div className="footer-brand">
+            <div className="brand-header">
+              <Accessibility className="brand-icon" aria-hidden="true" />
+              <h3 className="brand-title">
                 AccesibleStay
               </h3>
             </div>
-            <p className="text-gray-300 mb-6 leading-relaxed">
+            <p className="brand-description">
               Encuentra alojamientos verdaderamente accesibles para todos. 
               Creamos un mundo donde viajar es posible para todas las personas.
             </p>
             
             {/* Contact Info */}
-            <div className="space-y-3">
+            <div className="contact-info">
               {contactInfo.map((contact, index) => {
                 const IconComponent = contact.icon;
                 return (
-                  <div key={index} className="flex items-center gap-3">
-                    <IconComponent className="h-4 w-4 text-emerald-400 flex-shrink-0" aria-hidden="true" />
-                    {contact.href !== '#' ? (
+                  <div key={index} className="contact-item">
+                    <IconComponent className="contact-icon" aria-hidden="true" />
+                    {contact.href ? (
                       <a 
                         href={contact.href}
-                        className="text-gray-300 hover:text-emerald-400 transition-colors duration-200 text-sm"
+                        className="contact-link"
                         onClick={() => handleLinkClick(contact.href, contact.text)}
+                        target={contact.href.startsWith('http') ? '_blank' : '_self'}
+                        rel={contact.href.startsWith('http') ? 'noopener noreferrer' : ''}
                       >
                         {contact.text}
                       </a>
                     ) : (
-                      <span className="text-gray-300 text-sm">{contact.text}</span>
+                      <span className="contact-text">{contact.text}</span>
                     )}
                   </div>
                 );
@@ -120,21 +140,21 @@ const Footer = () => {
           </div>
 
           {/* Navigation Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-white">
+          <div className="footer-section">
+            <h4 className="section-title">
               Navegación
             </h4>
-            <ul className="space-y-3" role="list">
+            <ul className="footer-links" role="list">
               {navigationLinks.map((link, index) => (
-                <li key={index}>
+                <li key={index} className="footer-link-item">
                   <a
                     href={link.href}
-                    className="text-gray-300 hover:text-emerald-400 transition-colors duration-200 flex items-center gap-2 group"
+                    className="footer-link"
                     aria-label={link.ariaLabel}
                     onClick={() => handleLinkClick(link.href, link.label)}
                   >
                     <span>{link.label}</span>
-                    <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200" aria-hidden="true" />
+                    <ExternalLink className="link-external-icon" aria-hidden="true" />
                   </a>
                 </li>
               ))}
@@ -142,16 +162,16 @@ const Footer = () => {
           </div>
 
           {/* Legal Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-white">
+          <div className="footer-section">
+            <h4 className="section-title">
               Legal
             </h4>
-            <ul className="space-y-3" role="list">
+            <ul className="footer-links" role="list">
               {legalLinks.map((link, index) => (
-                <li key={index}>
+                <li key={index} className="footer-link-item">
                   <a
                     href={link.href}
-                    className="text-gray-300 hover:text-emerald-400 transition-colors duration-200"
+                    className="footer-link"
                     onClick={() => handleLinkClick(link.href, link.label)}
                   >
                     {link.label}
@@ -162,97 +182,87 @@ const Footer = () => {
           </div>
 
           {/* Social Media & Newsletter */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 text-white">
+          <div className="footer-section">
+            <h4 className="section-title">
               Conecta con nosotros
             </h4>
             
             {/* Social Icons */}
-            <div className="flex gap-4 mb-6">
+            <div className="social-icons">
               {socialLinks.map((social, index) => {
                 const IconComponent = social.icon;
                 return (
                   <a
                     key={index}
                     href={social.href}
-                    className="p-3 bg-gray-800 rounded-full hover:bg-gray-700 transition-all duration-200 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                    className="social-icon"
                     aria-label={`Síguenos en ${social.label}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => handleSocialClick(social.label)}
                     style={{'--hover-color': social.color}}
                   >
-                    <IconComponent 
-                      className="h-5 w-5 text-gray-300 hover:text-white transition-colors duration-200" 
-                      aria-hidden="true"
-                    />
+                    <IconComponent className="social-icon-svg" aria-hidden="true" />
                   </a>
                 );
               })}
             </div>
 
             {/* Newsletter Signup */}
-            <div>
-              <p className="text-gray-300 text-sm mb-3">
+            <div className="newsletter-section">
+              <p className="newsletter-text">
                 Recibe noticias y ofertas especiales
               </p>
-              <div className="flex">
-                <input
-                  type="email"
-                  placeholder="tu@email.com"
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-l-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:border-transparent text-sm"
-                  aria-label="Dirección de correo electrónico para newsletter"
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter') {
-                      const email = e.target.value;
-                      if (email) {
-                        console.log('Newsletter signup:', email);
-                        e.target.value = '';
-                      }
-                    }
-                  }}
-                />
-                <button
-                  className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-r-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-gray-900"
-                  aria-label="Suscribirse al newsletter"
-                  onClick={(e) => {
-                    const input = e.target.previousElementSibling;
-                    const email = input.value;
-                    if (email) {
-                      console.log('Newsletter signup:', email);
-                      input.value = '';
-                    }
-                  }}
-                >
-                  <Mail className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div>
+              {subscribed ? (
+                <div className="newsletter-success">
+                  <p>¡Gracias por suscribirte!</p>
+                </div>
+              ) : (
+                <form className="newsletter-form" onSubmit={handleNewsletterSubmit}>
+                  <div className="input-group">
+                    <input
+                      type="email"
+                      placeholder="tu@email.com"
+                      className="newsletter-input"
+                      aria-label="Dirección de correo electrónico para newsletter"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                    />
+                    <button
+                      type="submit"
+                      className="newsletter-button"
+                      aria-label="Suscribirse al newsletter"
+                    >
+                      <ArrowRight className="newsletter-icon" aria-hidden="true" />
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
           </div>
         </div>
       </div>
 
       {/* Footer Bottom */}
-      <div className="border-t border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-400 text-sm">
-              © {currentYear} AccesibleStay. Todos los derechos reservados.
-            </p>
-            
-            <div className="flex items-center gap-4 text-sm text-gray-400">
-              <span className="flex items-center gap-1">
-                Hecho con <Heart className="h-4 w-4 text-red-500" aria-hidden="true" /> en Colombia
-              </span>
-              <span className="hidden md:block">•</span>
-              <a 
-                href="/accessibility-statement" 
-                className="hover:text-emerald-400 transition-colors duration-200 flex items-center gap-1"
-              >
-                <Accessibility className="h-4 w-4" aria-hidden="true" />
-                Comprometidos con la accesibilidad
-              </a>
-            </div>
+      <div className="footer-bottom">
+        <div className="footer-bottom-content">
+          <p className="copyright">
+            © {currentYear} AccesibleStay. Todos los derechos reservados.
+          </p>
+          
+          <div className="footer-meta">
+            <span className="made-with">
+              Hecho con <Heart className="heart-icon" aria-hidden="true" /> en Colombia
+            </span>
+            <span className="meta-separator">•</span>
+            <a 
+              href="/accessibility-statement" 
+              className="accessibility-statement"
+            >
+              <Accessibility className="accessibility-icon" aria-hidden="true" />
+              Comprometidos con la accesibilidad
+            </a>
           </div>
         </div>
       </div>
@@ -260,12 +270,10 @@ const Footer = () => {
       {/* Back to Top Button */}
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        className="fixed bottom-8 right-8 p-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-full shadow-lg transition-all duration-200 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 z-50"
+        className="back-to-top"
         aria-label="Volver al inicio de la página"
       >
-        <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
+        <ChevronUp className="back-to-top-icon" aria-hidden="true" />
       </button>
     </footer>
   );

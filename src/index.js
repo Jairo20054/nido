@@ -1,6 +1,8 @@
+// src/index.js
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+import { SearchProvider } from './context/SearchContext';
 
 // Importar estilos
 import './assets/styles/variables.css';
@@ -35,9 +37,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      // Protección adicional contra errores en el propio ErrorBoundary
       const errorMessage = this.state.error?.toString() || 'Error desconocido';
-      
       return (
         <div style={{ 
           padding: '20px', 
@@ -97,16 +97,18 @@ if (!rootElement) {
   try {
     const root = createRoot(rootElement);
     
-    // Componente wrapper para manejo de errores
-    const AppWithErrorBoundary = () => (
+    // Ahora envolvemos App con SearchProvider PARA QUE useSearch tenga contexto
+    const AppWithProviders = () => (
       <React.StrictMode>
         <ErrorBoundary>
-          <App />
+          <SearchProvider>
+            <App />
+          </SearchProvider>
         </ErrorBoundary>
       </React.StrictMode>
     );
 
-    root.render(<AppWithErrorBoundary />);
+    root.render(<AppWithProviders />);
   } catch (error) {
     console.error('Error al renderizar la aplicación:', error);
     

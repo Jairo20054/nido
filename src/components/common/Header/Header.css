@@ -1,10 +1,12 @@
-/* src/components/Header/Header.css */
-/* Variables actualizadas */
+/* ===== HEADER COMPONENT - CSS MEJORADO ===== */
+/* Variables CSS actualizadas y organizadas */
 :root {
-  --header-height: 80px;
-  --header-height-mobile: 70px;
-  --header-blur: 12px;
-  --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  /* Dimensiones */
+  --header-height: 5rem;           /* 80px */
+  --header-height-mobile: 4.375rem; /* 70px */
+  --header-height-scrolled: 4rem;  /* 64px - altura reducida al hacer scroll */
+  
+  /* Colores */
   --primary-color: #10B981;
   --primary-light: rgba(16, 185, 129, 0.1);
   --secondary-color: #0EA5E9;
@@ -13,10 +15,50 @@
   --text-light: #6B7280;
   --bg-light: #F5F5DC;
   --danger-color: #EF4444;
-  --border-radius: 12px;
+  --white: #FFFFFF;
+  
+  /* Efectos visuales */
+  --border-radius: 0.75rem;        /* 12px */
+  --header-blur: 0.75rem;          /* 12px */
+  --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.15);
+  
+  /* Transiciones */
+  --transition-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --transition-fast: 0.2s var(--transition-smooth);
+  --transition-normal: 0.3s var(--transition-smooth);
+  --transition-slow: 0.4s var(--transition-smooth);
+  
+  /* Espaciado */
+  --spacing-xs: 0.5rem;    /* 8px */
+  --spacing-sm: 0.75rem;   /* 12px */
+  --spacing-md: 1rem;      /* 16px */
+  --spacing-lg: 1.25rem;   /* 20px */
+  --spacing-xl: 1.5rem;    /* 24px */
+  --spacing-2xl: 2rem;     /* 32px */
+  
+  /* Z-index escala */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal-backdrop: 1040;
+  --z-modal: 1050;
+  --z-popover: 1060;
+  --z-tooltip: 1070;
 }
 
-/* Header principal */
+/* ===== ESTILOS BASE ===== */
+/* Reset básico para evitar inconsistencias entre navegadores */
+.header *,
+.header *::before,
+.header *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Estilos del header principal */
 .header {
   position: fixed;
   top: 0;
@@ -26,45 +68,51 @@
   background-color: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(var(--header-blur));
   -webkit-backdrop-filter: blur(var(--header-blur));
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  transition: all 0.3s var(--transition-smooth);
+  z-index: var(--z-fixed);
+  box-shadow: var(--shadow-light);
+  transition: height var(--transition-normal), box-shadow var(--transition-normal);
+  /* Prevenir layout shift */
+  will-change: height, transform;
 }
 
+/* Header con scroll - versión compacta */
 .header--scrolled {
-  height: var(--header-height-mobile);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  height: var(--header-height-scrolled);
+  box-shadow: var(--shadow-medium);
 }
 
-/* Contenedor principal mejorado */
+/* Contenedor principal - diseño flexible */
 .header__container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--spacing-md);
   height: 100%;
-  padding: 0 20px;
-  max-width: 1600px;
+  padding: 0 var(--spacing-lg);
+  max-width: 90rem; /* 1440px */
   margin: 0 auto;
 }
 
-/* Logo optimizado */
+/* ===== LOGO ===== */
 .header__logo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  z-index: 10;
+  gap: var(--spacing-xs);
+  z-index: var(--z-fixed);
   text-decoration: none;
+  min-width: 0; /* Permite que se reduzca si es necesario */
 }
 
 .header__logo-icon {
-  width: 44px;
-  height: 44px;
+  width: 2.75rem; /* 44px */
+  height: 2.75rem; /* 44px */
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
-  transition: transform 0.3s ease;
+  border-radius: 0.875rem; /* 14px */
+  background-color: var(--primary-light);
+  transition: transform var(--transition-fast);
+  flex-shrink: 0; /* Evita que se reduzca */
 }
 
 .header__logo:hover .header__logo-icon {
@@ -72,8 +120,9 @@
 }
 
 .header__logo-svg {
-  width: 26px;
-  height: 26px;
+  width: 1.625rem; /* 26px */
+  height: 1.625rem; /* 26px */
+  color: var(--primary-color);
 }
 
 .header__logo-text {
@@ -81,51 +130,60 @@
   font-weight: 700;
   color: var(--primary-color);
   letter-spacing: -0.02em;
-  transition: color 0.2s ease;
+  transition: font-size var(--transition-normal);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .header--scrolled .header__logo-text {
   font-size: 1.5rem;
 }
 
-/* Barra de búsqueda flexible */
+/* ===== BARRA DE BÚSQUEDA ===== */
 .header__search {
   flex: 1;
-  max-width: 600px;
-  margin: 0 20px;
-  transition: all 0.3s ease;
-  z-index: 100;
+  max-width: 37.5rem; /* 600px */
+  margin: 0 var(--spacing-lg);
+  transition: all var(--transition-normal);
+  z-index: var(--z-fixed);
+  position: relative;
 }
 
 .header__search--expanded {
   position: absolute;
-  left: 20px;
-  right: 20px;
-  top: 20px;
-  z-index: 1000;
+  left: var(--spacing-lg);
+  right: var(--spacing-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: var(--z-modal);
   max-width: none;
+  margin: 0;
 }
 
-/* Acciones de usuario mejoradas */
+/* ===== ACCIONES DE USUARIO ===== */
 .header__actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--spacing-sm);
+  flex-shrink: 0; /* Evita que se reduzcan los botones */
 }
 
 .header__action-btn {
-  width: 42px;
-  height: 42px;
+  width: 2.625rem; /* 42px */
+  height: 2.625rem; /* 42px */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-dark);
+  flex-shrink: 0;
 }
 
 .header__action-btn:hover {
@@ -134,39 +192,42 @@
 }
 
 .header__action-icon {
-  width: 22px;
-  height: 22px;
+  width: 1.375rem; /* 22px */
+  height: 1.375rem; /* 22px */
 }
 
 /* Badges de notificación */
 .header__notification-badge {
   position: absolute;
-  top: -2px;
-  right: -2px;
+  top: -0.125rem; /* -2px */
+  right: -0.125rem; /* -2px */
   background-color: var(--danger-color);
-  color: white;
+  color: var(--white);
   border-radius: 50%;
-  width: 18px;
-  height: 18px;
+  width: 1.125rem; /* 18px */
+  height: 1.125rem; /* 18px */
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 0.7rem;
   font-weight: bold;
+  z-index: var(--z-tooltip);
 }
 
+/* Enlace "Hospedar" */
 .header__host-link {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-sm);
   border-radius: var(--border-radius);
   background-color: rgba(16, 185, 129, 0.08);
   color: var(--primary-color);
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all var(--transition-fast);
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .header__host-link:hover {
@@ -175,24 +236,34 @@
 }
 
 .header__host-icon {
-  width: 18px;
-  height: 18px;
+  width: 1.125rem; /* 18px */
+  height: 1.125rem; /* 18px */
 }
 
-/* Menú móvil optimizado */
+/* ===== MENÚ MÓVIL ===== */
+.header__mobile-toggle {
+  display: none; /* Oculto por defecto, se muestra en móviles */
+}
+
 .header__mobile-menu {
   position: fixed;
-  top: var(--header-height-mobile);
+  top: var(--header-height);
   left: 0;
   right: 0;
   bottom: 0;
-  background: white;
-  z-index: 999;
-  padding: 20px;
+  background: var(--white);
+  z-index: var(--z-modal);
+  padding: var(--spacing-xl);
   overflow-y: auto;
+  transform: translateX(-100%);
+  transition: transform var(--transition-normal);
+  box-shadow: var(--shadow-heavy);
+  /* Mejorar rendimiento en dispositivos móviles */
+  will-change: transform;
+}
+
+.header__mobile-menu--open {
   transform: translateX(0);
-  transition: transform 0.3s ease;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .header__mobile-nav {
@@ -203,11 +274,11 @@
 .header__mobile-nav-item {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 16px;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
   border-radius: var(--border-radius);
-  margin-bottom: 8px;
-  transition: all 0.2s ease;
+  margin-bottom: var(--spacing-xs);
+  transition: all var(--transition-fast);
   text-decoration: none;
   color: var(--text-dark);
 }
@@ -218,7 +289,7 @@
 
 .header__mobile-nav-item--active {
   background-color: rgba(16, 185, 129, 0.1);
-  border-left: 4px solid var(--primary-color);
+  border-left: 0.25rem solid var(--primary-color);
 }
 
 .header__mobile-nav-item--highlight {
@@ -227,8 +298,8 @@
 }
 
 .header__mobile-nav-icon {
-  width: 24px;
-  height: 24px;
+  width: 1.5rem; /* 24px */
+  height: 1.5rem; /* 24px */
   flex-shrink: 0;
   color: var(--text-dark);
 }
@@ -243,25 +314,25 @@
 .header__mobile-nav-description {
   font-size: 0.9rem;
   color: var(--text-light);
-  margin-top: 4px;
+  margin-top: 0.25rem; /* 4px */
 }
 
 .header__mobile-divider {
   height: 1px;
   background-color: #e5e7eb;
-  margin: 12px 0;
+  margin: var(--spacing-sm) 0;
 }
 
 .header__mobile-badge {
   display: inline-block;
-  margin-left: 8px;
+  margin-left: var(--spacing-xs);
   background-color: var(--danger-color);
-  color: white;
+  color: var(--white);
   border-radius: 50%;
-  min-width: 20px;
-  height: 20px;
+  min-width: 1.25rem; /* 20px */
+  height: 1.25rem; /* 20px */
   text-align: center;
-  line-height: 20px;
+  line-height: 1.25rem; /* 20px */
   font-size: 0.7rem;
   font-weight: bold;
 }
@@ -269,80 +340,240 @@
 /* Fondo difuminado para menú móvil */
 .header__mobile-backdrop {
   position: fixed;
-  top: var(--header-height-mobile);
+  top: var(--header-height);
   left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  z-index: 998;
+  z-index: var(--z-modal-backdrop);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
 }
 
-/* Media queries mejoradas */
+.header__mobile-backdrop--visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ===== MEDIA QUERIES MEJORADAS ===== */
+
+/* Tabletas grandes y laptops pequeñas */
 @media (max-width: 1024px) {
   .header__nav-container {
     display: none;
   }
   
   .header__search {
-    margin: 0 10px;
-  }
-}
-
-@media (max-width: 768px) {
-  :root {
-    --header-height: var(--header-height-mobile);
+    margin: 0 var(--spacing-sm);
+    max-width: 25rem;
   }
   
   .header__logo-text {
     font-size: 1.4rem;
   }
-  
-  .header__logo-icon {
-    width: 38px;
-    height: 38px;
+}
+
+/* Tabletas pequeñas */
+@media (max-width: 880px) {
+  .header__search {
+    max-width: 20rem;
   }
   
   .header__host-link span {
     display: none;
   }
   
+  .header__host-link {
+    padding: var(--spacing-xs);
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 768px) {
+  :root {
+    --header-height: var(--header-height-mobile);
+  }
+  
+  .header__container {
+    padding: 0 var(--spacing-md);
+  }
+  
+  .header__logo-icon {
+    width: 2.375rem; /* 38px */
+    height: 2.375rem; /* 38px */
+  }
+  
+  .header__logo-text {
+    font-size: 1.4rem;
+  }
+  
   .header__search:not(.header__search--expanded) {
     display: none;
   }
   
-  .header__container {
-    padding: 0 15px;
+  .header__mobile-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Ajustar altura del header cuando está scrolleado */
+  .header--scrolled {
+    height: 3.5rem; /* 56px */
   }
 }
 
-@media (min-width: 769px) {
-  .header__mobile-toggle {
-    display: none !important;
+/* Móviles medianos */
+@media (max-width: 640px) {
+  .header__actions {
+    gap: var(--spacing-xs);
   }
   
-  .header__mobile-menu,
-  .header__mobile-backdrop {
-    display: none;
+  .header__action-btn {
+    width: 2.25rem; /* 36px */
+    height: 2.25rem; /* 36px */
+  }
+  
+  .header__action-icon {
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
+  .header__container {
+    padding: 0 var(--spacing-sm);
+  }
+  
+  .header__logo-text {
+    font-size: 1.25rem;
+  }
+  
+  .header__logo-icon {
+    width: 2rem; /* 32px */
+    height: 2rem; /* 32px */
+  }
+  
+  .header__logo-svg {
+    width: 1.25rem; /* 20px */
+    height: 1.25rem; /* 20px */
+  }
+  
+  .header__mobile-menu {
+    padding: var(--spacing-lg);
   }
 }
 
 /* Utilidades de visibilidad */
-.hide-mobile {
+.header__desktop-only {
   display: block;
 }
 
-.hide-desktop {
+.header__mobile-only {
   display: none;
 }
 
 @media (max-width: 768px) {
-  .hide-mobile {
+  .header__desktop-only {
     display: none;
   }
   
-  .hide-desktop {
+  .header__mobile-only {
     display: block;
+  }
+}
+
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+.header__action-btn:focus-visible,
+.header__host-link:focus-visible,
+.header__mobile-toggle:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+/* Soporte para preferencia de reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .header__logo-icon,
+  .header__action-btn,
+  .header__host-link,
+  .header__mobile-menu,
+  .header__mobile-backdrop {
+    transition: none;
+  }
+  
+  .header__logo:hover .header__logo-icon {
+    transform: none;
+  }
+  
+  .header__action-btn:hover {
+    transform: none;
+  }
+  
+  .header__host-link:hover {
+    transform: none;
+  }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .header {
+    background-color: rgba(17, 24, 39, 0.9);
+  }
+  
+  .header__action-btn {
+    color: #E5E7EB;
+  }
+  
+  .header__action-btn:hover {
+    background-color: rgba(16, 185, 129, 0.2);
+  }
+  
+  .header__mobile-menu {
+    background: #111827;
+  }
+  
+  .header__mobile-nav-item {
+    color: #E5E7EB;
+  }
+  
+  .header__mobile-nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  .header__mobile-nav-icon {
+    color: #E5E7EB;
+  }
+  
+  .header__mobile-nav-description {
+    color: #9CA3AF;
+  }
+  
+  .header__mobile-divider {
+    background-color: #374151;
+  }
+}
+
+/* Prevenir layout shifts con reserva de espacio */
+body {
+  padding-top: var(--header-height);
+}
+
+/* Ajustar padding cuando el header se reduce */
+.header--scrolled ~ * {
+  --header-current-height: var(--header-height-scrolled);
+}
+
+@media (max-width: 768px) {
+  body {
+    padding-top: var(--header-height-mobile);
+  }
+  
+  .header--scrolled ~ * {
+    --header-current-height: 3.5rem;
   }
 }

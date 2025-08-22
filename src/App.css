@@ -1,83 +1,288 @@
-/* Reset y configuración base */
-* {
+/* ===== RESET MEJORADO Y CONFIGURACIÓN BASE ===== */
+/* Reset más completo para evitar inconsistencias entre navegadores */
+*,
+*::before,
+*::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Variables CSS para mejor mantenimiento */
+/* Variables CSS organizadas por categorías */
 :root {
-  --header-height: 80px;
-  --primary-spacing: 1rem;
-  --content-max-width: 1200px;
-  --border-radius: 8px;
-  --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
-  --transition-smooth: all 0.3s ease;
+  /* Colores */
+  --color-primary: #007acc;
+  --color-primary-light: rgba(0, 122, 204, 0.1);
+  --color-text: #333333;
+  --color-text-light: #666666;
+  --color-background: #fafafa;
+  --color-surface: #ffffff;
+  --color-border: #e0e0e0;
+  
+  /* Espaciado (usando rem para mejor escalabilidad) */
+  --spacing-xs: 0.5rem;   /* 8px */
+  --spacing-sm: 0.75rem;  /* 12px */
+  --spacing-md: 1rem;     /* 16px */
+  --spacing-lg: 1.5rem;   /* 24px */
+  --spacing-xl: 2rem;     /* 32px */
+  --spacing-2xl: 3rem;    /* 48px */
+  
+  /* Tamaños de header (responsive) */
+  --header-height-desktop: 5rem;     /* 80px */
+  --header-height-tablet: 4rem;      /* 64px */
+  --header-height-mobile: 3.5rem;    /* 56px */
+  
+  /* Dimensiones de contenido */
+  --content-max-width: 75rem;        /* 1200px */
+  --content-padding: var(--spacing-md);
+  
+  /* Border radius */
+  --border-radius-sm: 0.25rem;       /* 4px */
+  --border-radius-md: 0.5rem;        /* 8px */
+  --border-radius-lg: 0.75rem;       /* 12px */
+  
+  /* Sombras */
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
+  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.16);
+  
+  /* Transiciones */
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  
+  /* Tipografía */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+                'Oxygen', 'Ubuntu', 'Cantarell', 'Open Sans', sans-serif;
+  --line-height: 1.6;
 }
 
-/* Contenedor principal de la aplicación */
+/* ===== ESTRUCTURA PRINCIPAL ===== */
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  line-height: 1.6;
-  color: #333;
-  background-color: #fafafa;
+  font-family: var(--font-family);
+  line-height: var(--line-height);
+  color: var(--color-text);
+  background-color: var(--color-background);
+  /* Prevenir scroll horizontal */
+  overflow-x: hidden;
 }
 
-/* Contenido principal */
+/* Contenido principal con espacio reservado para el header */
 .main-content {
   flex: 1;
-  padding-top: var(--header-height);
-  padding-left: var(--primary-spacing);
-  padding-right: var(--primary-spacing);
-  padding-bottom: var(--primary-spacing);
+  width: 100%;
   max-width: var(--content-max-width);
   margin: 0 auto;
-  width: 100%;
-  transition: var(--transition-smooth);
+  padding: var(--header-height-desktop) var(--content-padding) var(--spacing-xl);
+  transition: padding var(--transition-normal);
+  /* Prevenir layout shifts */
+  will-change: padding;
 }
 
 /* Mejoras para accesibilidad y UX */
 .main-content:focus-within {
-  outline: 2px solid #007acc;
-  outline-offset: 4px;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 0.25rem;
 }
 
-/* Responsive design */
+/* ===== SECCIONES DE CONTENIDO ===== */
+.content-section {
+  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-lg);
+  background: var(--color-surface);
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-light);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  /* Prevenir layout shifts */
+  min-height: 1px;
+}
+
+.content-section:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-2px);
+}
+
+/* Utilidad para cuando el contenido es muy corto */
+.main-content--min-height {
+  min-height: calc(100vh - var(--header-height-desktop));
+}
+
+/* ===== DISEÑO RESPONSIVO ===== */
+
+/* Tabletas */
 @media (max-width: 768px) {
+  .main-content {
+    padding: var(--header-height-tablet) var(--spacing-sm) var(--spacing-lg);
+  }
+  
+  .content-section {
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+  }
+  
+  .main-content--min-height {
+    min-height: calc(100vh - var(--header-height-tablet));
+  }
+}
+
+/* Móviles grandes */
+@media (max-width: 640px) {
+  .main-content {
+    padding: var(--header-height-mobile) var(--spacing-xs) var(--spacing-md);
+  }
+  
+  .content-section {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    border-radius: var(--border-radius-sm);
+  }
+  
+  .main-content--min-height {
+    min-height: calc(100vh - var(--header-height-mobile));
+  }
+}
+
+/* Móviles pequeños */
+@media (max-width: 480px) {
   :root {
-    --header-height: 60px;
-    --primary-spacing: 0.75rem;
+    --content-padding: var(--spacing-xs);
   }
   
   .main-content {
-    padding-left: var(--primary-spacing);
-    padding-right: var(--primary-spacing);
+    padding: var(--header-height-mobile) var(--spacing-xs) var(--spacing-md);
+  }
+  
+  .content-section {
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
   }
 }
 
-@media (max-width: 480px) {
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+
+/* Soporte para preferencia de reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .main-content,
+  .content-section {
+    transition: none;
+  }
+  
+  .content-section:hover {
+    transform: none;
+  }
+  
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Mejor contraste para modo alto contraste */
+@media (prefers-contrast: high) {
+  .content-section {
+    border: 1px solid var(--color-border);
+  }
+}
+
+/* Soporte para modo oscuro */
+@media (prefers-color-scheme: dark) {
   :root {
-    --header-height: 50px;
-    --primary-spacing: 0.5rem;
+    --color-text: #e0e0e0;
+    --color-text-light: #a0a0a0;
+    --color-background: #121212;
+    --color-surface: #1e1e1e;
+    --color-border: #3a3a3a;
+  }
+  
+  .content-section {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  }
+  
+  .content-section:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
 }
 
-/* Mejoras adicionales para elementos comunes */
-.content-section {
-  margin-bottom: 2rem;
-  padding: var(--primary-spacing);
-  background: white;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow-light);
+/* ===== UTILIDADES ===== */
+
+/* Prevenir desbordamiento de imágenes y medios */
+.content-section img,
+.content-section video,
+.content-section iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* Utilidades para scroll suave */
+/* Mejora de scroll suave con fallback */
 html {
   scroll-behavior: smooth;
 }
 
-/* Mejora para cuando el contenido es muy corto */
-.main-content {
-  min-height: calc(100vh - var(--header-height));
+@supports not (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Clases de utilidad para espaciado consistente */
+.mb-xs { margin-bottom: var(--spacing-xs); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+/* ===== PREVENCIÓN DE LAYOUT SHIFTS ===== */
+
+/* Reservar espacio para imágenes y iframes */
+.content-section img,
+.content-section video,
+.content-section iframe {
+  aspect-ratio: attr(width) / attr(height);
+}
+
+/* Estilos para elementos que podrían causar layout shifts */
+.content-section {
+  contain: layout style paint;
+}
+
+/* Mejora para elementos que se cargan dinámicamente */
+[data-loaded="false"] {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+[data-loaded="true"] {
+  opacity: 1;
+  height: auto;
+  transition: opacity var(--transition-normal);
+}
+
+/* ===== MEJORAS DE RENDIMIENTO ===== */
+
+/* Optimización para elementos que se animan */
+.content-section {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevenir destellos de contenido no estilizado (FOUC) */
+.app-container {
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
 }

@@ -1,40 +1,41 @@
-// Configuración de la base de datos
+// config/db.js
 const mongoose = require('mongoose');
-const config = require('./config');
+const config = require('./index');
+const logger = require('../utils/logger');
 
-// Configuración para MongoDB
-const mongodbConfig = {
-  uri: config.database.mongodb.uri,
-  options: {
+const connect = async () => {
+  const uri = config.database.uri;
+  const options = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-  }
-};
+    serverSelectionTimeoutMS: 10000,
+    maxPoolSize: 10
+  };
 
-// Función para conectar a la base de datos
-const connectDatabase = async () => {
   try {
-    await mongoose.connect(mongodbConfig.uri, mongodbConfig.options);
-    console.log('=== CONEXIÓN A BASE DE DATOS ===');
-    console.log(`Conectado a MongoDB en: ${mongodbConfig.uri}`);
-    console.log(`==============================`);
-  } catch (error) {
-    console.error('Error al conectar a la base de datos:', error.message);
-    process.exit(1);
+    await mongoose.connect(uri, options);
+    logger.info('Connected to MongoDB', { uri: uri.split('@').pop ? uri.split('@').pop() : uri });
+    // Optional: enable mongoose debug in non-prod
+    if (process.env.NODE_ENV !== 'production') {
+      mongoose.set('debug', true);
+    }
+  } catch (err) {
+    logger.error('MongoDB connection error', { message: err.message });
+    throw err;
   }
+
+  mongoose.connection.on('disconnected', () => logger.warn('MongoDB disconnected'));
+  mongoose.connection.on('reconnected', () => logger.info('MongoDB reconnected'));
+  mongoose.connection.on('error', (err) => logger.error('MongoDB error', { message: err.message }));
 };
 
-// Función para desconectar de la base de datos
-const disconnectDatabase = async () => {
+const disconnect = async () => {
   try {
     await mongoose.disconnect();
-    console.log('Desconectado de la base de datos');
-  } catch (error) {
-    console.error('Error al desconectar de la base de datos:', error.message);
+    logger.info('MongoDB disconnected (manual)');
+  } catch (err) {
+    logger.error('Error disconnecting MongoDB', { message: err.message });
   }
 };
 
-module.exports = {
-  connect: connectDatabase,
-  disconnect: disconnectDatabase
-};
+module.exports = { connect, disconnect };

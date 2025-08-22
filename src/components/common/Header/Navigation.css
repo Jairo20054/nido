@@ -1,5 +1,7 @@
-/* Variables CSS para consistencia */
+/* ===== NAVIGATION COMPONENT - CSS MEJORADO ===== */
+/* Variables CSS actualizadas y organizadas */
 :root {
+  /* Colores */
   --nav-primary-color: #10b981;
   --nav-primary-hover: #059669;
   --nav-text-primary: #111827;
@@ -10,17 +12,39 @@
   --nav-bg-gray-100: #f3f4f6;
   --nav-bg-gray-900: #111827;
   --nav-border-color: #e5e7eb;
-  --nav-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  
+  /* Sombras */
+  --nav-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
   --nav-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --nav-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --nav-radius-sm: 6px;
-  --nav-radius-md: 8px;
-  --nav-radius-lg: 12px;
-  --nav-transition-fast: 150ms ease-in-out;
-  --nav-transition-normal: 200ms ease-in-out;
-  --nav-transition-slow: 300ms ease-in-out;
-  --nav-z-index-dropdown: 50;
-  --nav-z-index-modal: 100;
+  --nav-shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  
+  /* Border radius */
+  --nav-radius-sm: 0.375rem;  /* 6px */
+  --nav-radius-md: 0.5rem;    /* 8px */
+  --nav-radius-lg: 0.75rem;   /* 12px */
+  
+  /* Transiciones */
+  --nav-transition-fast: 150ms ease;
+  --nav-transition-normal: 200ms ease;
+  --nav-transition-slow: 300ms ease;
+  
+  /* Z-index escala */
+  --nav-z-index-dropdown: 1000;
+  --nav-z-index-sticky: 1020;
+  --nav-z-index-fixed: 1030;
+  --nav-z-index-modal: 1040;
+  --nav-z-index-overlay: 1050;
+}
+
+/* ===== ESTILOS BASE ===== */
+/* Reset básico para evitar inconsistencias */
+.navigation *,
+.navigation *::before,
+.navigation *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* Botón menú móvil */
@@ -31,11 +55,11 @@
   cursor: pointer;
   color: var(--nav-text-secondary);
   font-size: 1.25rem;
-  padding: 8px;
+  padding: 0.5rem;
   border-radius: var(--nav-radius-sm);
   transition: all var(--nav-transition-fast);
   position: relative;
-  z-index: calc(var(--nav-z-index-modal) + 1);
+  z-index: calc(var(--nav-z-index-modal) + 10);
 }
 
 .mobile-menu-toggle:hover {
@@ -43,7 +67,7 @@
   background-color: var(--nav-bg-gray-100);
 }
 
-.mobile-menu-toggle:focus {
+.mobile-menu-toggle:focus-visible {
   outline: 2px solid var(--nav-primary-color);
   outline-offset: 2px;
 }
@@ -80,7 +104,7 @@
 }
 
 .navigation.horizontal .nav-item {
-  margin: 0 20px;
+  margin: 0 1.25rem; /* 20px */
 }
 
 .navigation.horizontal .nav-item:first-child {
@@ -92,31 +116,30 @@
 }
 
 .navigation.vertical .nav-item {
-  margin: 4px 0;
+  margin: 0.25rem 0; /* 4px */
 }
 
 /* Enlaces de navegación */
 .nav-link {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 0.5rem; /* 8px */
   text-decoration: none;
   color: var(--nav-text-primary);
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 500;
   font-size: 0.9rem;
-  padding: 12px 16px;
+  padding: 0.75rem 1rem; /* 12px 16px */
   position: relative;
   border-radius: var(--nav-radius-md);
   transition: all var(--nav-transition-normal);
   white-space: nowrap;
-  opacity: 0;
-  transform: translateY(-10px);
-  animation: slideInNav 0.4s ease-out forwards;
+  /* Mejorar rendimiento de animaciones */
+  will-change: transform, opacity;
 }
 
 .navigation.horizontal .nav-link {
-  padding: 12px 8px;
+  padding: 0.75rem 0.5rem; /* 12px 8px */
   border-radius: 0;
 }
 
@@ -132,7 +155,7 @@
   transform: translateY(-2px);
 }
 
-.nav-link:focus {
+.nav-link:focus-visible {
   outline: 2px solid var(--nav-primary-color);
   outline-offset: 2px;
   color: var(--nav-primary-color);
@@ -150,8 +173,8 @@
 
 /* Iconos de navegación */
 .nav-icon {
-  width: 18px;
-  height: 18px;
+  width: 1.125rem; /* 18px */
+  height: 1.125rem; /* 18px */
   flex-shrink: 0;
   opacity: 0.8;
   transition: all var(--nav-transition-fast);
@@ -180,9 +203,9 @@
   bottom: 0;
   left: 50%;
   width: 0;
-  height: 3px;
+  height: 0.1875rem; /* 3px */
   background: linear-gradient(90deg, var(--nav-primary-color), var(--nav-primary-hover));
-  border-radius: 2px;
+  border-radius: 0.125rem; /* 2px */
   transform: translateX(-50%);
   transition: width var(--nav-transition-normal);
 }
@@ -199,15 +222,17 @@
 .active-indicator {
   position: absolute;
   bottom: 0;
-  height: 3px;
+  height: 0.1875rem; /* 3px */
   background: linear-gradient(90deg, var(--nav-primary-color), var(--nav-primary-hover));
-  border-radius: 2px;
+  border-radius: 0.125rem; /* 2px */
   transition: all var(--nav-transition-normal);
   opacity: 0;
   z-index: 1;
 }
 
-/* Responsive Design */
+/* ===== DISEÑO RESPONSIVO ===== */
+
+/* Tabletas */
 @media (max-width: 768px) {
   .mobile-menu-toggle {
     display: flex;
@@ -219,19 +244,21 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px;
+    width: 17.5rem; /* 280px */
     height: 100vh;
     background: var(--nav-bg-white);
     border-left: 1px solid var(--nav-border-color);
-    box-shadow: var(--nav-shadow-lg);
+    box-shadow: var(--nav-shadow-xl);
     z-index: var(--nav-z-index-modal);
-    transition: right var(--nav-transition-slow);
+    transition: transform var(--nav-transition-slow);
     overflow-y: auto;
-    padding: 80px 0 20px;
+    padding: 5rem 0 1.25rem; /* 80px 0 20px */
+    /* Mejorar rendimiento */
+    will-change: transform;
   }
 
   .navigation.mobile-open {
-    right: 0;
+    transform: translateX(-100%);
   }
 
   .mobile-overlay {
@@ -241,23 +268,35 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.5);
-    z-index: calc(var(--nav-z-index-modal) - 1);
-    backdrop-filter: blur(4px);
+    z-index: var(--nav-z-index-overlay);
+    backdrop-filter: blur(0.25rem); /* 4px */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity var(--nav-transition-slow), visibility var(--nav-transition-slow);
+  }
+
+  .mobile-overlay.visible {
+    opacity: 1;
+    visibility: visible;
   }
 
   .nav-list {
     flex-direction: column;
-    padding: 0 20px;
+    padding: 0 1.25rem; /* 20px */
   }
 
   .nav-item {
-    margin: 8px 0;
+    margin: 0.5rem 0; /* 8px */
   }
 
   .nav-link {
-    padding: 16px 20px;
+    padding: 1rem 1.25rem; /* 16px 20px */
     border-radius: var(--nav-radius-md);
     font-size: 1rem;
+    /* Eliminar animación de entrada en móviles para mejor rendimiento */
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 
   .nav-short-label {
@@ -269,12 +308,11 @@
 
   .nav-label {
     display: none;
-    color: #10b981;
   }
 
   .mobile-menu-footer {
     margin-top: auto;
-    padding: 20px;
+    padding: 1.25rem; /* 20px */
     border-top: 1px solid var(--nav-border-color);
   }
 
@@ -287,6 +325,7 @@
   }
 }
 
+/* Móviles pequeños */
 @media (max-width: 480px) {
   .navigation {
     width: 100vw;
@@ -294,49 +333,60 @@
   }
 
   .navigation.mobile-open {
-    right: 0;
+    transform: translateX(-100vw);
   }
 }
 
-/* Animaciones */
-@keyframes slideInNav {
-  from {
+/* ===== ANIMACIONES MEJORADAS ===== */
+/* Solo aplicar animaciones si el usuario no ha preferido reducirlas */
+@media (prefers-reduced-motion: no-preference) {
+  .nav-link {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-0.625rem); /* -10px */
+    animation: navLinkSlideIn 0.4s ease-out forwards;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  @keyframes navLinkSlideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-0.625rem); /* -10px */
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Retrasos de animación escalonados */
+  .nav-item:nth-child(1) .nav-link { animation-delay: 0.05s; }
+  .nav-item:nth-child(2) .nav-link { animation-delay: 0.1s; }
+  .nav-item:nth-child(3) .nav-link { animation-delay: 0.15s; }
+  .nav-item:nth-child(4) .nav-link { animation-delay: 0.2s; }
+  .nav-item:nth-child(5) .nav-link { animation-delay: 0.25s; }
+  .nav-item:nth-child(6) .nav-link { animation-delay: 0.3s; }
+
+  /* Efecto de onda en hover */
+  .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all var(--nav-transition-normal);
+    z-index: -1;
+  }
+
+  .nav-link:hover::before {
+    width: 6.25rem; /* 100px */
+    height: 6.25rem; /* 100px */
   }
 }
 
-/* Efecto de onda en hover */
-.nav-link::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: all var(--nav-transition-normal);
-  z-index: -1;
-}
-
-.nav-link:hover::before {
-  width: 100px;
-  height: 100px;
-}
-
-/* Retrasos de animación escalonados */
-.nav-item:nth-child(1) .nav-link { animation-delay: 0.1s; }
-.nav-item:nth-child(2) .nav-link { animation-delay: 0.2s; }
-.nav-item:nth-child(3) .nav-link { animation-delay: 0.3s; }
-.nav-item:nth-child(4) .nav-link { animation-delay: 0.4s; }
-
-/* Dark mode support */
+/* ===== MODO OSCURO ===== */
 @media (prefers-color-scheme: dark) {
   :root {
     --nav-text-primary: #f9fafb;
@@ -350,61 +400,157 @@
   }
 }
 
-/* Estados de carga */
+/* ===== ESTADOS DE CARGA MEJORADOS ===== */
 .navigation.loading .nav-link {
-  opacity: 0.5;
+  opacity: 0.7;
   pointer-events: none;
+  position: relative;
+  overflow: hidden;
 }
 
-/* Variante vertical para sidebar */
+.navigation.loading .nav-link::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: loadingShimmer 1.5s infinite;
+}
+
+@keyframes loadingShimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ===== VARIANTE VERTICAL PARA SIDEBAR ===== */
 .navigation.vertical {
-  width: 240px;
-  padding: 20px 0;
+  width: 15rem; /* 240px */
+  padding: 1.25rem 0; /* 20px */
   background: var(--nav-bg-white);
   border-right: 1px solid var(--nav-border-color);
   height: 100%;
 }
 
 .navigation.vertical .nav-link {
-  margin: 4px 12px;
+  margin: 0.25rem 0.75rem; /* 4px 12px */
   justify-content: flex-start;
 }
 
 .navigation.vertical .nav-link.active {
   background: linear-gradient(90deg, var(--nav-primary-color), var(--nav-primary-hover));
-  background-size: 4px 100%;
+  background-size: 0.25rem 100%; /* 4px */
   background-repeat: no-repeat;
   background-position: left center;
 }
 
-/* Accesibilidad mejorada */
+/* ===== MEJORAS DE ACCESIBILIDAD ===== */
+/* Soporte para preferencia de reducción de movimiento */
 @media (prefers-reduced-motion: reduce) {
   .nav-link,
   .active-indicator,
   .nav-underline,
-  .navigation {
+  .navigation,
+  .mobile-menu-toggle {
     transition: none;
     animation: none;
   }
-}
-
-/* Estados de focus mejorados */
-.nav-link:focus-visible {
-  outline: 2px solid var(--nav-primary-color);
-  outline-offset: 2px;
-  border-radius: var(--nav-radius-sm);
+  
+  .nav-link {
+    opacity: 1;
+    transform: none;
+  }
+  
+  .nav-link:hover {
+    transform: none;
+  }
+  
+  .navigation.horizontal .nav-link:hover {
+    transform: none;
+  }
+  
+  .nav-link::before {
+    display: none;
+  }
 }
 
 /* Indicadores de estado */
 .nav-link[aria-current="page"]::after {
   content: '';
   position: absolute;
-  right: 8px;
+  right: 0.5rem; /* 8px */
   top: 50%;
   transform: translateY(-50%);
-  width: 6px;
-  height: 6px;
+  width: 0.375rem; /* 6px */
+  height: 0.375rem; /* 6px */
   background: var(--nav-primary-color);
   border-radius: 50%;
   opacity: 0.8;
+}
+
+/* Navegación con JavaScript deshabilitado */
+.no-js .navigation {
+  position: static;
+  width: auto;
+  height: auto;
+  transform: none;
+}
+
+.no-js .mobile-menu-toggle {
+  display: none;
+}
+
+.no-js .mobile-overlay {
+  display: none;
+}
+
+/* ===== UTILIDADES ===== */
+/* Ocultar elementos visualmente pero mantener accesibles para lectores de pantalla */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Prevenir desbordamiento de texto */
+.nav-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Mejorar contraste para accesibilidad */
+@media (prefers-contrast: high) {
+  .nav-link {
+    border: 1px solid transparent;
+  }
+  
+  .nav-link:hover,
+  .nav-link:focus {
+    border-color: var(--nav-primary-color);
+  }
+}
+
+/* Soporte para modo alto contraste en Windows */
+@media (forced-colors: active) {
+  .nav-link {
+    forced-color-adjust: none;
+    border: 1px solid transparent;
+  }
+  
+  .nav-link:hover,
+  .nav-link:focus {
+    border-color: Highlight;
+  }
+  
+  .nav-underline,
+  .active-indicator {
+    background: Highlight;
+  }
 }
