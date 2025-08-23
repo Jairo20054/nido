@@ -1,14 +1,18 @@
 // config/db.js
 const mongoose = require('mongoose');
-const config = require('./index');
-const logger = require('../utils/logger');
+const config = require('./config');
+const logger = require('../utils/logger'); // Asumiendo que tienes un logger
 
-// Función para ofuscar credenciales en el URI
+// 🛡️ FUNCIÓN PARA OFUSCAR CREDENCIALES EN EL URI
+// Oculta información sensible en los logs
 const obfuscateUri = (uri) => {
   try {
     const url = new URL(uri);
     if (url.password) {
       url.password = '***';
+    }
+    if (url.username) {
+      url.username = url.username.substring(0, 3) + '***';
     }
     return url.toString();
   } catch {
@@ -16,61 +20,73 @@ const obfuscateUri = (uri) => {
   }
 };
 
-// Opciones mejoradas de conexión
+// ⚙️ OPCIONES MEJORADAS DE CONEXIÓN
 const getConnectionOptions = () => ({
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  serverSelectionTimeoutMS: config.database.serverSelectionTimeoutMS || 10000,
-  socketTimeoutMS: config.database.socketTimeoutMS || 45000,
-  maxPoolSize: config.database.maxPoolSize || 10,
-  minPoolSize: config.database.minPoolSize || 2,
-  maxIdleTimeMS: config.database.maxIdleTimeMS || 30000,
+  serverSelectionTimeoutMS: config.database.options.serverSelectionTimeoutMS,
+  socketTimeoutMS: config.database.options.socketTimeoutMS,
+  maxPoolSize: config.database.options.maxPoolSize,
+  minPoolSize: config.database.options.minPoolSize,
   retryWrites: true,
   retryReads: true,
-  ...config.database.options // Opciones adicionales desde configuración
 });
 
-let isFirstConnection = true;
-let retryAttempts = 0;
+// 📊 ESTADÍSTICAS DE CONEXIÓN
+const connectionStats = {
+  attempts: 0,
+  connected: false,
+  lastConnection: null,
+  lastDisconnection: null,
+};
 
+// 🔌 CONEXIÓN A MONGODB
 const connect = async () => {
   const uri = config.database.uri;
   const options = getConnectionOptions();
   const obfuscatedUri = obfuscateUri(uri);
 
-  // Manejadores de eventos (deben registrarse antes de conectar)
+  // 📝 REGISTRO DE MANEJADORES DE EVENTOS
   mongoose.connection.on('connecting', () => {
-    logger.info('Connecting to MongoDB...', { 
-      attempt: retryAttempts + 1,
-      uri: obfuscatedUri 
+    connectionStats.attempts++;
+    logger.info(`Conectando a MongoDB... [Intento ${connectionStats.attempts}]`, {
+      uri: obfuscatedUri
     });
   });
 
   mongoose.connection.on('connected', () => {
-    isFirstConnection = false;
-    retryAttempts = 0;
-    logger.info('MongoDB connected successfully', {
+    connectionStats.connected = true;
+    connectionStats.lastConnection = new Date();
+    connectionStats.attempts = 0;
+    
+    logger.info('Conexión a MongoDB establecida correctamente', {
       uri: obfuscatedUri,
       poolSize: mongoose.connection.base.connections.length
     });
   });
 
   mongoose.connection.on('disconnected', () => {
-    logger.warn('MongoDB disconnected', {
+    connectionStats.connected = false;
+    connectionStats.lastDisconnection = new Date();
+    
+    logger.warn('Conexión a MongoDB perdida', {
       uri: obfuscatedUri,
-      lastActive: new Date().toISOString()
+      lastActive: connectionStats.lastConnection.toISOString()
     });
   });
 
   mongoose.connection.on('reconnected', () => {
-    logger.info('MongoDB reconnected', { 
-      retryAttempts,
-      uri: obfuscatedUri 
+    connectionStats.connected = true;
+    connectionStats.lastConnection = new Date();
+    
+    logger.info('Conexión a MongoDB reestablecida', {
+      uri: obfuscatedUri,
+      retryAttempts: connectionStats.attempts
     });
   });
 
   mongoose.connection.on('error', (error) => {
-    logger.error('MongoDB connection error', {
+    logger.error('Error de conexión a MongoDB', {
       message: error.message,
       stack: error.stack,
       uri: obfuscatedUri
@@ -78,13 +94,15 @@ const connect = async () => {
   });
 
   mongoose.connection.on('fullsetup', () => {
-    logger.debug('MongoDB replica set connected');
+    logger.debug('Conjunto de réplicas de MongoDB conectado');
   });
 
-  // Configuración de debug en desarrollo
-  if (process.env.NODE_ENV !== 'production') {
+  // 🐛 MODO DEBUG EN DESARROLLO
+  if (config.isDev) {
     mongoose.set('debug', (coll, method, query, doc) => {
-      logger.debug(`MongoDB Query: ${coll}.${method}`, {
+      logger.debug(`Consulta MongoDB: ${coll}.${method}`, {
+        collection: coll,
+        method: method,
         query: JSON.stringify(query),
         doc: JSON.stringify(doc)
       });
@@ -92,43 +110,48 @@ const connect = async () => {
   }
 
   try {
+    // 🔗 INTENTAR CONEXIÓN
     await mongoose.connect(uri, options);
     
-    // Heartbeat para monitorear la conexión
-    setInterval(() => {
+    // ❤️ HEARTBEAT PARA MONITOREAR LA CONEXIÓN
+    setInterval(async () => {
       if (mongoose.connection.readyState === 1) {
-        mongoose.connection.db.admin().ping();
+        try {
+          await mongoose.connection.db.admin().ping();
+          logger.debug('Heartbeat MongoDB: Conexión activa');
+        } catch (error) {
+          logger.warn('Heartbeat MongoDB falló', {
+            message: error.message
+          });
+        }
       }
     }, 30000);
 
   } catch (error) {
-    logger.error('Failed to connect to MongoDB', {
+    logger.error('Error al conectar con MongoDB', {
       message: error.message,
       stack: error.stack,
       uri: obfuscatedUri,
-      retryAttempts
+      retryAttempts: connectionStats.attempts
     });
 
-    // Reintento con backoff exponencial
-    if (isFirstConnection) {
-      const retryDelay = Math.min(1000 * 2 ** retryAttempts, 30000);
-      retryAttempts++;
-      logger.info(`Retrying connection in ${retryDelay}ms...`);
-      setTimeout(connect, retryDelay);
-    } else {
-      throw new Error(`MongoDB connection failed after ${retryAttempts} attempts: ${error.message}`);
-    }
+    // 🔄 REINTENTO CON BACKOFF EXPONENCIAL
+    const retryDelay = Math.min(1000 * 2 ** connectionStats.attempts, 30000);
+    logger.info(`Reintentando conexión en ${retryDelay}ms...`);
+    
+    setTimeout(connect, retryDelay);
   }
 };
 
+// 🔌 DESCONEXIÓN CONTROLADA
 const disconnect = async () => {
   try {
     await mongoose.disconnect();
-    logger.info('MongoDB manually disconnected', {
+    logger.info('Desconexión manual de MongoDB realizada correctamente', {
       activeTime: Math.round(process.uptime()) + 's'
     });
   } catch (error) {
-    logger.error('Error during manual disconnection', {
+    logger.error('Error durante la desconexión manual', {
       message: error.message,
       stack: error.stack
     });
@@ -136,14 +159,31 @@ const disconnect = async () => {
   }
 };
 
-// Manejo graceful de shutdown
+// 🚪 MANEJO GRACEFUL DE SHUTDOWN
 process.on('SIGINT', async () => {
+  logger.info('Recibida señal SIGINT, cerrando conexión a MongoDB...');
   await disconnect();
   process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  logger.info('Recibida señal SIGTERM, cerrando conexión a MongoDB...');
+  await disconnect();
+  process.exit(0);
+});
+
+// 📊 MÉTODOS DE UTILIDAD
+const getConnectionStatus = () => ({
+  connected: connectionStats.connected,
+  attempts: connectionStats.attempts,
+  lastConnection: connectionStats.lastConnection,
+  lastDisconnection: connectionStats.lastDisconnection,
+  readyState: mongoose.connection.readyState,
 });
 
 module.exports = { 
   connect, 
   disconnect,
+  getConnectionStatus,
   connection: mongoose.connection
 };

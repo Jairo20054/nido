@@ -24,6 +24,7 @@
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.525.0",
+    "mongodb": "^6.18.0",
     "mongoose": "^7.8.7",
     "multer": "^2.0.2",
     "react": "^19.1.0",
@@ -44,9 +45,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:backend": "node backend/src/server.js",
-    "dev:backend": "nodemon backend/src/server.js",
-    "dev": "concurrently \"npm start\" \"npm run dev:backend\""
+    "dev:frontend": "react-scripts start",
+    "dev": "concurrently \"npm run dev:frontend\" \"cd backend && npm run dev\""
   },
   "eslintConfig": {
     "extends": [

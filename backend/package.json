@@ -8,7 +8,9 @@
     "dev": "nodemon server.js",
     "test": "jest --runInBand",
     "lint": "eslint . --ext .js",
-    "docker:build": "docker build -t nido-backend ."
+    "docker:build": "docker build -t nido-backend .",
+    "db:init": "mkdir -p data/db",
+    "db:start": "mongod --dbpath ./data/db --port 27017"
   },
   "keywords": [
     "node",
