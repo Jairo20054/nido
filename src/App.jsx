@@ -1,3 +1,4 @@
+// App.jsx
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -22,31 +23,84 @@ import './assets/styles/animations.css';
 import './assets/styles/responsive-fixes.css';
 import './App.css';
 
-// Helper function for lazy loading with error handling
-const lazyLoad = (importFunc, exportName = null) => {
-  return lazy(() => 
-    importFunc().then(module => {
-      // Handle both default and named exports
-      const component = exportName ? module[exportName] : module.default;
-      if (!component) {
-        throw new Error(`Component ${exportName || 'default'} not found in module`);
-      }
-      return { default: component };
-    }).catch(error => {
-      console.error('Lazy loading error:', error);
-      return { 
-        default: () => (
-          <div style={{ padding: '2rem', textAlign: 'center' }}>
-            <h2>Error de carga</h2>
-            <p>No se pudo cargar este componente.</p>
-          </div>
-        )
-      };
-    })
-  );
-};
+/**
+ * Robust lazy loader helper
+ *
+ * - Accepts an import function and optional named export name.
+ * - Handles modules that:
+ *    • export a default React component
+ *    • export a named React component
+ *    • export an object with component properties
+ *    • (rare) where module.default itself is a Promise (resolves to a component)
+ *
+ * - Provides clear console logging to help identify which import returns an unexpected shape.
+ * - Returns a small fallback component on failure (so the app doesn't crash with the "promise resolves to object" message).
+ */
+const lazyLoad = (importFunc, exportName = null) =>
+  lazy(async () => {
+    try {
+      const moduleOrPromise = importFunc();
+      // allow importFunc to return a promise (normal dynamic import)
+      const module = await moduleOrPromise;
 
-// Lazy Loaded Pages
+      // Debug: show keys (uncomment for heavy debugging)
+      // console.debug('lazyLoad module keys:', Object.keys(module), 'for', importFunc.toString());
+
+      // Try to pick the component according to exportName -> default -> first candidate
+      let candidate = null;
+
+      if (exportName && module && module[exportName]) {
+        candidate = module[exportName];
+      } else if (module && module.default) {
+        candidate = module.default;
+      } else if (module) {
+        // pick first export that looks like a component (function or object)
+        const keys = Object.keys(module);
+        for (let k of keys) {
+          const value = module[k];
+          if (typeof value === 'function' || (typeof value === 'object' && value !== null)) {
+            candidate = value;
+            break;
+          }
+        }
+      }
+
+      // If candidate is itself a Promise (rare case), await it
+      if (candidate && typeof candidate.then === 'function') {
+        candidate = await candidate;
+      }
+
+      // If candidate is an ESModule wrapper, unwrap
+      if (candidate && candidate.__esModule && candidate.default) {
+        candidate = candidate.default;
+      }
+
+      // Final validation
+      const isValid = typeof candidate === 'function' || (typeof candidate === 'object' && candidate !== null);
+      if (!isValid) {
+        console.error('lazyLoad: invalid component export. Module content:', module);
+        throw new Error('lazyLoad: module does not export a valid React component (default or named).');
+      }
+
+      return { default: candidate };
+    } catch (err) {
+      // Helpful console error for debugging which import failed
+      console.error('lazyLoad error loading module:', err);
+
+      // Small, safe fallback component to keep the app running
+      const ErrorFallback = () => (
+        <div style={{ padding: '2rem', textAlign: 'center' }}>
+          <h2>Error al cargar componente</h2>
+          <p>Inténtalo de nuevo más tarde.</p>
+        </div>
+      );
+      return { default: ErrorFallback };
+    }
+  });
+
+/* -------------------------
+   Lazy Loaded Pages (default exports expected)
+   ------------------------- */
 const Home = lazyLoad(() => import('./pages/Home/Home'));
 const Search = lazyLoad(() => import('./pages/Search/Search'));
 const Property = lazyLoad(() => import('./pages/Property/Property'));
@@ -67,18 +121,24 @@ const Analytics = lazyLoad(() => import('./components/host/HostDashboard/Analyti
 const BecomeHost = lazyLoad(() => import('./pages/BecomeHost/BecomeHost'));
 const ErrorState = lazyLoad(() => import('./components/common/ErrorState/ErrorState'));
 
-// Host components with explicit export names
+/* If the Host pages export named components, pass the export name as second argument.
+   Example: export function HostCalendar() {}  -> lazyLoad(() => import('...'), 'HostCalendar') */
 const HostCalendar = lazyLoad(() => import('./pages/Host/HostCalendar'), 'HostCalendar');
 const HostFinances = lazyLoad(() => import('./pages/Host/HostFinances'), 'HostFinances');
 const HostStats = lazyLoad(() => import('./pages/Host/HostStats'), 'HostStats');
 const HostMessages = lazyLoad(() => import('./pages/Host/HostMessages'), 'HostMessages');
 const HostSettings = lazyLoad(() => import('./pages/Host/HostSettings'), 'HostSettings');
 
+/* Corrected routes for header pages (ensure those files export default components) */
+const OfertasPage = lazyLoad(() => import('./components/common/Header/OfertasPage'));
+const MarketplacePage = lazyLoad(() => import('./components/common/Header/MarketplacePage'));
+const ServiciosPage = lazyLoad(() => import('./components/common/Header/ServiciosPage'));
+
 function App() {
   return (
     <Router>
       <AuthProvider>
-        <SearchProvider> {/* SearchProvider debe envolver todo el contenido que use useSearch */}
+        <SearchProvider>
           <BookingProvider>
             <Layout>
               <Suspense fallback={<LoadingSpinner />}>
@@ -90,6 +150,11 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/register" element={<Register />} />
                   <Route path="/become-host" element={<BecomeHost />} />
+
+                  {/* Nuevas rutas agregadas */}
+                  <Route path="/ofertas" element={<OfertasPage />} />
+                  <Route path="/marketplace" element={<MarketplacePage />} />
+                  <Route path="/servicios" element={<ServiciosPage />} />
 
                   {/* User Protected */}
                   <Route element={<PrivateRoute />}>
