@@ -22,14 +22,10 @@ import {
   FaWifi,
   FaParking,
   FaUtensils,
-  FaSwimmingPool,
-  FaChevronDown,
-  FaChevronUp,
-  FaDollarSign
+  FaSwimmingPool
 } from 'react-icons/fa';
 import './OfertasPage.css';
 
-// Datos iniciales de las ofertas, incluyendo productos para el hogar y alojamientos
 const initialOfertas = [
   {
     id: 'o-1',
@@ -162,7 +158,6 @@ const initialOfertas = [
   }
 ];
 
-// Lista de categorías con iconos y colores asociados
 const categorias = [
   { id: 'todas', label: 'Todas', icon: <FaTags />, color: '#6c5ce7' },
   { id: 'baño', label: 'Baño', icon: <FaGift />, color: '#00cec9' },
@@ -173,40 +168,19 @@ const categorias = [
   { id: 'alojamiento', label: 'Alojamiento', icon: <FaHotel />, color: '#e17055' },
 ];
 
-// Componente principal de la página de ofertas
 const OfertasPage = () => {
-  // Estado para la categoría seleccionada
   const [selectedCategory, setSelectedCategory] = useState('todas');
-  // Estado para el término de búsqueda
   const [busqueda, setBusqueda] = useState('');
-  // Estado para mostrar ofertas expiradas
   const [showExpired, setShowExpired] = useState(false);
-  // Estado para el criterio de ordenamiento
   const [sortBy, setSortBy] = useState('descuento_desc');
-  // Estado para el descuento mínimo
-  const [minDescuento, setMinDescuento] = useState(0);
-  // Estado para el rating mínimo
-  const [minRating, setMinRating] = useState(0);
-  // Estado para el filtro de fecha de inicio
-  const [fechaInicioFiltro, setFechaInicioFiltro] = useState('');
-  // Estado para el filtro de fecha de fin
-  const [fechaFinFiltro, setFechaFinFiltro] = useState('');
-  // Estado para la lista de ofertas
   const [ofertas, setOfertas] = useState([]);
-  // Estado para las ofertas favoritas
   const [favorites, setFavorites] = useState([]);
-  // Estado para el carrito de ofertas
   const [carrito, setCarrito] = useState([]);
-  // Estado para abrir/cerrar el carrito
   const [isCartOpen, setIsCartOpen] = useState(false);
-  // Estado para mostrar/ocultar el panel de filtros
   const [showFilters, setShowFilters] = useState(false);
-  // Estado para la oferta seleccionada en el modal
   const [selectedOferta, setSelectedOferta] = useState(null);
-  // Estado para indicar si se está cargando data
   const [loading, setLoading] = useState(true);
 
-  // Efecto para cargar datos iniciales, favoritos y carrito desde localStorage
   useEffect(() => {
     const loadData = () => {
       setTimeout(() => {
@@ -227,20 +201,16 @@ const OfertasPage = () => {
     }
   }, []);
 
-  // Efecto para guardar favoritos en localStorage
   useEffect(() => {
     localStorage.setItem('ofertasFavorites', JSON.stringify(favorites));
   }, [favorites]);
 
-  // Efecto para guardar carrito en localStorage
   useEffect(() => {
     localStorage.setItem('ofertasCarrito', JSON.stringify(carrito));
   }, [carrito]);
 
-  // Función para verificar si una oferta está activa basada en la fecha de fin
   const isActive = (fechaFin) => new Date(fechaFin) >= new Date();
 
-  // Memo para filtrar y ordenar las ofertas basadas en los estados de filtros
   const ofertasFiltradas = useMemo(() => {
     let filtered = ofertas.filter((oferta) => {
       const matchCat = selectedCategory === 'todas' || oferta.categoria === selectedCategory;
@@ -249,11 +219,7 @@ const OfertasPage = () => {
         oferta.description.toLowerCase().includes(busqueda.toLowerCase()) ||
         oferta.codigo.toLowerCase().includes(busqueda.toLowerCase());
       const matchExpired = showExpired || isActive(oferta.fechaFin);
-      const matchDescuento = oferta.descuento >= minDescuento;
-      const matchRating = oferta.rating >= minRating;
-      const matchFechaInicio = !fechaInicioFiltro || new Date(oferta.fechaInicio) >= new Date(fechaInicioFiltro);
-      const matchFechaFin = !fechaFinFiltro || new Date(oferta.fechaFin) <= new Date(fechaFinFiltro);
-      return matchCat && matchText && matchExpired && matchDescuento && matchRating && matchFechaInicio && matchFechaFin;
+      return matchCat && matchText && matchExpired;
     });
 
     if (sortBy === 'descuento_desc') {
@@ -269,16 +235,14 @@ const OfertasPage = () => {
     }
 
     return filtered;
-  }, [ofertas, selectedCategory, busqueda, showExpired, sortBy, minDescuento, minRating, fechaInicioFiltro, fechaFinFiltro]);
+  }, [ofertas, selectedCategory, busqueda, showExpired, sortBy]);
 
-  // Función para alternar una oferta como favorita
   const toggleFavorite = (id) => {
     setFavorites((prev) => 
       prev.includes(id) ? prev.filter((fid) => fid !== id) : [...prev, id]
     );
   };
 
-  // Función para añadir una oferta al carrito y mostrar notificación
   const addToCart = (oferta) => {
     if (!carrito.some((item) => item.id === oferta.id)) {
       setCarrito((prev) => [...prev, oferta]);
@@ -286,12 +250,10 @@ const OfertasPage = () => {
     }
   };
 
-  // Función para remover una oferta del carrito
   const removeFromCart = (id) => {
     setCarrito((prev) => prev.filter((item) => item.id !== id));
   };
 
-  // Función para copiar el código de la oferta al portapapeles y mostrar notificación
   const copiarCodigo = (codigo) => {
     navigator.clipboard.writeText(codigo).then(() => {
       showNotification(`¡Código ${codigo} copiado al portapapeles!`);
@@ -301,7 +263,6 @@ const OfertasPage = () => {
     });
   };
 
-  // Función para mostrar una notificación temporal
   const showNotification = (message) => {
     const notification = document.createElement('div');
     notification.className = 'oferta-notification';
@@ -314,10 +275,8 @@ const OfertasPage = () => {
     }, 2000);
   };
 
-  // Función para alternar la visibilidad del carrito
   const toggleCart = () => setIsCartOpen(!isCartOpen);
 
-  // Efecto para cerrar el carrito al hacer clic fuera
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (isCartOpen && !e.target.closest('.ofertas-cart-drawer') && !e.target.closest('.ofertas-cart-btn')) {
@@ -328,19 +287,16 @@ const OfertasPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isCartOpen]);
 
-  // Función para abrir el modal de detalles de una oferta
   const openDetails = (e, oferta) => {
     if (!e.target.closest('button')) {
       setSelectedOferta(oferta);
     }
   };
 
-  // Función para cerrar el modal de detalles
   const closeDetails = () => {
     setSelectedOferta(null);
   };
 
-  // Efecto para cerrar el modal al hacer clic fuera
   useEffect(() => {
     const handleClickOutsideModal = (e) => {
       if (selectedOferta && !e.target.closest('.ofertas-modal-content')) {
@@ -351,50 +307,37 @@ const OfertasPage = () => {
     return () => document.removeEventListener('mousedown', handleClickOutsideModal);
   }, [selectedOferta]);
 
-  // Función para formatear una fecha en español
   const formatDate = (dateString) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString('es-ES', options);
   };
 
-  // Función para renderizar estrellas de rating
   const renderStars = (rating) => {
     return Array.from({ length: 5 }, (_, index) => (
       <FaStar key={index} className={index < Math.floor(rating) ? 'star-filled' : 'star-empty'} />
     ));
   };
 
-  // Función para resetear todos los filtros a valores predeterminados
-  const resetFilters = () => {
-    setShowExpired(false);
-    setSortBy('descuento_desc');
-    setMinDescuento(0);
-    setMinRating(0);
-    setFechaInicioFiltro('');
-    setFechaFinFiltro('');
-  };
-
   return (
     <div className="ofertas-page">
-      {/* Header de la página con título, descripción y controles de búsqueda y filtros */}
       <header className="ofertas-header">
         <div className="ofertas-header-content">
-          <h1>Ofertas Exclusivas</h1>
-          <p>Promociones para hogar y viajes</p>
+          <h1>Ofertas Exclusivas en Nido</h1>
+          <p>Descubre las mejores promociones para tu hogar y viajes</p>
         </div>
         <div className="ofertas-controls">
           <div className="ofertas-search">
             <FaSearch className="ofertas-icon" />
             <input
               type="search"
-              placeholder="Buscar..."
+              placeholder="Buscar ofertas, códigos o categorías..."
               value={busqueda}
               onChange={(e) => setBusqueda(e.target.value)}
               aria-label="Buscar ofertas"
             />
           </div>
           <button className="ofertas-filter-btn" onClick={() => setShowFilters(!showFilters)}>
-            <FaFilter />
+            <FaFilter /> Filtros
           </button>
           <button className="ofertas-cart-btn" onClick={toggleCart}>
             <FaShoppingCart />
@@ -403,20 +346,21 @@ const OfertasPage = () => {
         </div>
       </header>
 
-      {/* Panel de filtros mejorado con botones de aplicar y resetear */}
       {showFilters && (
         <div className="ofertas-filters-panel">
-          <div className="filter-group checkbox-group">
-            <input
-              type="checkbox"
-              id="active-only"
-              checked={!showExpired}
-              onChange={() => setShowExpired(!showExpired)}
-            />
-            <label htmlFor="active-only">Solo activas</label>
+          <h3>Filtrar Ofertas</h3>
+          <div className="filter-group">
+            <label>
+              <input
+                type="checkbox"
+                checked={!showExpired}
+                onChange={() => setShowExpired(!showExpired)}
+              />
+              Mostrar solo ofertas activas
+            </label>
           </div>
           <div className="filter-group">
-            <label>Ordenar por</label>
+            <label>Ordenar por:</label>
             <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <option value="descuento_desc">Mayor descuento</option>
               <option value="fechaFin_asc">Expiración pronto</option>
@@ -425,51 +369,10 @@ const OfertasPage = () => {
               <option value="destacadas">Destacadas primero</option>
             </select>
           </div>
-          <div className="filter-group">
-            <label>Descuento mín. (%)</label>
-            <input
-              type="range"
-              min="0"
-              max="100"
-              value={minDescuento}
-              onChange={(e) => setMinDescuento(Number(e.target.value))}
-            />
-            <span>{minDescuento}%</span>
-          </div>
-          <div className="filter-group">
-            <label>Rating mín.</label>
-            <select value={minRating} onChange={(e) => setMinRating(Number(e.target.value))}>
-              <option value={0}>Cualquiera</option>
-              <option value={3}>3+</option>
-              <option value={4}>4+</option>
-              <option value={4.5}>4.5+</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label>Inicio desde</label>
-            <input
-              type="date"
-              value={fechaInicioFiltro}
-              onChange={(e) => setFechaInicioFiltro(e.target.value)}
-            />
-          </div>
-          <div className="filter-group">
-            <label>Fin hasta</label>
-            <input
-              type="date"
-              value={fechaFinFiltro}
-              onChange={(e) => setFechaFinFiltro(e.target.value)}
-            />
-          </div>
-          {/* Acciones de filtros: aplicar y resetear */}
-          <div className="filter-actions">
-            <button className="apply-filters-btn" onClick={() => setShowFilters(false)}>Aplicar</button>
-            <button className="reset-filters-btn" onClick={resetFilters}>Resetear</button>
-          </div>
+          <button className="close-filters-btn" onClick={() => setShowFilters(false)}>Aplicar Filtros</button>
         </div>
       )}
 
-      {/* Sección de categorías con scroll horizontal */}
       <div className="ofertas-categories-scroll">
         <div className="ofertas-categories">
           {categorias.map((c) => (
@@ -480,68 +383,123 @@ const OfertasPage = () => {
               aria-pressed={selectedCategory === c.id}
               style={{ '--category-color': c.color }}
             >
-              {c.icon}
-              {c.label}
+              <span className="ofertas-cat-icon">{c.icon}</span>
+              <span className="ofertas-cat-label">{c.label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* Contenido principal con título de sección y grid de ofertas */}
       <main className="ofertas-main-content">
-        <h2 className="ofertas-section-title">
-          {selectedCategory === 'todas' ? 'Todas' : categorias.find(c => c.id === selectedCategory)?.label}
-          <span className="ofertas-count">({ofertasFiltradas.length})</span>
-        </h2>
+        <div className="ofertas-grid-container">
+          <h2 className="ofertas-section-title">
+            {selectedCategory === 'todas' ? 'Todas las Ofertas' : `Ofertas en ${categorias.find(c => c.id === selectedCategory)?.label}`}
+            <span className="ofertas-count">({ofertasFiltradas.length} disponibles)</span>
+          </h2>
 
-        {loading ? (
-          <div className="ofertas-loading">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <div key={index} className="ofertas-card-skeleton" />
-            ))}
-          </div>
-        ) : ofertasFiltradas.length === 0 ? (
-          <div className="ofertas-empty">
-            <h3>No hay ofertas</h3>
-            <p>Ajusta los filtros</p>
-          </div>
-        ) : (
-          <div className="ofertas-grid" role="list">
-            {ofertasFiltradas.map((oferta) => (
-              <article 
-                key={oferta.id} 
-                className={`ofertas-card ${!isActive(oferta.fechaFin) ? 'expired' : ''} ${oferta.destacada ? 'featured' : ''}`} 
-                role="listitem"
-                onClick={(e) => openDetails(e, oferta)}
-              >
-                <div className="ofertas-image">
-                  <img src={oferta.imagen} alt={oferta.title} loading="lazy" />
-                  <div className="ofertas-discount-badge">
-                    {oferta.descuento}%
+          {loading ? (
+            <div className="ofertas-loading">
+              {Array.from({ length: 6 }).map((_, index) => (
+                <div key={index} className="ofertas-card-skeleton">
+                  <div className="skeleton-image"></div>
+                  <div className="skeleton-content">
+                    <div className="skeleton-line"></div>
+                    <div className="skeleton-line short"></div>
+                    <div className="skeleton-line shorter"></div>
                   </div>
-                  <button 
-                    className="ofertas-fav-btn"
-                    onClick={(e) => { e.stopPropagation(); toggleFavorite(oferta.id); }}
-                    aria-label={favorites.includes(oferta.id) ? 'Quitar favorito' : 'Agregar favorito'}
-                  >
-                    {favorites.includes(oferta.id) ? <FaHeart /> : <FaRegHeart />}
-                  </button>
                 </div>
-                <div className="ofertas-body">
-                  <h3 className="ofertas-title">{oferta.title}</h3>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          ) : ofertasFiltradas.length === 0 ? (
+            <div className="ofertas-empty">
+              <div className="ofertas-empty-icon">🔍</div>
+              <h3>No se encontraron ofertas</h3>
+              <p>Intenta ajustando la búsqueda o categoría. ¡Nuevas ofertas pronto!</p>
+            </div>
+          ) : (
+            <div className="ofertas-grid" role="list">
+              {ofertasFiltradas.map((oferta) => (
+                <article 
+                  key={oferta.id} 
+                  className={`ofertas-card ${!isActive(oferta.fechaFin) ? 'expired' : ''} ${oferta.destacada ? 'featured' : ''}`} 
+                  role="listitem"
+                  onClick={(e) => openDetails(e, oferta)}
+                >
+                  {oferta.destacada && <div className="featured-badge">Destacada</div>}
+                  <div className="ofertas-image">
+                    <img src={oferta.imagen} alt={oferta.title} loading="lazy" />
+                    <div className="ofertas-discount-badge">
+                      <FaPercent /> {oferta.descuento}%
+                    </div>
+                    <button 
+                      className="ofertas-fav-btn"
+                      onClick={(e) => { e.stopPropagation(); toggleFavorite(oferta.id); }}
+                      aria-label={favorites.includes(oferta.id) ? 'Quitar favorito' : 'Agregar favorito'}
+                    >
+                      {favorites.includes(oferta.id) ? <FaHeart /> : <FaRegHeart />}
+                    </button>
+                  </div>
+
+                  <div className="ofertas-body">
+                    <div className="ofertas-header">
+                      <h3 className="ofertas-title">{oferta.title}</h3>
+                      {oferta.rating && (
+                        <div className="ofertas-rating">
+                          {renderStars(oferta.rating)}
+                          <span>({oferta.reseñas})</span>
+                        </div>
+                      )}
+                    </div>
+                    <p className="ofertas-description">{oferta.description}</p>
+                    
+                    {oferta.categoria === 'alojamiento' && (
+                      <div className="alojamiento-details">
+                        <div className="location">
+                          <FaMapMarkerAlt /> {oferta.ubicacion}
+                        </div>
+                        <div className="capacity">
+                          <FaUsers /> {oferta.capacidad} personas
+                        </div>
+                        <div className="services">
+                          {oferta.servicios && oferta.servicios.slice(0, 3).map((service, idx) => (
+                            <span key={idx} className="service-tag">{service}</span>
+                          ))}
+                          {oferta.servicios && oferta.servicios.length > 3 && (
+                            <span className="more-services">+{oferta.servicios.length - 3} más</span>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="ofertas-meta">
+                      <div className="ofertas-dates">
+                        <FaCalendarAlt /> Válido hasta: {formatDate(oferta.fechaFin)}
+                      </div>
+                      <div className="ofertas-code">
+                        Código: <strong>{oferta.codigo}</strong>
+                      </div>
+                    </div>
+
+                    <div className="ofertas-actions">
+                      <button className="btn btn-primary" onClick={(e) => { e.stopPropagation(); copiarCodigo(oferta.codigo); }}>
+                        <FaCopy /> Copiar Código
+                      </button>
+                      <button className="btn btn-outline" onClick={(e) => { e.stopPropagation(); addToCart(oferta); }}>
+                        Añadir al Carrito <FaArrowRight />
+                      </button>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </div>
       </main>
 
-      {/* Overlay para el carrito */}
       <div className={`ofertas-cart-overlay ${isCartOpen ? 'active' : ''}`} onClick={toggleCart}></div>
-      {/* Drawer del carrito */}
       <aside className={`ofertas-cart-drawer ${isCartOpen ? 'open' : ''}`}>
         <div className="ofertas-cart-header">
-          <h4>Carrito</h4>
+          <h4>Tu Carrito de Ofertas</h4>
           <button className="ofertas-cart-close" onClick={toggleCart}>
             <FaTimes />
           </button>
@@ -549,80 +507,122 @@ const OfertasPage = () => {
         <div className="ofertas-cart-content">
           {carrito.length === 0 ? (
             <div className="ofertas-empty-cart">
-              <p>Vacío</p>
+              <p>Tu carrito está vacío</p>
+              <button className="btn btn-outline" onClick={toggleCart}>Seguir explorando</button>
             </div>
           ) : (
-            <ul className="ofertas-cart-list">
-              {carrito.map((item) => (
-                <li key={item.id} className="ofertas-cart-item">
-                  <img src={item.imagen} alt={item.title} className="cart-item-image" />
-                  <div className="cart-item-info">
-                    <h5>{item.title}</h5>
-                    <p>{item.codigo}</p>
-                    <div className="cart-item-actions">
-                      <button className="cart-remove-btn" onClick={() => removeFromCart(item.id)}>
-                        Eliminar
-                      </button>
-                      <button className="cart-copy-btn" onClick={() => copiarCodigo(item.codigo)}>
-                        <FaCopy />
-                      </button>
+            <>
+              <ul className="ofertas-cart-list">
+                {carrito.map((item) => (
+                  <li key={item.id} className="ofertas-cart-item">
+                    <img src={item.imagen} alt={item.title} className="cart-item-image" />
+                    <div className="cart-item-info">
+                      <h5>{item.title}</h5>
+                      <p>Código: {item.codigo}</p>
+                      <div className="cart-item-actions">
+                        <button className="cart-remove-btn" onClick={() => removeFromCart(item.id)}>
+                          Eliminar
+                        </button>
+                        <button className="cart-copy-btn" onClick={() => copiarCodigo(item.codigo)}>
+                          <FaCopy />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+              <div className="ofertas-cart-footer">
+                <button className="btn btn-primary">Ver todos los códigos</button>
+              </div>
+            </>
           )}
         </div>
       </aside>
 
-      {/* Modal para detalles de la oferta seleccionada */}
       {selectedOferta && (
         <div className="ofertas-modal-overlay" onClick={closeDetails}>
           <div className="ofertas-modal-content" onClick={(e) => e.stopPropagation()}>
             <button className="ofertas-modal-close" onClick={closeDetails}>
               <FaTimes />
             </button>
-            <img src={selectedOferta.imagen} alt={selectedOferta.title} className="ofertas-modal-image" />
-            <h2>{selectedOferta.title}</h2>
-            <div className="ofertas-modal-rating">
-              {renderStars(selectedOferta.rating)}
-              <span>({selectedOferta.reseñas})</span>
+            <div className="ofertas-modal-image-container">
+              <img src={selectedOferta.imagen} alt={selectedOferta.title} className="ofertas-modal-image" />
+              <div className="ofertas-modal-badge">
+                <FaPercent /> {selectedOferta.descuento}% OFF
+              </div>
             </div>
-            <p>{selectedOferta.description}</p>
-            <p>{selectedOferta.details}</p>
+            <div className="ofertas-modal-header">
+              <h2>{selectedOferta.title}</h2>
+              {selectedOferta.rating && (
+                <div className="ofertas-modal-rating">
+                  {renderStars(selectedOferta.rating)}
+                  <span>({selectedOferta.reseñas} reseñas)</span>
+                </div>
+              )}
+            </div>
+            <p className="ofertas-modal-description">{selectedOferta.description}</p>
             
             {selectedOferta.categoria === 'alojamiento' && (
               <div className="ofertas-modal-alojamiento">
-                <span><FaMapMarkerAlt /> {selectedOferta.ubicacion}</span>
-                <span><FaUsers /> {selectedOferta.capacidad} personas</span>
-                <h4>Servicios:</h4>
-                <div className="servicios-grid">
-                  {selectedOferta.servicios.map((service, idx) => (
-                    <span key={idx}>
-                      {service === 'wifi' && <FaWifi />}
-                      {service === 'piscina' && <FaSwimmingPool />}
-                      {service === 'estacionamiento' && <FaParking />}
-                      {service === 'desayuno' && <FaUtensils />}
-                      {service === 'cocina' && <FaUtensils />}
-                      {service === 'jacuzzi' && <FaShower />}
-                      {service}
-                    </span>
-                  ))}
+                <div className="alojamiento-info">
+                  <div className="info-item">
+                    <FaMapMarkerAlt />
+                    <span>{selectedOferta.ubicacion}</span>
+                  </div>
+                  <div className="info-item">
+                    <FaUsers />
+                    <span>{selectedOferta.capacidad} personas</span>
+                  </div>
+                  <div className="info-item">
+                    <FaBed />
+                    <span>{selectedOferta.capacidad > 2 ? 'Múltiples habitaciones' : '1 habitación'}</span>
+                  </div>
+                </div>
+                <div className="servicios-list">
+                  <h4>Servicios incluidos:</h4>
+                  <div className="servicios-grid">
+                    {selectedOferta.servicios && selectedOferta.servicios.map((service, idx) => (
+                      <div key={idx} className="servicio-item">
+                        {service === 'wifi' && <FaWifi />}
+                        {service === 'piscina' && <FaSwimmingPool />}
+                        {service === 'estacionamiento' && <FaParking />}
+                        {service === 'desayuno' && <FaUtensils />}
+                        {service === 'cocina' && <FaUtensils />}
+                        {service === 'jacuzzi' && <FaShower />}
+                        {service !== 'wifi' && service !== 'piscina' && service !== 'estacionamiento' && 
+                         service !== 'desayuno' && service !== 'cocina' && service !== 'jacuzzi' && <FaGift />}
+                        <span>{service}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
             
+            <div className="ofertas-modal-details">
+              <h3>Detalles de la oferta</h3>
+              <p>{selectedOferta.details}</p>
+            </div>
             <div className="ofertas-modal-meta">
-              <span><FaCalendarAlt /> Desde: {formatDate(selectedOferta.fechaInicio)}</span>
-              <span><FaClock /> Hasta: {formatDate(selectedOferta.fechaFin)}</span>
-              <span>Código: {selectedOferta.codigo}</span>
+              <div className="meta-item">
+                <FaCalendarAlt />
+                <span>Válido desde: {formatDate(selectedOferta.fechaInicio)}</span>
+              </div>
+              <div className="meta-item">
+                <FaClock />
+                <span>Válido hasta: {formatDate(selectedOferta.fechaFin)}</span>
+              </div>
+              <div className="meta-item code">
+                <span>Código: </span>
+                <strong>{selectedOferta.codigo}</strong>
+              </div>
             </div>
             <div className="ofertas-modal-actions">
-              <button onClick={() => copiarCodigo(selectedOferta.codigo)}>
-                <FaCopy /> Copiar
+              <button className="btn btn-primary" onClick={() => copiarCodigo(selectedOferta.codigo)}>
+                <FaCopy /> Copiar Código
               </button>
-              <button onClick={() => addToCart(selectedOferta)}>
-                Carrito <FaArrowRight />
+              <button className="btn btn-outline" onClick={() => addToCart(selectedOferta)}>
+                Añadir al Carrito <FaArrowRight />
               </button>
             </div>
           </div>

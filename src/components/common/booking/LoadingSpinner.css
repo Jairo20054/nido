@@ -1,189 +1,74 @@
-/* LoadingSpinner.css */
-
-/* Variables para temas y personalización */
-:root {
-  --spinner-size-small: 24px;
-  --spinner-size-medium: 48px;
-  --spinner-size-large: 72px;
-  --spinner-color-primary: #ff385c; /* Rojo principal */
-  --spinner-color-secondary: #6c757d; /* Gris */
-  --spinner-color-success: #28a745; /* Verde */
-  --spinner-color-danger: #dc3545; /* Rojo oscuro */
-  --spinner-color-warning: #ffc107; /* Amarillo */
-  --spinner-color-info: #17a2b8; /* Azul cyan */
-  --animation-duration: 1.8s;
-  --animation-timing: cubic-bezier(0.2, 0.68, 0.18, 1.08);
-  --perspective: 120px;
-}
-
 .loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px;
-  background-color: transparent;
-  transition: all 0.3s ease-in-out;
-}
-
-/* Tamaños responsivos */
-.loading-spinner.small .spinner {
-  width: var(--spinner-size-small);
-  height: var(--spinner-size-small);
-}
-
-.loading-spinner.medium .spinner {
-  width: var(--spinner-size-medium);
-  height: var(--spinner-size-medium);
-}
-
-.loading-spinner.large .spinner {
-  width: var(--spinner-size-large);
-  height: var(--spinner-size-large);
-}
-
-/* Colores */
-.loading-spinner.primary {
-  --spinner-color: var(--spinner-color-primary);
-}
-
-.loading-spinner.secondary {
-  --spinner-color: var(--spinner-color-secondary);
-}
-
-.loading-spinner.success {
-  --spinner-color: var(--spinner-color-success);
-}
-
-.loading-spinner.danger {
-  --spinner-color: var(--spinner-color-danger);
-}
-
-.loading-spinner.warning {
-  --spinner-color: var(--spinner-color-warning);
-}
-
-.loading-spinner.info {
-  --spinner-color: var(--spinner-color-info);
-}
-
-/* Estructura del spinner (folding cube) */
-.spinner {
+  display: inline-block;
   position: relative;
-  transform-style: preserve-3d;
-  perspective: var(--perspective);
 }
 
-.spinner > div {
-  background-color: var(--spinner-color, var(--spinner-color-primary));
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Borde sutil para profundidad */
-  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
-}
-
-.spinner .cube1 {
-  animation: foldCubeAngle  var(--animation-duration) var(--animation-timing) infinite;
-}
-
-.spinner .cube2 {
-  animation: foldCubeAngle  var(--animation-duration) var(--animation-timing) infinite;
-  transform: rotateZ(90deg);
-}
-
-.spinner .cube3 {
-  animation: foldCubeAngle  var(--animation-duration) var(--animation-timing) infinite;
-  transform: rotateY(90deg);
-}
-
-.spinner .cube4 {
-  animation: foldCubeAngle  var(--animation-duration) var(--animation-timing) infinite;
-  transform: rotateX(90deg);
-}
-
-/* Animación clave */
-@keyframes foldCubeAngle {
-  0%, 10% {
-    transform: perspective(var(--perspective)) rotateX(-180deg);
-    opacity: 0;
-  }
-  25%, 75% {
-    transform: perspective(var(--perspective)) rotateX(0deg);
-    opacity: 1;
-  }
-  90%, 100% {
-    transform: perspective(var(--perspective)) rotateY(180deg);
-    opacity: 0;
-  }
-}
-
-/* Delays para cada cubo */
-.spinner .cube1 {
-  animation-delay: calc(var(--animation-duration) * 0.2);
-}
-
-.spinner .cube2 {
-  animation-delay: calc(var(--animation-duration) * 0.3);
-}
-
-.spinner .cube3 {
-  animation-delay: calc(var(--animation-duration) * 0.4);
-}
-
-.spinner .cube4 {
-  animation-delay: calc(var(--animation-duration) * 0.5);
-}
-
-/* Texto oculto para accesibilidad */
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Responsividad general */
-@media (prefers-reduced-motion: reduce) {
-  .spinner > div {
-    animation: none !important;
-    opacity: 1 !important;
-  }
-  .loading-spinner::after {
-    content: 'Cargando...'; /* Mostrar texto si animaciones reducidas */
-    color: var(--spinner-color);
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 768px) {
-  .loading-spinner {
-    padding: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .loading-spinner.small .spinner {
-    width: 20px;
-    height: 20px;
-  }
-  .loading-spinner.medium .spinner {
-    width: 40px;
-    height: 40px;
-  }
-  .loading-spinner.large .spinner {
-    width: 60px;
-    height: 60px;
-  }
-}
-
-/* Mejora de rendimiento: will-change para animaciones suaves */
 .spinner {
-  will-change: transform;
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.spinner div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  margin: 10%;
+  border: 3px solid;
+  border-radius: 50%;
+  animation: spinner 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: currentColor transparent transparent transparent;
+}
+
+.spinner div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.spinner div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.spinner div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Sizes */
+.loading-spinner.small {
+  width: 24px;
+  height: 24px;
+}
+
+.loading-spinner.medium {
+  width: 40px;
+  height: 40px;
+}
+
+.loading-spinner.large {
+  width: 60px;
+  height: 60px;
+}
+
+/* Colors */
+.loading-spinner.primary div {
+  border-color: #008489 transparent transparent transparent;
+}
+
+.loading-spinner.secondary div {
+  border-color: #ff5a5f transparent transparent transparent;
+}
+
+.loading-spinner.light div {
+  border-color: #fff transparent transparent transparent;
 }
