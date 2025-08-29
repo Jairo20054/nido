@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { FaUserCircle, FaBell, FaEnvelope, FaUser, FaHome, FaCog, FaSignOutAlt, FaChevronDown } from 'react-icons/fa';
+import { FaUserCircle, FaBell, FaEnvelope, FaUser, FaHome, FaCog, FaSignOutAlt, FaChevronDown, FaHeart, FaKey, FaQuestionCircle } from 'react-icons/fa';
 import './UserMenu.css';
 
 const UserMenu = ({ 
@@ -10,9 +10,9 @@ const UserMenu = ({
   onReservationsClick = () => {},
   onPropertiesClick = () => {},
   onSettingsClick = () => {},
-  onLogoutClick = () => {}
+  onLogoutClick = () => {},
+  onHelpClick = () => {}
 }) => {
-  // Crear un usuario seguro con valores predeterminados
   const safeUser = user || {
     name: 'Usuario',
     email: 'usuario@example.com',
@@ -30,7 +30,7 @@ const UserMenu = ({
       setTimeout(() => {
         setIsOpen(false);
         setIsAnimating(false);
-      }, 250);
+      }, 200);
     } else {
       setIsOpen(true);
     }
@@ -45,7 +45,6 @@ const UserMenu = ({
     }, 150);
   }, []);
 
-  // Cerrar dropdown cuando se hace clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -89,7 +88,7 @@ const UserMenu = ({
     {
       id: 'reservations',
       label: 'Mis reservas',
-      icon: FaHome,
+      icon: FaKey,
       onClick: onReservationsClick
     },
     {
@@ -99,11 +98,18 @@ const UserMenu = ({
       onClick: onPropertiesClick
     },
     {
+      id: 'wishlist',
+      label: 'Favoritos',
+      icon: FaHeart,
+      onClick: () => {}
+    },
+    {
       id: 'settings',
       label: 'Configuración',
       icon: FaCog,
       onClick: onSettingsClick
-    }
+    },
+    
   ];
 
   return (
@@ -114,7 +120,7 @@ const UserMenu = ({
           aria-label={`Notificaciones (${notificationCount})`}
           title="Notificaciones"
         >
-          <FaBell size={20} />
+          <FaBell size={18} />
           {notificationCount > 0 && (
             <span className="user-menu-badge" aria-label={`${notificationCount} notificaciones`}>
               {notificationCount > 99 ? '99+' : notificationCount}
@@ -127,7 +133,7 @@ const UserMenu = ({
           aria-label={`Mensajes (${messageCount})`}
           title="Mensajes"
         >
-          <FaEnvelope size={20} />
+          <FaEnvelope size={18} />
           {messageCount > 0 && (
             <span className="user-menu-badge" aria-label={`${messageCount} mensajes`}>
               {messageCount > 99 ? '99+' : messageCount}
@@ -148,11 +154,11 @@ const UserMenu = ({
             {safeUser.avatar ? (
               <img src={safeUser.avatar} alt={safeUser.name} />
             ) : (
-              <FaUserCircle size={36} />
+              <FaUserCircle size={32} />
             )}
           </div>
           <span className="user-name-short">{safeUser.name.split(' ')[0]}</span>
-          <FaChevronDown size={14} className={`dropdown-chevron ${isOpen ? 'open' : ''}`} />
+          <FaChevronDown size={12} className={`dropdown-chevron ${isOpen ? 'open' : ''}`} />
         </button>
       </div>
 
@@ -163,18 +169,16 @@ const UserMenu = ({
           aria-label="Menú de usuario"
         >
           <div className="user-menu-header">
-            <div className="user-info-large">
-              <div className="user-avatar-large">
-                {safeUser.avatar ? (
-                  <img src={safeUser.avatar} alt={safeUser.name} />
-                ) : (
-                  <FaUserCircle size={48} />
-                )}
-              </div>
-              <div className="user-details">
-                <div className="user-name-large">{safeUser.name}</div>
-                <div className="user-email-large">{safeUser.email}</div>
-              </div>
+            <div className="user-avatar-large">
+              {safeUser.avatar ? (
+                <img src={safeUser.avatar} alt={safeUser.name} />
+              ) : (
+                <FaUserCircle size={56} />
+              )}
+            </div>
+            <div className="user-details">
+              <h3 className="user-name-large">{safeUser.name}</h3>
+              <p className="user-email-large">{safeUser.email}</p>
             </div>
           </div>
 
@@ -189,7 +193,7 @@ const UserMenu = ({
                   role="menuitem"
                   tabIndex={isOpen ? 0 : -1}
                 >
-                  <IconComponent className="user-menu-item-icon" size={18} />
+                  <IconComponent className="user-menu-item-icon" size={16} />
                   <span className="user-menu-item-text">{item.label}</span>
                 </button>
               );
@@ -205,7 +209,7 @@ const UserMenu = ({
               role="menuitem"
               tabIndex={isOpen ? 0 : -1}
             >
-              <FaSignOutAlt className="user-menu-item-icon" size={18} />
+              <FaSignOutAlt className="user-menu-item-icon" size={16} />
               <span className="user-menu-item-text">Cerrar sesión</span>
             </button>
           </div>
