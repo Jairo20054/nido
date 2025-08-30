@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { FaUserCircle, FaBell, FaEnvelope, FaUser, FaHome, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { FaUserCircle, FaBell, FaEnvelope, FaUser, FaHome, FaCog, FaSignOutAlt, FaChevronDown, FaHeart, FaKey, FaQuestionCircle } from 'react-icons/fa';
 import './UserMenu.css';
 
 const UserMenu = ({ 
@@ -10,12 +10,13 @@ const UserMenu = ({
   onReservationsClick = () => {},
   onPropertiesClick = () => {},
   onSettingsClick = () => {},
-  onLogoutClick = () => {}
+  onLogoutClick = () => {},
+  onHelpClick = () => {}
 }) => {
-  // Crear un usuario seguro con valores predeterminados
   const safeUser = user || {
     name: 'Usuario',
-    email: 'usuario@example.com'
+    email: 'usuario@example.com',
+    avatar: null
   };
 
   const [isOpen, setIsOpen] = useState(false);
@@ -36,22 +37,33 @@ const UserMenu = ({
   }, [isOpen]);
 
   const handleMenuItemClick = useCallback((action) => {
-    setIsOpen(false);
-    if (action) action();
+    setIsAnimating(true);
+    setTimeout(() => {
+      setIsOpen(false);
+      setIsAnimating(false);
+      if (action) action();
+    }, 150);
   }, []);
 
-  // Cerrar dropdown cuando se hace clic fuera
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsOpen(false);
+        setIsAnimating(true);
+        setTimeout(() => {
+          setIsOpen(false);
+          setIsAnimating(false);
+        }, 150);
       }
     };
 
     const handleEscapeKey = (event) => {
       if (event.key === 'Escape' && isOpen) {
-        setIsOpen(false);
-        userButtonRef.current?.focus();
+        setIsAnimating(true);
+        setTimeout(() => {
+          setIsOpen(false);
+          setIsAnimating(false);
+          userButtonRef.current?.focus();
+        }, 150);
       }
     };
 
@@ -76,7 +88,7 @@ const UserMenu = ({
     {
       id: 'reservations',
       label: 'Mis reservas',
-      icon: FaHome,
+      icon: FaKey,
       onClick: onReservationsClick
     },
     {
@@ -86,37 +98,44 @@ const UserMenu = ({
       onClick: onPropertiesClick
     },
     {
+      id: 'wishlist',
+      label: 'Favoritos',
+      icon: FaHeart,
+      onClick: () => {}
+    },
+    {
       id: 'settings',
       label: 'Configuración',
       icon: FaCog,
       onClick: onSettingsClick
-    }
+    },
+    
   ];
 
   return (
-    <div className="user-menu" ref={dropdownRef}>
-      <div className="icons">
+    <div className="user-menu-container" ref={dropdownRef}>
+      <div className="user-menu-icons">
         <button 
-          className="icon-button" 
+          className="user-menu-icon-btn" 
           aria-label={`Notificaciones (${notificationCount})`}
           title="Notificaciones"
         >
-          <FaBell />
+          <FaBell size={18} />
           {notificationCount > 0 && (
-            <span className="badge" aria-label={`${notificationCount} notificaciones`}>
+            <span className="user-menu-badge" aria-label={`${notificationCount} notificaciones`}>
               {notificationCount > 99 ? '99+' : notificationCount}
             </span>
           )}
         </button>
 
         <button 
-          className="icon-button" 
+          className="user-menu-icon-btn" 
           aria-label={`Mensajes (${messageCount})`}
           title="Mensajes"
         >
-          <FaEnvelope />
+          <FaEnvelope size={18} />
           {messageCount > 0 && (
-            <span className="badge" aria-label={`${messageCount} mensajes`}>
+            <span className="user-menu-badge" aria-label={`${messageCount} mensajes`}>
               {messageCount > 99 ? '99+' : messageCount}
             </span>
           )}
@@ -124,59 +143,74 @@ const UserMenu = ({
 
         <button 
           ref={userButtonRef}
-          className="user-button" 
+          className="user-menu-trigger" 
           onClick={toggleMenu}
           aria-expanded={isOpen}
           aria-haspopup="menu"
           aria-label="Menú de usuario"
           title={`Menú de ${safeUser.name}`}
         >
-          <FaUserCircle size={28} />
+          <div className="user-avatar">
+            {safeUser.avatar ? (
+              <img src={safeUser.avatar} alt={safeUser.name} />
+            ) : (
+              <FaUserCircle size={32} />
+            )}
+          </div>
+          <span className="user-name-short">{safeUser.name.split(' ')[0]}</span>
+          <FaChevronDown size={12} className={`dropdown-chevron ${isOpen ? 'open' : ''}`} />
         </button>
       </div>
 
       {(isOpen || isAnimating) && (
         <div 
-          className={`dropdown-menu ${isOpen && !isAnimating ? 'open' : 'closing'}`}
+          className={`user-menu-dropdown ${isOpen && !isAnimating ? 'open' : 'closing'}`}
           role="menu"
           aria-label="Menú de usuario"
         >
-          <div className="dropdown-header">
-            <div className="user-info">
-              <div className="user-name">{safeUser.name}</div>
-              <div className="user-email">{safeUser.email}</div>
+          <div className="user-menu-header">
+            <div className="user-avatar-large">
+              {safeUser.avatar ? (
+                <img src={safeUser.avatar} alt={safeUser.name} />
+              ) : (
+                <FaUserCircle size={56} />
+              )}
+            </div>
+            <div className="user-details">
+              <h3 className="user-name-large">{safeUser.name}</h3>
+              <p className="user-email-large">{safeUser.email}</p>
             </div>
           </div>
 
-          <div className="dropdown-section">
+          <div className="user-menu-section">
             {menuItems.map((item) => {
               const IconComponent = item.icon;
               return (
                 <button
                   key={item.id}
-                  className="dropdown-item"
+                  className="user-menu-item"
                   onClick={() => handleMenuItemClick(item.onClick)}
                   role="menuitem"
                   tabIndex={isOpen ? 0 : -1}
                 >
-                  <IconComponent className="dropdown-icon" />
-                  <span>{item.label}</span>
+                  <IconComponent className="user-menu-item-icon" size={16} />
+                  <span className="user-menu-item-text">{item.label}</span>
                 </button>
               );
             })}
           </div>
 
-          <div className="divider" role="separator"></div>
+          <div className="user-menu-divider"></div>
 
-          <div className="dropdown-section">
+          <div className="user-menu-section">
             <button
-              className="dropdown-item logout"
+              className="user-menu-item logout"
               onClick={() => handleMenuItemClick(onLogoutClick)}
               role="menuitem"
               tabIndex={isOpen ? 0 : -1}
             >
-              <FaSignOutAlt className="dropdown-icon" />
-              <span>Cerrar sesión</span>
+              <FaSignOutAlt className="user-menu-item-icon" size={16} />
+              <span className="user-menu-item-text">Cerrar sesión</span>
             </button>
           </div>
         </div>
