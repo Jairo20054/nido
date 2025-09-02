@@ -35,6 +35,10 @@ function throttle(func, limit) {
   }
 }
 
+// Icon components for navigation items
+  const ClockIcon = ({ className }) => <div className={className}>⏰</div>;
+  const HomeModernIcon = ({ className }) => <div className={className}>🏠</div>;
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -209,9 +213,7 @@ const Header = () => {
     navigate("/login");
   }, [navigate]);
 
-  // Icon components for navigation items
-  const ClockIcon = ({ className }) => <div className={className}>⏰</div>;
-  const HomeModernIcon = ({ className }) => <div className={className}>🏠</div>;
+  
 
   return (
     <header className={`header ${isScrolled ? "header--scrolled" : ""}`} role="banner">

@@ -42,14 +42,15 @@
     "zustand": "^5.0.6"
   },
   "scripts": {
-    "start": "PORT=3001 react-scripts start",
+    "start": "cross-env PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev:frontend": "PORT=3001 react-scripts start",
-    "dev": "concurrently \"npm run dev:frontend\" \"cd backend && npm run dev\"",
-  "kill-ports": "npx kill-port 3000 && npx kill-port 3001 && npx kill-port 5000 && npx kill-port 5001",
-  "clean-start": "npm run kill-ports && npm run dev"
+    "dev:frontend": "cross-env PORT=3001 react-scripts start",
+    "dev:backend": "cross-env PORT=5001 nodemon server.js",
+    "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "kill-ports": "npx kill-port 3000 && npx kill-port 3001 && npx kill-port 5000 && npx kill-port 5001",
+    "clean-start": "npm run kill-ports && npm run dev"
   },
   "eslintConfig": {
     "extends": [
@@ -72,7 +73,8 @@
   "devDependencies": {
     "@testing-library/react": "^16.3.0",
     "concurrently": "^8.2.2",
+    "cross-env": "^10.0.0",
     "jest": "^27.5.1",
     "nodemon": "^2.0.22"
   }
-} 
+}
