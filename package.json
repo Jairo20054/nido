@@ -2,7 +2,7 @@
   "name": "nido",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5000",
+  "proxy": "http://localhost:5001",
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
@@ -42,12 +42,14 @@
     "zustand": "^5.0.6"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev:frontend": "react-scripts start",
-    "dev": "concurrently \"npm run dev:frontend\" \"cd backend && npm run dev\""
+    "dev:frontend": "PORT=3001 react-scripts start",
+    "dev": "concurrently \"npm run dev:frontend\" \"cd backend && npm run dev\"",
+  "kill-ports": "npx kill-port 3000 && npx kill-port 3001 && npx kill-port 5000 && npx kill-port 5001",
+  "clean-start": "npm run kill-ports && npm run dev"
   },
   "eslintConfig": {
     "extends": [
@@ -73,4 +75,4 @@
     "jest": "^27.5.1",
     "nodemon": "^2.0.22"
   }
-}
+} 

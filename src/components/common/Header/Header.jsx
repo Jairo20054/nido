@@ -4,21 +4,16 @@ import useAuth from '../../../hooks/useAuth';
 import Navigation from './Navigation';
 import UserMenu from './UserMenu';
 import { 
-  HomeIcon, 
-  CalendarDaysIcon, 
-  WrenchScrewdriverIcon,
-  Bars3Icon,
-  XMarkIcon,
   HeartIcon,
   BellIcon,
-  ClockIcon,
-  HomeModernIcon,
   SparklesIcon,
-  MagnifyingGlassIcon
+  MagnifyingGlassIcon,
+  Bars3Icon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import './Header.css';
 
-// Función throttle optimizada (sin cambios, ya es eficiente)
+// Función throttle optimizada
 function throttle(func, limit) {
   let lastFunc;
   let lastRan;
@@ -214,6 +209,10 @@ const Header = () => {
     navigate("/login");
   }, [navigate]);
 
+  // Icon components for navigation items
+  const ClockIcon = ({ className }) => <div className={className}>⏰</div>;
+  const HomeModernIcon = ({ className }) => <div className={className}>🏠</div>;
+
   return (
     <header className={`header ${isScrolled ? "header--scrolled" : ""}`} role="banner">
       <div className="header__container">
@@ -238,7 +237,7 @@ const Header = () => {
               <path
                 d="M16 8L8 12v8c0 3.31 2.69 6 8 6s8-2.69 8-6v-8L16 8z"
                 fill="#ffffff"
-                opacity="0.2"  // Cambiado de 0.9 a 0.2 para hacerlo más transparente
+                opacity="0.2"
               />
               <circle cx="16" cy="16" r="3" fill="url(#logoGradient)" />
             </svg>
@@ -256,8 +255,6 @@ const Header = () => {
             className="header__navigation"
           />
         </div>
-
-       
 
         {/* Botón de búsqueda mobile */}
         <button

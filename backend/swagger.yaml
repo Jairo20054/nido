@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: Nido API
+  description: API para el sistema de alquiler de viviendas Nido
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api
+    description: Servidor de desarrollo
+tags:
+  - name: Auth
+    description: Operaciones de autenticación
+  - name: Users
+    description: Operaciones con usuarios
+  - name: Properties
+    description: Operaciones con propiedades
+  - name: Bookings
+    description: Operaciones con reservas
+paths:
+  /health:
+    get:
+      summary: Verificar estado del servidor
+      responses:
+        '200':
+          description: Servidor funcionando correctamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  status:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+  /auth/login:
+    post:
+      summary: Iniciar sesión de usuario
+      tags: [Auth]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  format: password
+      responses:
+        '200':
+          description: Login exitoso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        role:
+          type: string
+          enum: [user, host, admin]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time

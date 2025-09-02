@@ -1,14 +1,5 @@
 'use strict';
 
-// ███╗   ██╗██╗██████╗ ██████╗  ██████╗ 
-// ████╗  ██║██║██╔══██╗██╔══██╗██╔═══██╗
-// ██╔██╗ ██║██║██║  ██║██║  ██║██║   ██║
-// ██║╚██╗██║██║██║  ██║██║  ██║██║   ██║
-// ██║ ╚████║██║██████╔╝██████╔╝╚██████╔╝
-// ╚═╝  ╚═══╝╚═╝╚═════╝ ╚═════╝  ╚═════╝ 
-//                                        
-// Backend Nido - Airbnb Clone Optimizadooo
-
 require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
@@ -19,33 +10,40 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const hpp = require('hpp');
 const path = require('path');
+const fs = require('fs');
 
 // Configuraciones y utilidades
 const config = require('./config/config');
-const connectDB = require('./config/db');
+const { connect: connectDB } = require('./config/db');
 const routes = require('./routes');
 const requestLogger = require('./middleware/loggingMiddleware');
 const errorHandler = require('./middleware/errorHandler');
 const logger = require('./utils/logger');
 
-// Intento de carga de Swagger (opcional)
+// ✅ CORRECCIÓN: Manejo mejorado de Swagger
 let swaggerSetup = null;
 try {
   const swaggerUi = require('swagger-ui-express');
   const YAML = require('yamljs');
-  const swaggerDocument = YAML.load(path.join(__dirname, './swagger.yaml'));
-  swaggerSetup = { swaggerUi, swaggerDocument };
-  logger.info('Documentación Swagger cargada correctamente');
+  const swaggerPath = path.join(__dirname, './swagger.yaml');
+  
+  if (fs.existsSync(swaggerPath)) {
+    const swaggerDocument = YAML.load(swaggerPath);
+    swaggerSetup = { swaggerUi, swaggerDocument };
+    logger.info('Documentación Swagger cargada correctamente');
+  } else {
+    logger.warn('Archivo Swagger no encontrado, omitiendo carga');
+  }
 } catch (error) {
-  logger.warn('Swagger no disponible', { error: error.message });
+  logger.warn('Error al cargar Swagger', { error: error.message });
 }
 
 // Inicializar aplicación Express
 const app = express();
-const port = config.server.port;
+const port = process.env.PORT || config.server.port || 5001; // 🔧 Cambiado a 5001
 
 // 🔐 Configuración de seguridad avanzada
-app.set('trust proxy', 1); // Para detrás de balanceador de carga
+app.set('trust proxy', 1);
 
 // Helmet con configuración específica
 app.use(helmet({
@@ -87,7 +85,7 @@ const corsOptions = {
   allowedHeaders: config.cors.allowedHeaders
 };
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions)); // Pre-flight para todas las rutas
+app.options('*', cors(corsOptions));
 
 // ⚡ Rate limiting estratificado
 const generalLimiter = rateLimit({
@@ -123,7 +121,7 @@ app.use(requestLogger);
 app.use(express.json({
   limit: config.server.uploadLimit,
   verify: (req, res, buf) => {
-    req.rawBody = buf; // Para verificación de webhooks
+    req.rawBody = buf;
   }
 }));
 
@@ -226,21 +224,21 @@ const startServer = async () => {
     });
 
     // Iniciar servidor
-    const server = app.listen(port, config.server.host, () => {
+    const server = app.listen(port, config.server.host || 'localhost', () => {
       logger.info('Servidor backend iniciado', {
-        host: config.server.host,
+        host: config.server.host || 'localhost',
         port: port,
         environment: process.env.NODE_ENV || 'development'
       });
       
       console.log(`\n=== SERVIDOR BACKEND NIDO ===`);
-      console.log(`🚀 Servidor ejecutándose en http://${config.server.host}:${port}`);
+      console.log(`🚀 Servidor ejecutándose en http://${config.server.host || 'localhost'}:${port}`);
       console.log(`🌍 Ambiente: ${process.env.NODE_ENV || 'development'}`);
       console.log(`📊 Base de datos: ${mongoose.connection.name}`);
       console.log(`📍 Host BD: ${mongoose.connection.host}`);
       console.log(`🔗 CORS origin: ${config.cors.origin}`);
       if (process.env.NODE_ENV !== 'production' && swaggerSetup) {
-        console.log(`📚 Documentación disponible en http://${config.server.host}:${port}/api-docs`);
+        console.log(`📚 Documentación disponible en http://${config.server.host || 'localhost'}:${port}/api-docs`);
       }
       console.log(`============================`);
     });
