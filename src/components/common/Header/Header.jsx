@@ -219,7 +219,7 @@ const Header = () => {
     <header className={`header ${isScrolled ? "header--scrolled" : ""}`} role="banner">
       <div className="header__container">
         {/* Logo */}
-        <Link to="/" className="header__logo" aria-label="Nido - Inicio">
+        <Link to="/" className="header__logo" aria-label="Nido - Inicio" target="_blank">
           <div className="header__logo-icon">
             <svg
               viewBox="0 0 32 32"

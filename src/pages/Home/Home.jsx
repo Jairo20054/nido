@@ -8,7 +8,7 @@ import ErrorMessage from '../../components/common/ErrorMessage/ErrorMessage';
 import Footer from '../../components/common/Footer/Footer';
 
 const Home = () => {
-  const [featuredProperties, setFeaturedProperties] = useState([])
+  const [featuredProperties, setFeaturedProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -151,7 +151,7 @@ const Home = () => {
   const fetchFeaturedProperties = useCallback(async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
       setFeaturedProperties(mockFeaturedProperties);
@@ -167,12 +167,46 @@ const Home = () => {
     fetchFeaturedProperties();
   }, [fetchFeaturedProperties]);
 
-  // Función para manejar búsquedas
-  const handleSearch = useCallback((searchParams) => {
-    navigate('/search', { 
-      state: { searchParams }  // Pasamos parámetros como estado de navegación
-    });
-  }, [navigate]);
+  // Función para construir URL de búsqueda
+  const buildSearchUrl = useCallback((searchParams) => {
+    const url = new URL('/search', window.location.origin);
+    
+    // Añadir solo parámetros válidos
+    if (searchParams.location) url.searchParams.set('location', searchParams.location);
+    if (searchParams.checkIn) url.searchParams.set('checkIn', searchParams.checkIn);
+    if (searchParams.checkOut) url.searchParams.set('checkOut', searchParams.checkOut);
+    if (searchParams.guests) url.searchParams.set('guests', searchParams.guests.toString());
+    if (searchParams.minPrice) url.searchParams.set('minPrice', searchParams.minPrice.toString());
+    if (searchParams.maxPrice) url.searchParams.set('maxPrice', searchParams.maxPrice.toString());
+    if (searchParams.propertyType) url.searchParams.set('propertyType', searchParams.propertyType);
+    if (searchParams.amenities && searchParams.amenities.length > 0) {
+      url.searchParams.set('amenities', searchParams.amenities.join(','));
+    }
+    if (searchParams.accessibility) url.searchParams.set('accessibility', 'true');
+    if (searchParams.rating) url.searchParams.set('rating', searchParams.rating.toString());
+    if (searchParams.instantBook) url.searchParams.set('instantBook', 'true');
+    
+    return url.toString();
+  }, []);
+
+  // Función para manejar búsquedas - MODIFICADA para abrir nueva pestaña
+  const handleSearch = useCallback((params) => {
+    // Validar parámetros mínimos
+    if (!params.location?.trim()) {
+      alert('Por favor, ingresa una ubicación para buscar');
+      return;
+    }
+    
+    const searchUrl = buildSearchUrl(params);
+    
+    // Abrir nueva pestaña de forma segura
+    if (typeof window !== 'undefined' && window.open) {
+      window.open(searchUrl, '_blank', 'noopener,noreferrer');
+    } else {
+      // Fallback para entornos sin window.open (ej. testing)
+      console.log('Search URL:', searchUrl);
+    }
+  }, [buildSearchUrl]);
 
   const handleRetry = useCallback(() => {
     fetchFeaturedProperties();
@@ -204,7 +238,7 @@ const Home = () => {
         <h2 id="featured-title" className="section-title text-center">
           Propiedades Destacadas
         </h2>
-        <p className="section-subtitleflex text-center">
+        <p className="section-subtitle text-center">
           Descubre los alojamientos más populares y mejor valorados
         </p>
         
@@ -232,19 +266,7 @@ const Home = () => {
       <CategorySection />
       
       <section className="value-proposition" aria-labelledby="value-title">
-        
-        
-        {/*<div className="value-grid">
-          {valuePropositions.map((item) => (
-            <article key={item.id} className="value-card">
-              <div className="value-icon" role="img" aria-label={item.title}>
-                {item.icon}
-              </div>
-              <h3 className="value-title">{item.title}</h3>
-              <p className="value-description">{item.description}</p>
-            </article>
-          ))}
-        </div>*/}
+        {/* Contenido de value proposition */}
       </section>
       
       <Footer />

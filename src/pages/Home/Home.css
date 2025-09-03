@@ -1,3 +1,40 @@
+/* ===== CONTROLES DE BÚSQUEDA ===== */
+.section-header {
+  position: relative;
+}
+
+.search-controls {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.back-to-featured-btn {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.back-to-featured-btn:hover {
+  background: #e2e8f0;
+  color: #334155;
+  border-color: #cbd5e1;
+}
+
+.back-to-featured-btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
 /* ===== PÁGINA HOME ===== */
 .home-page {
   min-height: 100vh;

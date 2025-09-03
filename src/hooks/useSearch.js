@@ -1,5 +1,5 @@
 import { useState, useContext, useCallback, useRef } from 'react';
-import { useSearchContext} from '../context/SearchContext'; // Fixed import path
+import { SearchContext } from '../context/SearchContext';
 import { api } from '../utils/api';
 
 export const useSearchHook = () => {
