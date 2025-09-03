@@ -29,7 +29,7 @@ const envSchema = Joi.object({
   JWT_ALGORITHM: Joi.string().default('HS256'),
   
   // 🌍 CORS
-  CORS_ORIGIN: Joi.string().default('http://localhost:3000'),
+  CORS_ORIGIN: Joi.string().default('http://localhost:3000,http://localhost:3001'),
   CORS_CREDENTIALS: Joi.boolean()
     .truthy('true')
     .falsy('false')

@@ -32,10 +32,11 @@ const SearchFilters = ({ filters, onFilterChange, disabled }) => {
   };
 
   const handleAmenityChange = (amenityId) => {
-    const updatedAmenities = filters.amenities.includes(amenityId)
-      ? filters.amenities.filter(id => id !== amenityId)
-      : [...filters.amenities, amenityId];
-    
+    const currentAmenities = filters.amenities || [];
+    const updatedAmenities = currentAmenities.includes(amenityId)
+      ? currentAmenities.filter(id => id !== amenityId)
+      : [...currentAmenities, amenityId];
+
     onFilterChange({ amenities: updatedAmenities });
   };
 
@@ -110,7 +111,7 @@ const SearchFilters = ({ filters, onFilterChange, disabled }) => {
             <label key={amenity.id} className="amenity-option">
               <input
                 type="checkbox"
-                checked={filters.amenities.includes(amenity.id)}
+                checked={(filters.amenities || []).includes(amenity.id)}
                 onChange={() => handleAmenityChange(amenity.id)}
                 disabled={disabled}
               />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
-import useSearch from '../../hooks/useSearch'; // Cambiado a importación por defecto
+import { useSearch } from '../../context/SearchContext';
 import SearchFilters from '../../components/Search/SearchFilters';
 import PropertyGrid from '../../components/property/PropertyGrid/PropertyGrid';
 import MapView from '../../components/Search/MapView/MapView';
