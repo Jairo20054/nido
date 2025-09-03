@@ -9,9 +9,7 @@ import {
   SparklesIcon,
   MagnifyingGlassIcon,
   Bars3Icon,
-  XMarkIcon,
-  ClockIcon, // Añadido ClockIcon
-  HomeModernIcon // Añadido HomeModernIcon
+  XMarkIcon
 } from '@heroicons/react/24/outline';
 import './Header.css';
 
@@ -37,6 +35,10 @@ function throttle(func, limit) {
   }
 }
 
+// Icon components for navigation items
+  const ClockIcon = ({ className }) => <div className={className}>⏰</div>;
+  const HomeModernIcon = ({ className }) => <div className={className}>🏠</div>;
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -49,10 +51,6 @@ const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Definir iconos personalizados antes de usarlos en useMemo
-  const CustomClockIcon = ({ className }) => <div className={className}>⏰</div>;
-  const CustomHomeModernIcon = ({ className }) => <div className={className}>🏠</div>;
-
   const navigationItems = useMemo(
     () => [
       {
@@ -60,7 +58,7 @@ const Header = () => {
         label: "Estadías Cortas",
         shortLabel: "Cortas",
         path: "/search?type=short",
-        icon: CustomClockIcon, // Usar el icono personalizado
+        icon: ClockIcon,
         description: "Hasta 30 días",
         color: "blue",
       },
@@ -69,7 +67,7 @@ const Header = () => {
         label: "Estadías Largas",
         shortLabel: "Largas",
         path: "/search?type=long",
-        icon: CustomHomeModernIcon, // Usar el icono personalizado
+        icon: HomeModernIcon,
         description: "Más de 30 días",
         color: "green",
       },
@@ -214,6 +212,8 @@ const Header = () => {
   const onLogoutClick = useCallback(() => {
     navigate("/login");
   }, [navigate]);
+
+  
 
   return (
     <header className={`header ${isScrolled ? "header--scrolled" : ""}`} role="banner">

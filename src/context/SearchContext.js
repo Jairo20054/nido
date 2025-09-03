@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 
-const SearchContext = createContext();
+// Export the context object for direct use
+export const SearchContext = createContext();
 
 export const SearchProvider = ({ children }) => {
   const [location, setLocation] = useState('');
@@ -67,6 +68,7 @@ export const SearchProvider = ({ children }) => {
   );
 };
 
+// Export both useSearch and useSearchContext for compatibility
 export const useSearch = () => {
   const context = useContext(SearchContext);
   if (!context) {
@@ -74,3 +76,8 @@ export const useSearch = () => {
   }
   return context;
 };
+
+// Alias for useSearch
+export const useSearchContext = useSearch;
+
+export default SearchContext;

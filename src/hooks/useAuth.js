@@ -1,6 +1,5 @@
-// src/hooks/useSearch.js
 import { useState, useRef, useCallback } from 'react';
-import { useSearch as useSearchContext } from '../context/SearchContext';
+import { useSearchContext } from '../context/SearchContext'; // Fixed import
 import { api } from '../utils/api';
 
 /**

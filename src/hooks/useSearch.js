@@ -1,12 +1,12 @@
 import { useState, useContext, useCallback, useRef } from 'react';
-import { SearchContext } from '../context/BookingContext';
+import { useSearchContext} from '../context/SearchContext'; // Fixed import path
 import { api } from '../utils/api';
 
-export const useSearch = () => {
+export const useSearchHook = () => {
   const context = useContext(SearchContext);
   
   if (!context) {
-    throw new Error('useSearch must be used within a SearchProvider');
+    throw new Error('useSearchHook must be used within a SearchProvider');
   }
   
   const { 
@@ -175,4 +175,4 @@ export const useSearch = () => {
 };
 
 // Exportación única por defecto
-export default useSearch;
+export default useSearchHook;
