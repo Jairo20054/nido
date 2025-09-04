@@ -20,6 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
     "express": "^4.21.2",
+    "express-rate-limit": "^8.0.1",
     "framer-motion": "^12.20.1",
     "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",
@@ -42,15 +43,15 @@
     "zustand": "^5.0.6"
   },
   "scripts": {
-   "start": "cross-env PORT=3001 react-scripts start",
+    "start": "cross-env PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-   "dev:frontend": "cross-env PORT=3001 react-scripts start",
-  "dev:backend": "cross-env PORT=5001 nodemon server.js",
+    "dev:frontend": "cross-env PORT=3001 react-scripts start",
+    "dev:backend": "cross-env PORT=5001 nodemon server.js",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
-  "kill-ports": "npx kill-port 3000 && npx kill-port 3001 && npx kill-port 5000 && npx kill-port 5001",
-  "clean-start": "npm run kill-ports && npm run dev"
+    "kill-ports": "npx kill-port 3000 && npx kill-port 3001 && npx kill-port 5000 && npx kill-port 5001",
+    "clean-start": "npm run kill-ports && npm run dev"
   },
   "eslintConfig": {
     "extends": [

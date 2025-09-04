@@ -11,12 +11,9 @@ import {
   FaCouch,
   FaBath,
   FaBed,
-  FaLightbulb,
-  FaArrowLeft
+  FaLightbulb
 } from 'react-icons/fa';
 import './MarketplacePage.css';
-
-const SAMPLE_IMAGE = 'https://images.unsplash.com/photo-1556228453-efd6c1ff04f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=600&q=80';
 
 const initialProducts = [
   {
