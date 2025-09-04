@@ -228,8 +228,8 @@ const Header = () => {
             >
               <defs>
                 <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#10B981" />
-                  <stop offset="100%" stopColor="#0EA5E9" />
+                  <stop offset="0%" stopColor="#98a19eff" />
+                  <stop offset="100%" stopColor="#98a1a5ff" />
                 </linearGradient>
               </defs>
               <path
@@ -238,7 +238,7 @@ const Header = () => {
               />
               <path
                 d="M16 8L8 12v8c0 3.31 2.69 6 8 6s8-2.69 8-6v-8L16 8z"
-                fill="#ffffff"
+                fill="#d64e4eff"
                 opacity="0.2"
               />
               <circle cx="16" cy="16" r="3" fill="url(#logoGradient)" />
@@ -252,8 +252,6 @@ const Header = () => {
           <Navigation
             variant="horizontal"
             showIcons={true}
-            items={navigationItems}
-            activePathMatcher={(item) => isActiveNavItem(item.path)}
             className="header__navigation"
           />
         </div>
@@ -313,7 +311,7 @@ const Header = () => {
             >
               <path
                 d="M8 0L10.5 5L16 5.5L11.5 9L13 16L8 13L3 16L4.5 9L0 5.5L5.5 5L8 0Z"
-                fill="#10B981"
+                fill="#aeb1b0ff"
               />
             </svg>
           </Link>
