@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../../../hooks/useAuth';
@@ -85,12 +86,12 @@ const Header = () => {
   );
 
   // Manejo del scroll optimizado
-  const handleScroll = useCallback(
-    throttle(() => {
+  const handleScroll = useCallback(() => {
+    const throttledScroll = throttle(() => {
       setIsScrolled(window.scrollY > 10);
-    }, 100),
-    []
-  );
+    }, 100);
+    throttledScroll();
+  }, []);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll, { passive: true });
