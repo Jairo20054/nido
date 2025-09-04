@@ -11,75 +11,103 @@ import SortDropdown from '../../components/Search/SortDropdown/SortDropdown';
 import ResultsCounter from '../../components/Search/ResultsCounter/ResultsCounter';
 import './Search.css';
 
-// Función para simular búsqueda (mock)
 const mockSearch = (params) => {
-  // Simular retraso de red
   return new Promise((resolve) => {
     setTimeout(() => {
-      // Propiedades de ejemplo basadas en la ubicación
       const propertiesByLocation = {
         bogota: [
           {
             id: 1,
             title: "Apartamento en el norte de Bogotá",
             location: "Bogotá, Colombia",
-            price: 120000,
+            price: 47,
             rating: 4.5,
+            reviews: 5526,
             images: ["https://example.com/image1.jpg"],
             amenities: ["WiFi", "Cocina"],
-            type: "apartment"
+            type: "apartment",
+            beds: 2,
+            monthlyPrice: 1128,
+            isSuperHost: true
           },
           {
             id: 2,
             title: "Casa en Usaquén",
             location: "Bogotá, Colombia",
-            price: 250000,
+            price: 85,
             rating: 4.8,
+            reviews: 680,
             images: ["https://example.com/image2.jpg"],
             amenities: ["WiFi", "Estacionamiento", "Jardín"],
-            type: "house"
+            type: "house",
+            beds: 3,
+            monthlyPrice: 769,
+            isSuperHost: false
+          },
+          {
+            id: 3,
+            title: "Apartamento en Chapinero",
+            location: "Bogotá, Colombia",
+            price: 62,
+            rating: 4.3,
+            reviews: 420,
+            images: ["https://example.com/image3.jpg"],
+            amenities: ["WiFi", "Lavadora"],
+            type: "apartment",
+            beds: 1,
+            monthlyPrice: 525,
+            isSuperHost: true
           }
         ],
         medellin: [
           {
-            id: 3,
+            id: 4,
             title: "Loft en El Poblado",
             location: "Medellín, Colombia",
-            price: 140000,
+            price: 75,
             rating: 4.7,
-            images: ["https://example.com/image3.jpg"],
+            reviews: 1250,
+            images: ["https://example.com/image4.jpg"],
             amenities: ["WiFi", "Piscina", "Gimnasio"],
-            type: "loft"
+            type: "loft",
+            beds: 2,
+            monthlyPrice: 950,
+            isSuperHost: true
           }
         ],
         cartagena: [
           {
-            id: 4,
+            id: 5,
             title: "Casa en la playa",
             location: "Cartagena, Colombia",
-            price: 300000,
+            price: 120,
             rating: 4.9,
-            images: ["https://example.com/image4.jpg"],
+            reviews: 890,
+            images: ["https://example.com/image5.jpg"],
             amenities: ["WiFi", "Aire acondicionado", "Piscina"],
-            type: "house"
+            type: "house",
+            beds: 4,
+            monthlyPrice: 1500,
+            isSuperHost: false
           }
         ]
       };
 
-      // Convertir la ubicación a minúsculas para buscar en el objeto
       const locationKey = params.location.toLowerCase();
       let results = propertiesByLocation[locationKey] || [];
 
-      // Filtrar por otros parámetros si existen (aquí puedes expandir la lógica)
       if (params.minPrice) {
         results = results.filter(property => property.price >= parseInt(params.minPrice));
       }
       if (params.maxPrice) {
         results = results.filter(property => property.price <= parseInt(params.maxPrice));
       }
+      if (params.propertyType) {
+        results = results.filter(property => property.type === params.propertyType);
+      }
 
       resolve(results);
-    }, 1000); // 1 segundo de delay
+    }, 1000);
   });
 };
 
@@ -96,8 +124,8 @@ const Search = () => {
   });
   const [sortBy, setSortBy] = useState('relevance');
   const [filtersVisible, setFiltersVisible] = useState(false);
+  const [showMap, setShowMap] = useState(false);
 
-  // Parsear parámetros de URL inicial
   const parseUrlParams = useCallback(() => {
     const params = Object.fromEntries(urlParams.entries());
     return {
@@ -115,7 +143,6 @@ const Search = () => {
     };
   }, [urlParams]);
 
-  // Actualizar URL con nuevos parámetros
   const updateUrlParams = useCallback((newParams) => {
     const params = new URLSearchParams();
     
@@ -132,7 +159,6 @@ const Search = () => {
     setUrlParams(params, { replace: true });
   }, [setUrlParams]);
 
-  // Ejecutar búsqueda
   const executeSearch = useCallback(async (params) => {
     setLoading(true);
     setError(null);
@@ -152,7 +178,6 @@ const Search = () => {
     }
   }, []);
 
-  // Efecto para inicializar búsqueda desde URL
   useEffect(() => {
     const initialParams = parseUrlParams();
     setSearchParams(initialParams);
@@ -164,7 +189,6 @@ const Search = () => {
     }
   }, [parseUrlParams, executeSearch]);
 
-  // Manejar cambios en filtros
   const handleFilterChange = useCallback((newFilters) => {
     const updatedParams = { ...searchParams, ...newFilters };
     setSearchParams(updatedParams);
@@ -172,10 +196,121 @@ const Search = () => {
     executeSearch(updatedParams);
   }, [searchParams, updateUrlParams, executeSearch]);
 
-  // ... resto de funciones (handleViewChange, handleSortChange, handleClearFilters, etc.)
+  const handleViewChange = useCallback((mode) => {
+    setViewMode(mode);
+    localStorage.setItem('preferredViewMode', mode);
+  }, []);
 
-  // ... resto del componente (render)
+  const handleSortChange = useCallback((sortOption) => {
+    setSortBy(sortOption);
+  }, []);
 
+  const handleClearFilters = useCallback(() => {
+    const defaultParams = {
+      location: searchParams.location,
+      checkIn: '',
+      checkOut: '',
+      guests: 1,
+      minPrice: null,
+      maxPrice: null,
+      propertyType: '',
+      amenities: [],
+      accessibility: false,
+      rating: null,
+      instantBook: false
+    };
+    handleFilterChange(defaultParams);
+  }, [searchParams.location, handleFilterChange]);
+
+  const sortedProperties = useMemo(() => {
+    const propertiesCopy = [...properties];
+    switch (sortBy) {
+      case 'price-asc':
+        return propertiesCopy.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return propertiesCopy.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return propertiesCopy.sort((a, b) => b.rating - a.rating);
+      default:
+        return propertiesCopy;
+    }
+  }, [properties, sortBy]);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  return (
+    <div className="search-page">
+      <div className="search-header">
+        <div className="search-header-top">
+          <h1>Más de 1000 alojamientos</h1>
+          <div className="search-controls">
+            <button 
+              className="filter-toggle"
+              onClick={() => setFiltersVisible(!filtersVisible)}
+            >
+              <span>Filtros</span>
+            </button>
+            <SortDropdown 
+              sortBy={sortBy} 
+              onSortChange={handleSortChange} 
+            />
+            <ViewToggle 
+              viewMode={viewMode} 
+              onViewChange={handleViewChange} 
+            />
+          </div>
+        </div>
+        <div className="search-header-bottom">
+          <ResultsCounter count={properties.length} />
+          <button 
+            className={`map-toggle ${showMap ? 'active' : ''}`}
+            onClick={() => setShowMap(!showMap)}
+          >
+            {showMap ? 'Mostrar lista' : 'Mostrar mapa'}
+          </button>
+        </div>
+      </div>
+
+      <div className="search-content">
+        <div className={`search-filters-sidebar ${filtersVisible ? 'visible' : ''}`}>
+          <div className="filters-header">
+            <h2>Filtros</h2>
+            <button onClick={() => setFiltersVisible(false)}>×</button>
+          </div>
+          <SearchFilters
+            filters={searchParams}
+            onFilterChange={handleFilterChange}
+            onClearFilters={handleClearFilters}
+          />
+        </div>
+
+        {filtersVisible && <div className="filters-overlay" onClick={() => setFiltersVisible(false)}></div>}
+
+        <div className="search-results-container">
+          {error && <ErrorMessage message={error} />}
+
+          {!error && properties.length === 0 && (
+            <EmptyState 
+              message="No se encontraron propiedades que coincidan con tu búsqueda"
+              subtitle="Intenta ajustar los filtros o busca en otra ubicación"
+            />
+          )}
+
+          {!error && properties.length > 0 && (
+            <>
+              {showMap ? (
+                <MapView properties={sortedProperties} />
+              ) : (
+                <PropertyGrid properties={sortedProperties} />
+              )}
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Search;

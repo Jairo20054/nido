@@ -1,12 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import ImageGallery from './ImageGallery';
 import AmenityList from './AmenityList';
 import ReviewSection from './ReviewSection';
-import BookingWidget from '../BookingWidget/BookingWidget';
+import BookingWidget from '../../booking/BookingWidget';
 import './PropertyDetail.css';
 
-const PropertyDetail = ({ property }) => {
+const PropertyDetail = ({ property: propProperty }) => {
   const [activeTab, setActiveTab] = useState('details');
+  const [property, setProperty] = useState(propProperty || null);
+  const [loading, setLoading] = useState(!propProperty);
+  const [error, setError] = useState(null);
+  const { id } = useParams();
+
+  // Mock property data for demonstration
+  const mockProperty = {
+    id: id || '1',
+    title: "Habitación 203 cerca al centro",
+    type: "Habitación en San Antonio, Colombia",
+    guests: 2,
+    bedrooms: 1,
+    bathrooms: 1,
+    rating: 4.9,
+    reviewCount: 58,
+    location: "San Antonio, Colombia",
+    host: {
+      name: "Yita",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80",
+      isSuperhost: true
+    },
+    images: [
+      "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1484154218962-a197022b5858?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+      "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
+    ],
+    amenities: [
+      { name: "WiFi", icon: "📶" },
+      { name: "Cocina", icon: "🍳" },
+      { name: "Estacionamiento", icon: "🚗" },
+      { name: "Aire acondicionado", icon: "❄️" }
+    ],
+    reviews: [
+      { id: 1, user: "Ana", rating: 5, comment: "Excelente lugar", date: "2024-01-15" }
+    ],
+    description: "Hermosa habitación en el centro de la ciudad con todas las comodidades.",
+    locationDetails: "Ubicación perfecta cerca de transporte público y comercios.",
+    // BookingWidget expected properties
+    pricePerNight: 37,
+    cleaningFee: 10,
+    serviceFeeRate: 0.12,
+    maxGuests: 2,
+    instantBook: true
+  };
+
+  useEffect(() => {
+    if (!propProperty && id) {
+      // Simulate API call
+      const fetchProperty = async () => {
+        setLoading(true);
+        try {
+          // In a real app, this would be an API call
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          setProperty(mockProperty);
+        } catch (err) {
+          setError("Error al cargar la propiedad");
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchProperty();
+    } else if (propProperty) {
+      setProperty(propProperty);
+      setLoading(false);
+    }
+  }, [propProperty, id]);
+
+  if (loading) {
+    return (
+      <div className="property-detail-loading">
+        <div className="loading-spinner"></div>
+        <p>Cargando propiedad...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="property-detail-error">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
+  if (!property) {
+    return (
+      <div className="property-detail-error">
+        <p>Propiedad no encontrada</p>
+      </div>
+    );
+  }
   
   return (
     <div className="property-detail">

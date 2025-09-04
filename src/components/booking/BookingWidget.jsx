@@ -13,8 +13,18 @@ const defaultProperty = {
 };
 
 const BookingWidget = ({ property = null }) => {
-  // Usar property o defaultProperty si es null/undefined
-  const safeProperty = useMemo(() => property || defaultProperty, [property]);
+  // Usar property con valores predeterminados para campos undefined
+  const safeProperty = useMemo(() => ({
+    ...defaultProperty,
+    ...property,
+    pricePerNight: property?.pricePerNight ?? defaultProperty.pricePerNight,
+    rating: property?.rating ?? defaultProperty.rating,
+    reviewCount: property?.reviewCount ?? defaultProperty.reviewCount,
+    cleaningFee: property?.cleaningFee ?? defaultProperty.cleaningFee,
+    serviceFeeRate: property?.serviceFeeRate ?? defaultProperty.serviceFeeRate,
+    maxGuests: property?.maxGuests ?? defaultProperty.maxGuests,
+    instantBook: property?.instantBook ?? defaultProperty.instantBook,
+  }), [property]);
 
   const [dates, setDates] = useState({ start: null, end: null });
   const [guests, setGuests] = useState({ adults: 1, children: 0 });
@@ -61,17 +71,23 @@ const BookingWidget = ({ property = null }) => {
 
   const calculateTotal = () => {
     if (!dates.start || !dates.end) return { subtotal: 0, cleaningFee: 0, serviceFee: 0, total: 0, days: 0 };
-    
+
     const days = Math.ceil((dates.end - dates.start) / (1000 * 60 * 60 * 24));
-    const subtotal = safeProperty.pricePerNight * days;
-    const cleaningFee = safeProperty.cleaningFee || 0;
-    const serviceFee = subtotal * (safeProperty.serviceFeeRate || 0.1);
+    const price = Number(safeProperty.pricePerNight) || 0;
+    const subtotal = price * days;
+    const cleaningFee = Number(safeProperty.cleaningFee) || 0;
+    const serviceFee = subtotal * (Number(safeProperty.serviceFeeRate) || 0.1);
     const total = subtotal + cleaningFee + serviceFee;
-    
+
     return { subtotal, cleaningFee, serviceFee, total, days };
   };
 
   const { subtotal, cleaningFee, serviceFee, total, days } = calculateTotal();
+
+  const formatCurrency = (amount) => {
+    const num = Number(amount);
+    return isNaN(num) ? '$0' : `$${num.toLocaleString()}`;
+  };
 
   const formatDate = (date) => {
     return date ? date.toISOString().split('T')[0] : '';
@@ -102,7 +118,7 @@ const BookingWidget = ({ property = null }) => {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-1">
             <span className="text-2xl font-bold text-gray-900">
-              ${safeProperty.pricePerNight.toLocaleString()}
+              {formatCurrency(safeProperty.pricePerNight)}
             </span>
             <span className="text-gray-600">/noche</span>
           </div>
@@ -252,25 +268,25 @@ const BookingWidget = ({ property = null }) => {
             {/* Price Breakdown */}
             <div className="space-y-3 py-4 border-t border-gray-200">
               <div className="flex justify-between text-sm">
-                <span>${safeProperty.pricePerNight.toLocaleString()} × {days} noche{days !== 1 ? 's' : ''}</span>
-                <span>${subtotal.toLocaleString()}</span>
+                <span>{formatCurrency(safeProperty.pricePerNight)} × {days} noche{days !== 1 ? 's' : ''}</span>
+                <span>{formatCurrency(subtotal)}</span>
               </div>
               
               {cleaningFee > 0 && (
                 <div className="flex justify-between text-sm">
                   <span>Tarifa de limpieza</span>
-                  <span>${cleaningFee.toLocaleString()}</span>
+                  <span>{formatCurrency(cleaningFee)}</span>
                 </div>
               )}
               
               <div className="flex justify-between text-sm">
                 <span>Tarifa de servicio</span>
-                <span>${serviceFee.toLocaleString()}</span>
+                <span>{formatCurrency(serviceFee)}</span>
               </div>
               
               <div className="flex justify-between font-bold text-lg pt-3 border-t border-gray-200">
                 <span>Total</span>
-                <span>${total.toLocaleString()}</span>
+                <span>{formatCurrency(total)}</span>
               </div>
             </div>
 
