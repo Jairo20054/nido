@@ -152,9 +152,11 @@ function App() {
                   <Route path="/become-host" element={<BecomeHost />} />
 
                   {/* Nuevas rutas agregadas */}
+                  <Route path="/alojamientos" element={<Search />} />
+                  <Route path="/experiencias" element={<OfertasPage />} />
+                  <Route path="/servicios" element={<ServiciosPage />} />
                   <Route path="/ofertas" element={<OfertasPage />} />
                   <Route path="/marketplace" element={<MarketplacePage />} />
-                  <Route path="/servicios" element={<ServiciosPage />} />
 
                   {/* User Protected */}
                   <Route element={<PrivateRoute />}>

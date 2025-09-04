@@ -144,7 +144,7 @@ const Footer = () => {
             <h4 className="section-title">
               Navegación
             </h4>
-            <ul className="footer-links" role="list">
+            <ul className="footer-links">
               {navigationLinks.map((link, index) => (
                 <li key={index} className="footer-link-item">
                   <a
@@ -166,7 +166,7 @@ const Footer = () => {
             <h4 className="section-title">
               Legal
             </h4>
-            <ul className="footer-links" role="list">
+            <ul className="footer-links">
               {legalLinks.map((link, index) => (
                 <li key={index} className="footer-link-item">
                   <a

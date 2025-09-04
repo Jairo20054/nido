@@ -1,62 +1,45 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
-import { FaTags, FaShoppingCart, FaServicestack, FaBars, FaTimes } from 'react-icons/fa';
+import { Tag, Store, ConciergeBell, Menu, X } from 'lucide-react';
 import './Navigation.css';
 
-const Navigation = ({ 
+const Navigation = ({
   className = '',
   variant = 'horizontal',
-  showIcons = false,
-  onItemClick
+  showIcons = true,
+  onItemClick,
+  items
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeIndicatorStyle, setActiveIndicatorStyle] = useState({});
   const location = useLocation();
   const navRef = useRef(null);
-  const activeItemRef = useRef(null);
 
   const navigationItems = [
-    {
-      id: 'offers',
-      path: '/ofertas',
-      label: 'Ofertas',
-      shortLabel: 'Ofertas',
-      icon: FaTags,
-      description: 'Descuentos y promociones especiales'
-    },
-    {
-      id: 'marketplace',
-      path: '/marketplace',
-      label: 'Marketplace',
-      shortLabel: 'Market',
-      icon: FaShoppingCart,
-      description: 'Compra artículos para el hogar'
-    },
-    {
-      id: 'services',
-      path: '/servicios',
-      label: 'Servicios Adicionales',
-      shortLabel: 'Servicios',
-      icon: FaServicestack,
-      description: 'Servicios complementarios'
-    }
-  ];
-
-  useEffect(() => {
-    if (activeItemRef.current && variant === 'horizontal') {
-      const activeElement = activeItemRef.current;
-      const rect = activeElement.getBoundingClientRect();
-      const navRect = navRef.current?.getBoundingClientRect();
-      
-      if (navRect) {
-        setActiveIndicatorStyle({
-          width: rect.width,
-          left: rect.left - navRect.left,
-          opacity: 1
-        });
-      }
-    }
-  }, [location.pathname, variant]);
+  {
+    id: 'alojamientos',
+    path: '/alojamientos',
+    label: 'Alojamientos',
+    shortLabel: 'Alojamientos',
+    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🏡</span>,
+    description: 'Encuentra alojamientos únicos'
+  },
+  {
+    id: 'experiencias',
+    path: '/experiencias',
+    label: 'Experiencias',
+    shortLabel: 'Experiencias',
+    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🎈</span>,
+    description: 'Vive experiencias únicas'
+  },
+  {
+    id: 'servicios',
+    path: '/servicios',
+    label: 'Servicios',
+    shortLabel: 'Servicios',
+    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🛎️</span>,
+    description: 'Servicios adicionales'
+  }
+];
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -103,7 +86,7 @@ const Navigation = ({
         aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
         aria-expanded={isMobileMenuOpen}
       >
-        {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
+        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
       <nav 
@@ -115,7 +98,7 @@ const Navigation = ({
         {isMobileMenuOpen && <div className="mobile-overlay" onClick={() => setIsMobileMenuOpen(false)} />}
         
         <ul className="nav-list" role="menubar">
-          {navigationItems.map((item, index) => {
+          {(items || navigationItems).map((item, index) => {
             const IconComponent = item.icon;
             const isActive = location.pathname === item.path || 
                            location.pathname.startsWith(item.path + '/');
@@ -123,7 +106,6 @@ const Navigation = ({
             return (
               <li key={item.id} className="nav-item" role="none">
                 <NavLink
-                  ref={isActive ? activeItemRef : null}
                   to={item.path}
                   className={({ isActive: linkIsActive }) => 
                     `nav-link ${linkIsActive ? 'active' : ''}`
@@ -137,28 +119,19 @@ const Navigation = ({
                   }}
                 >
                   {showIcons && (
-                    <IconComponent className="nav-icon" aria-hidden="true" />
+                    <div className="nav-icon-container">
+                      <IconComponent className="nav-icon" size={22} aria-hidden="true" />
+                    </div>
                   )}
                   <span className="nav-text">
                     <span className="nav-label">{item.label}</span>
                     <span className="nav-short-label">{item.shortLabel}</span>
                   </span>
-                  {variant === 'horizontal' && (
-                    <span className="nav-underline" aria-hidden="true" />
-                  )}
                 </NavLink>
               </li>
             );
           })}
         </ul>
-
-        {variant === 'horizontal' && (
-          <div 
-            className="active-indicator"
-            style={activeIndicatorStyle}
-            aria-hidden="true"
-          />
-        )}
 
         {isMobileMenuOpen && (
           <div className="mobile-menu-footer">
