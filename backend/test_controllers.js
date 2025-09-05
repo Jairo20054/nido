@@ -24,8 +24,16 @@ const createMockReq = (body = {}, params = {}, query = {}, user = {}) => ({
 
 const createMockRes = () => {
   const res = {};
-  res.status = jest.fn().mockReturnValue(res);
-  res.json = jest.fn().mockReturnValue(res);
+  res.statusCode = 200;
+  res.responseData = null;
+  res.status = function(code) {
+    this.statusCode = code;
+    return this;
+  };
+  res.json = function(data) {
+    this.responseData = data;
+    return this;
+  };
   return res;
 };
 
@@ -65,8 +73,8 @@ async function runControllerTests() {
     });
 
     const testProperty = await Property.create({
-      title: 'Propiedad de Prueba',
-      description: 'Una hermosa propiedad para testing',
+      title: 'Propiedad de Prueba Completa',
+      description: 'Esta es una hermosa propiedad de prueba que cumple con todos los requisitos de validación del sistema NIDO. Tiene todas las comodidades necesarias para una estadía perfecta.',
       location: 'Madrid, España',
       address: {
         street: 'Calle Test 123',
@@ -79,13 +87,18 @@ async function runControllerTests() {
         type: 'Point',
         coordinates: [-3.7038, 40.4168]
       },
+      price: 5000,
       pricePerNight: 100,
       propertyType: 'apartment',
       bedrooms: 2,
       bathrooms: 1,
       maxGuests: 4,
-      amenities: ['wifi', 'kitchen', 'airConditioning'],
-      images: ['https://example.com/image1.jpg'],
+      amenities: ['wifi', 'kitchen', 'air_conditioning'],
+      images: [{
+        url: 'https://example.com/image1.jpg',
+        alt: 'Imagen principal de la propiedad',
+        isPrimary: true
+      }],
       host: testHost._id,
       isActive: true
     });
@@ -104,7 +117,7 @@ async function runControllerTests() {
     const registerRes = createMockRes();
 
     await authController.register(registerReq, registerRes);
-    console.log('✅ Registro de usuario:', registerRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Registro de usuario:', registerRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // Prueba de login
     const loginReq = createMockReq({
@@ -114,7 +127,7 @@ async function runControllerTests() {
     const loginRes = createMockRes();
 
     await authController.login(loginReq, loginRes);
-    console.log('✅ Login de usuario:', loginRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Login de usuario:', loginRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // ===== PRUEBAS DE USER CONTROLLER =====
     console.log('\n👤 ===== PRUEBAS DE USER CONTROLLER =====');
@@ -124,14 +137,14 @@ async function runControllerTests() {
     const getUsersRes = createMockRes();
 
     await userController.getAllUsers(getUsersReq, getUsersRes);
-    console.log('✅ Obtener usuarios:', getUsersRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Obtener usuarios:', getUsersRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // Prueba de obtener usuario por ID
     const getUserReq = createMockReq({}, { id: testUser._id }, {}, { id: testUser._id });
     const getUserRes = createMockRes();
 
     await userController.getUserById(getUserReq, getUserRes);
-    console.log('✅ Obtener usuario por ID:', getUserRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Obtener usuario por ID:', getUserRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // ===== PRUEBAS DE PROPERTY CONTROLLER =====
     console.log('\n🏠 ===== PRUEBAS DE PROPERTY CONTROLLER =====');
@@ -141,14 +154,14 @@ async function runControllerTests() {
     const getPropertiesRes = createMockRes();
 
     await propertyController.getAllProperties(getPropertiesReq, getPropertiesRes);
-    console.log('✅ Obtener propiedades:', getPropertiesRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Obtener propiedades:', getPropertiesRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // Prueba de obtener propiedad por ID
     const getPropertyReq = createMockReq({}, { id: testProperty._id }, {}, { id: testUser._id });
     const getPropertyRes = createMockRes();
 
     await propertyController.getPropertyById(getPropertyReq, getPropertyRes);
-    console.log('✅ Obtener propiedad por ID:', getPropertyRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Obtener propiedad por ID:', getPropertyRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // Prueba de crear propiedad
     const createPropertyReq = createMockReq({
@@ -174,7 +187,7 @@ async function runControllerTests() {
     const createPropertyRes = createMockRes();
 
     await propertyController.createProperty(createPropertyReq, createPropertyRes);
-    console.log('✅ Crear propiedad:', createPropertyRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Crear propiedad:', createPropertyRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // ===== PRUEBAS DE BOOKING CONTROLLER =====
     console.log('\n📅 ===== PRUEBAS DE BOOKING CONTROLLER =====');
@@ -191,7 +204,7 @@ async function runControllerTests() {
     const createBookingRes = createMockRes();
 
     await bookingController.createBooking(createBookingReq, createBookingRes);
-    console.log('✅ Crear reserva:', createBookingRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Crear reserva:', createBookingRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // ===== PRUEBAS DE MESSAGE CONTROLLER =====
     console.log('\n💬 ===== PRUEBAS DE MESSAGE CONTROLLER =====');
@@ -205,14 +218,14 @@ async function runControllerTests() {
     const createMessageRes = createMockRes();
 
     await messageController.createMessage(createMessageReq, createMessageRes);
-    console.log('✅ Crear mensaje:', createMessageRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Crear mensaje:', createMessageRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // Prueba de obtener conversaciones
     const getConversationsReq = createMockReq({}, {}, {}, { id: testUser._id });
     const getConversationsRes = createMockRes();
 
     await messageController.getConversations(getConversationsReq, getConversationsRes);
-    console.log('✅ Obtener conversaciones:', getConversationsRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Obtener conversaciones:', getConversationsRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // ===== PRUEBAS DE PAYMENT CONTROLLER =====
     console.log('\n💳 ===== PRUEBAS DE PAYMENT CONTROLLER =====');
@@ -223,7 +236,7 @@ async function runControllerTests() {
     const getPaymentsRes = createMockRes();
 
     await paymentController.getPaymentsByUser(getPaymentsReq, getPaymentsRes);
-    console.log('✅ Obtener pagos:', getPaymentsRes.json.mock.calls[0][0].success ? 'PASÓ' : 'FALLÓ');
+    console.log('✅ Obtener pagos:', getPaymentsRes.responseData?.success ? 'PASÓ' : 'FALLÓ');
 
     // ===== RESULTADOS FINALES =====
     console.log('\n🎉 ===== PRUEBAS COMPLETADAS =====');

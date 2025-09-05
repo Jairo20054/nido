@@ -1,7 +1,7 @@
 // Controlador de pagos completo para NIDO
 const Payment = require('../models/Payment');
 const Booking = require('../models/Booking');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const stripe = process.env.STRIPE_SECRET_KEY ? require('stripe')(process.env.STRIPE_SECRET_KEY) : null;
 const Joi = require('joi');
 const sanitize = require('mongo-sanitize');
 const { validationResult } = require('express-validator');
@@ -184,7 +184,14 @@ const createPayment = async (req, res) => {
       });
     }
 
-    // Procesar pago con Stripe
+    // Procesar pago con Stripe (solo si está configurado)
+    if (!stripe) {
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
+        success: false,
+        message: 'Stripe no está configurado',
+      });
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount * 100),
       currency: 'usd',
@@ -259,7 +266,14 @@ const refundPayment = async (req, res) => {
       });
     }
 
-    // Procesar reembolso con Stripe
+    // Procesar reembolso con Stripe (solo si está configurado)
+    if (!stripe) {
+      return res.status(STATUS_CODES.BAD_REQUEST).json({
+        success: false,
+        message: 'Stripe no está configurado',
+      });
+    }
+
     const refund = await stripe.refunds.create({
       payment_intent: payment.stripeChargeId,
     });
