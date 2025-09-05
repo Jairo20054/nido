@@ -44,12 +44,12 @@
     "zustand": "^5.0.6"
   },
   "scripts": {
-    "start": "cross-env PORT=3001 react-scripts start",
+    "start": "npm run dev",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "dev:frontend": "cross-env PORT=3001 react-scripts start",
-    "dev:backend": "cross-env PORT=5001 nodemon server.js",
+    "dev:backend": "cd backend && cross-env PORT=5001 nodemon server.js",
     "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:backend\"",
     "kill-ports": "npx kill-port 3000 && npx kill-port 3001 && npx kill-port 5000 && npx kill-port 5001",
     "clean-start": "npm run kill-ports && npm run dev"

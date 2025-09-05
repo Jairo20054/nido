@@ -56,17 +56,7 @@ const PropertyCard = ({ property, onClick }) => {
           </div>
         </div>
         
-        <div className="property-features">
-          <div className="feature">
-            <span>🛏️</span> {safeProperty.bedrooms} hab
-          </div>
-          <div className="feature">
-            <span>🚿</span> {safeProperty.bathrooms} baño{safeProperty.bathrooms > 1 ? 's' : ''}
-          </div>
-          <div className="feature">
-            <span>📶</span> WiFi
-          </div>
-        </div>
+
         
         <div className="property-footer">
           <div className="reviews">

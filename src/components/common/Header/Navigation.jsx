@@ -16,19 +16,19 @@ const Navigation = ({
 
   const navigationItems = [
   {
-    id: 'alojamientos',
-    path: '/alojamientos',
-    label: 'Alojamientos',
-    shortLabel: 'Alojamientos',
-    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🏡</span>,
+    id: 'ofertas',
+    path: '/ofertas',
+    label: 'ofertas',
+    shortLabel: 'ofertas',
+    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🏷️</span>,
     description: 'Encuentra alojamientos únicos'
   },
   {
-    id: 'experiencias',
-    path: '/experiencias',
-    label: 'Experiencias',
-    shortLabel: 'Experiencias',
-    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🎈</span>,
+    id: 'marketplace',
+    path: '/marketplace',
+    label: 'marketplace',
+    shortLabel: 'marketplace',
+    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🛒</span>,
     description: 'Vive experiencias únicas'
   },
   {
@@ -36,7 +36,7 @@ const Navigation = ({
     path: '/servicios',
     label: 'Servicios',
     shortLabel: 'Servicios',
-    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🛎️</span>,
+    icon: ({ className, ...props }) => <span className={className} style={{ fontSize: "1.5rem" }} {...props}>🛠️</span>,
     description: 'Servicios adicionales'
   }
 ];
