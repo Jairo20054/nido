@@ -2,9 +2,9 @@
 /* Variables CSS organizadas y mejoradas */
 :root {
   /* Colores */
-  --sb-color-primary: #10b981;
-  --sb-color-primary-hover: #059669;
-  --sb-color-accent: #ff385c;
+  --sb-color-primary: #191b1b;
+  --sb-color-primary-hover: #c7c7c7;
+  --sb-color-accent: #0c0b0b;
   --sb-color-text: #111827;
   --sb-color-text-muted: #6b7280;
   --sb-color-background: #ffffff;
@@ -208,8 +208,8 @@
 }
 
 .search-input-container input:focus {
-  border-color: var(--sb-color-primary);
-  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15);
+  border-color: transparent;
+  box-shadow: none;
   background: var(--sb-color-background);
 }
 
