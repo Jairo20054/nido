@@ -52,7 +52,6 @@ const PropertyCard = ({ property, onClick }) => {
             <span>{safeProperty.location}</span>
             <span>·</span>
             {/* Protección para guests */}
-            <span>{safeProperty.guests} huéspedes</span>
           </div>
         </div>
         
