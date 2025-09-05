@@ -10,6 +10,15 @@ const Payment = require('./models/Payment');
 async function main() {
   await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/NIDO');
 
+  // Limpiar datos existentes
+  console.log('🧹 Limpiando datos existentes...');
+  await User.deleteMany({});
+  await Property.deleteMany({});
+  await Booking.deleteMany({});
+  await Message.deleteMany({});
+  await Payment.deleteMany({});
+  console.log('✅ Datos existentes limpiados');
+
   // Insertar usuario de ejemplo
   const user = new User({
     name: 'Usuario Ejemplo',
