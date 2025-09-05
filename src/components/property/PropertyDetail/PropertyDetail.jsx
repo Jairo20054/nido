@@ -3,8 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { 
   Star, MapPin, Users, Bed, Bath, Home, 
   Calendar, ArrowLeft, Share, Heart, 
-  Wifi, Kitchen, Car, Snowflake, Tv,
-  Coffee, Dumbbell, Pool, Dog, Key
+  Wifi, Car, Snowflake, Tv,
+  Coffee, Dumbbell, Dog, Key
 } from 'lucide-react';
 import './PropertyDetail.css';
 
@@ -49,13 +49,13 @@ const PropertyDetail = () => {
     ],
     amenities: [
       { name: "WiFi", icon: <Wifi size={20} /> },
-      { name: "Cocina equipada", icon: <Kitchen size={20} /> },
+  { name: "Cocina equipada", icon: <Car size={20} /> }, // Cambia el icono por uno existente o eliminalo si prefieres
       { name: "Estacionamiento gratuito", icon: <Car size={20} /> },
       { name: "Aire acondicionado", icon: <Snowflake size={20} /> },
       { name: "TV por cable", icon: <Tv size={20} /> },
       { name: "Cafetera", icon: <Coffee size={20} /> },
       { name: "Gimnasio", icon: <Dumbbell size={20} /> },
-      { name: "Piscina", icon: <Pool size={20} /> },
+  { name: "Piscina", icon: <Dumbbell size={20} /> }, // Cambia el icono por uno existente o eliminalo si prefieres
       { name: "Mascotas permitidas", icon: <Dog size={20} /> },
       { name: "Check-in automático", icon: <Key size={20} /> }
     ],
